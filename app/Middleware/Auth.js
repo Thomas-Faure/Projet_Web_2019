@@ -1,0 +1,23 @@
+'use strict'
+/** @typedef {import('@adonisjs/framework/src/Request')} Request */
+/** @typedef {import('@adonisjs/framework/src/Response')} Response */
+/** @typedef {import('@adonisjs/framework/src/View')} View */
+
+class Auth {
+  /**
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Function} next
+   */
+  async handle ({ request }, next) {
+    const cartTotal = request.cookie('Authorization')
+    if(cartTotal != null) {
+      const token = cartTotal['token']
+      request.request.headers.authorization = `Bearer ${token}`
+    }
+
+    await next()
+  }
+}
+
+module.exports = Auth
