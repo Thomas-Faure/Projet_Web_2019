@@ -4,17 +4,16 @@ const Database = use('Database')
 
 
 class UserController {
-
-
-    async test({request, auth, response}){
-        try {
-            await auth.check()
-            return await auth.getUser()
-        } catch (error) {
-            response.send('Missing or invalid jwt token')
-        }
+    async destroy ({ params, request, response }) {
     }
-    async register({request, auth, response}) {
+
+    async edit ({ params, request, response, view }) {
+    }
+
+    async show ({ params, request, response, view }) {
+    }
+
+    async create({request, auth, response}) {
         const username = request.input("username")
         const email = request.input("email")
         const password = request.input("password")
@@ -50,10 +49,8 @@ class UserController {
                 let user = await User.findBy('email', email)
                let token = await auth.generate(user)
                 response.cookie('Authorization', token,{ httpOnly: true, path: '/' })
-                //return response.json({"user": user, "access_token": token})
                 response.redirect('/')
             }
-
 
         }
         catch (e) {

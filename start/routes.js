@@ -18,7 +18,7 @@ const Route = use('Route');
 
 Route.on('/').render('index');
 
-
+Route.get('test','RoleController.show')
 
 //pour déconnecter un utilisateur
 Route.get('user/logout', 'UserController.logout');
@@ -32,4 +32,4 @@ Route.post('user/login','UserController.login').validator('LogUser');
 
 //chemin pour l'inscription utilisateur
 Route.on('user/register').render('user.register').middleware(['guest'])
-Route.post('user/register','UserController.register').validator('RegisterUser');
+Route.post('user/register','UserController.create').validator('RegisterUser');
