@@ -33,7 +33,11 @@ Route.get('user/logout', 'UserController.logout');
 Route.on('user/login').render('user.login').middleware(['guest'])
 Route.post('user/login','UserController.login').validator('LogUser');
 
-Route.get('test','UserController.test')
+Route.get('user/show','UserController.show').middleware(['auth'])
+
+
+Route.get('user/edit','UserController.edit').middleware(['auth'])
+Route.post('user/edit/:id','UserController.update').validator('EditUser');
 //chemin pour l'inscription utilisateur
 Route.on('user/register').render('user.register').middleware(['guest'])
 Route.post('user/register','UserController.create').validator('RegisterUser');

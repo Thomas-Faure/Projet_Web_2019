@@ -6,9 +6,6 @@ class LogUser {
             'email': 'required|email',
             'password': 'required'
 
-
-
-
         }
     }
 
@@ -18,6 +15,11 @@ class LogUser {
             'unique' : ' Il se trouve que {{ field }} existe deja...',
             'email' : ' Vous devez mettre un email dans ce champ...'
         }
+    }
+    async fails(error){
+        this.ctx.session.withErrors(error)
+        .flashAll();
+        return this.ctx.response.redirect('back');
     }
 
 }

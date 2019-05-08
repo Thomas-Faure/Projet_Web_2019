@@ -7,11 +7,39 @@ class UserController {
     async destroy ({ params, request, response }) {
     }
 
-    async edit ({ params, request, response, view }) {
+    async update ({ params,auth, request, response, view,session }) {
+        const user = (await auth.getUser())
+        if(user.id == params.id){
+            try{
+                const name = request.input('name')
+                const username = request.input('username')
+                const email = request.input('email')
+
+                let userEdit = await User.find(params.id)
+
+                userEdit.name = name
+                userEdit.email = email
+                userEdit.username = username
+        
+                await userEdit.save()
+                return response.redirect('/user/edit')
+            }catch(error){
+                session.flash({EditError : 'Email ou Username deja pris'});
+            return response.redirect('/user/edit')
+            }
+        }else{
+            response.redirect('/')
+        }
     }
 
-    async show ({ params, request, response, view }) {
+    async show ({ params, request, auth, response, view }) {
+        
+        const user = await auth.getUser()
+        console.log(user)
+        return view.render('user.profile',{user : user})
     }
+
+    
 
     async create({request, auth, response}) {
         const username = request.input("username")
@@ -31,22 +59,29 @@ class UserController {
         user.admin = 0
         await user.save()
         let accessToken = await auth.attempt(email, password)
-        response.redirect('/')
+        return user.id
+        //response.redirect('/')
     }
+
+
+    async edit ({ auth, view }) {
+        const user = (await auth.getUser())
+
+        return view.render('user.edit',{user : user.toJSON()})
+        
+    }
+
+
+
     async logout({request, auth, response}) {
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }
-    async test({request, auth, response}){
-        try {
-            console.log( (await auth.getUser()).id)
-     
-          } catch (error) {
-            response.send('You are not logged in')
-        }
-    }
 
-    async login({request, auth, response}) {
+    
+    
+
+    async login({request, auth, response,session}) {
 
         let {email, password} = request.all();
 
@@ -56,14 +91,15 @@ class UserController {
                 let user = await User.findBy('email', email)
                let token = await auth.generate(user)
                 response.cookie('Authorization', token,{ httpOnly: true, path: '/' })
-                console.log(token)
+                
                 response.redirect('/')
             }
 
         }
-        catch (e) {
-            console.log(e)
-            return response.json({message: 'You are not registered!'})
+        catch (error) {
+            session.flash({loginError : 'Les identifiants ne correspondent pas'});
+            return response.redirect('/user/login')
+
         }
     }
 }

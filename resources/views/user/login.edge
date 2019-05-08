@@ -5,12 +5,18 @@ Accueil
 @endsection
 
 @section('content')
-
+@if(flashMessage('loginError'))
+        <span>
+                {{ flashMessage('loginError') }}
+        </span>
+        @endif
 <h1>page de login</h1>
 <form action="{{ route('UserController.login') }}" method="POST">
         {{csrfField()}}
-
+        
+       
         <div class="form-group">
+
                 <label>Mail</label>
                 <input type="text" name="email" value="{{old('email', '') }}" class="form-control"\>
                 @if(hasErrorFor('email'))
