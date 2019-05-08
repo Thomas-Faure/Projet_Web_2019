@@ -3,11 +3,11 @@
 class RegisterUser {
   get rules () {
     return {
-      'name': 'required',
-      'username': 'required|unique:users',
+      'name': 'required|max:80',
+      'username': 'required|unique:users|max:80',
       'birthday': 'required',
-      'email': 'required|email|unique:users',
-      'password': 'required'
+      'email': 'required|email|unique:users|max:254',
+      'password': 'required|min:3|max:60'
 
 
 
@@ -18,7 +18,9 @@ class RegisterUser {
     return{
       'required' : ' Il faut remplir le champ : {{ field }}...',
       'unique' : ' Il se trouve que {{ field }} existe deja...',
-      'email' : ' Vous devez mettre un email dans ce champ...'
+      'email' : ' Vous devez mettre un email dans ce champ...',
+      'max' : 'Nombre de caractère autorisé dépassé',
+      'min' : 'Nombre de caractère doit être supérieur'
     }
   }
 
