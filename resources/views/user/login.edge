@@ -10,7 +10,7 @@ Accueil
 <form action="{{ route('UserController.login') }}" method="POST">
         {{csrfField()}}
 
-         <div class="form-group">
+        <div class="form-group">
                 <label>Mail</label>
                 <input type="text" name="email" value="{{old('email', '') }}" class="form-control"\>
                 @if(hasErrorFor('email'))
@@ -29,6 +29,6 @@ Accueil
                                 @endif
                 </div>
 
-             <button type="submit" class="btn btn-primary">Envoyer</button>
-       </form>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
 @endsection

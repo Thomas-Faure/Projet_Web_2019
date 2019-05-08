@@ -16,9 +16,9 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-Route.on('/').render('index');
+Route.get('/','IndexController.index')
 
-Route.get('test','RoleController.show')
+/**                 PARTIE UTILISATEUR                                     */
 
 //pour déconnecter un utilisateur
 Route.get('user/logout', 'UserController.logout');
@@ -27,9 +27,34 @@ Route.get('user/logout', 'UserController.logout');
 Route.on('user/login').render('user.login').middleware(['guest'])
 Route.post('user/login','UserController.login').validator('LogUser');
 
-
-
-
+Route.get('test','UserController.test')
 //chemin pour l'inscription utilisateur
 Route.on('user/register').render('user.register').middleware(['guest'])
 Route.post('user/register','UserController.create').validator('RegisterUser');
+
+
+/**                 PARTIE BADGE                                     */
+
+
+
+/**                 PARTIE NIVEAU                                     */
+
+
+
+/**                 PARTIE BID                                     */
+
+Route.post('bid/create','BidController.create');
+
+
+
+/**                 PARTIE MESSAGE                                     */
+
+
+
+/**                 PARTIE CATEGORY_QUESTION                                     */
+
+
+
+/**                 PARTIE BACKOFFICE                                     */
+
+Route.on('backoffice').render('user.register').middleware(['admin'])
