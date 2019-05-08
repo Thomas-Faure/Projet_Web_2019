@@ -8,12 +8,12 @@ class BadgeSchema extends Schema {
     this.create('badge', (table) => {
       table.increments()
       table.string('name_badge', 80).notNullable().unique()
+      table.string('description', 254).notNullable()
       table.string('photo', 254).notNullable()
       table.integer('exp', 60).notNullable()
       table.timestamps()
     })
   }
-
   down () {
     this.drop('badge')
   }
