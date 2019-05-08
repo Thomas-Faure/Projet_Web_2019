@@ -11,6 +11,8 @@ class RoleController {
     }
 
     async show ({ params, request, response, view }) {
+		console.log("oui")
+		console.log( await Database.select('*').from('role'))
     }
 
     async create({request, auth, response}) {

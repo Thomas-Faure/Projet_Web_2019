@@ -1,10 +1,12 @@
 'use strict'
-const Question = use('App/Models/Question')
+const Bid = use('App/Models/Bid')
 const Database = use('Database')
 
 
-class QuestionController {
-    async destroy ({ params, request, response }) {
+class IndexController {
+    async index ({ view }) {
+        const bid = await Bid.all()
+        return view.render('index',{bids : bid.toJSON()})
     }
 
     async edit ({ params, request, response, view }) {
@@ -21,4 +23,4 @@ class QuestionController {
 
 }
 
-module.exports = QuestionController
+module.exports = IndexController

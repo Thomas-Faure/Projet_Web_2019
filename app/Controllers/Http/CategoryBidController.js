@@ -1,9 +1,9 @@
 'use strict'
-const Category = use('App/Models/Category')
+const Category = use('App/Models/CategoryBid')
 const Database = use('Database')
 
 
-class CategoryController {
+class CategoryBidController {
     async destroy ({ params, request, response }) {
     }
 
@@ -21,4 +21,4 @@ class CategoryController {
 
 }
 
-module.exports = CategoryController
+module.exports = CategoryBidController

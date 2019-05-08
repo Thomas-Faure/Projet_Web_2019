@@ -26,17 +26,24 @@ class UserController {
         user.password = password
         user.birthday= birthday
         user.name = name
-        user.level = 0
+        user.niveau_id = 1
         user.exp = 0
-        user.role_id = 1
+        user.admin = 0
         await user.save()
         let accessToken = await auth.attempt(email, password)
-
         response.redirect('/')
     }
     async logout({request, auth, response}) {
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
+    }
+    async test({request, auth, response}){
+        try {
+            console.log( (await auth.getUser()).id)
+     
+          } catch (error) {
+            response.send('You are not logged in')
+        }
     }
 
     async login({request, auth, response}) {
@@ -49,6 +56,7 @@ class UserController {
                 let user = await User.findBy('email', email)
                let token = await auth.generate(user)
                 response.cookie('Authorization', token,{ httpOnly: true, path: '/' })
+                console.log(token)
                 response.redirect('/')
             }
 
