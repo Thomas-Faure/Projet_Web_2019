@@ -1,0 +1,12 @@
+@layout('layouts.main')
+@section('title')
+Accueil
+@endsection
+@section('content')
+<div id="error-page">
+<h1>ERROR</h1>
+<h1>{{ id }}</h1>
+<p>une erreur s'est produite, veuillez retourner à l'accueil</p>
+<a class="btn btn-danger" href="/" role="button">Accueil</a>
+</div>
+@endsection

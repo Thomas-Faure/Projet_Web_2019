@@ -18,6 +18,12 @@ const Route = use('Route');
 
 Route.get('/','IndexController.index')
 
+
+/**                    ERROR                                               */
+
+Route.get('error/:id',async ({view, params }) => {
+    return view.render('error',{id : params.id})
+  })
 /**                 PARTIE UTILISATEUR                                     */
 
 //pour déconnecter un utilisateur
