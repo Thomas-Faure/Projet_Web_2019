@@ -1,0 +1,62 @@
+body{
+    background: white;
+}
+.navbar{
+    background:#333333;
+
+    width: 100%;
+
+}
+.color-nav{
+    color:white !important;
+}
+.navitem .navbar-link{
+    color: white;
+}
+
+.container{
+    width:100%;
+}
+
+.img-nav{
+    width: 70%;
+    height: auto;
+}
+
+#button-add{
+    background-color : #008ae6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border-color: #46b8da;
+
+}
+
+#button-add-div{
+    position: fixed;
+     bottom: -4px;
+     right: 10px;
+}
+#img-nav-div{
+    background:#333333;width:100%;
+}
+
+.bid-index-a{
+    width:100%;color:black !important;background-color: blue
+}
+.bid-index-div{
+    width: 100%;text-align:center;
+}
+
+/** 
+
+Pour la page d'erreur
+
+*/
+#error-page{
+    text-align: center;
+    
+}
+#error-page h1{
+    font-size: 70px;
+}
