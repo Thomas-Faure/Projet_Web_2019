@@ -26,7 +26,7 @@ class ExceptionHandler extends BaseExceptionHandler {
       await session.commit()
       response.redirect('back')
       return
-    }else if (error.code === 'E_ROUTE_NOT_FOUND') {
+    }else if (error.code === 'E_ROUTE_NOT_FOUND' || error.code === 'E_GUEST_ONLY' || error.code === 'E_INVALID_JWT_TOKEN') {
       return response.redirect('/error/404')
     }
     response.status(error.status).send(error.message)
