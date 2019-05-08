@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
       {{ script('js/jquery') }}
       {{ script('js/popper') }}
       {{ style('css/styleBootstrap') }}
@@ -34,9 +37,13 @@
       <ul class="navbar-nav">
     
         <li class="nav-item active">
-          <a class="nav-link color-nav" href="/">Accueil <span class="sr-only">(current)</span></a>
+          <a class="nav-link color-nav" href="/"><strong>Accueil</strong><span class="sr-only">(current)</span></a>
         </li>
         @if(auth.user)
+        
+        <li class="nav-item">
+            <a class="nav-link color-nav" href="/user/show">Profile</a>
+          </li>
         <li class="nav-item">
           <a class="nav-link color-nav" href="/user/logout">Deconnexion</a>
         </li>
@@ -53,7 +60,7 @@
       </ul>
     </div>
   </nav>
-  <div class ="container">
+  <div class ="container" id="main-container">
 
 
       <div class="row">
