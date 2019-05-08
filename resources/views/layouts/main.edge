@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-      {{ script('jquery') }}
-      {{ script('popper') }}
-      {{ style('style') }}
-      {{ style('style2') }}
-      {{ script('bootstrap') }}
+      {{ script('js/jquery') }}
+      {{ script('js/popper') }}
+      {{ style('css/styleBootstrap') }}
+      {{ style('css/style') }}
+      {{ script('js/bootstrap') }}
   @!section('extracss')
   <title>
     @!section('title')
   </title>
 </head>
 <body>
-    <div class="container" style="background:#333333">
+    <div id="img-nav-div">
         <div class="row">
-            <div class="col-4">
-                <img class="mx-auto d-block" src="logo.png">  
+            <div class="col-5">
+             
+            </div>
+            <div class="col-2">
+                <img class="mx-auto d-block img-nav" src="{{ assetsUrl('img/logo.png') }}">  
+            </div>
+            <div class="col-5">
+           
             </div>
         </div>
     </div>
