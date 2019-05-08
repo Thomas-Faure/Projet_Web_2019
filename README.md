@@ -1,31 +1,31 @@
-# Adonis fullstack application
+# Projet Web
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+Projet web - semestre 6 - IG3
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
+## Technologies
 
-## Setup
+- Adonis JS (Framework Full-Stack NodesJS) https://adonisjs.com/
+- MySql https://www.mysql.com/fr/
+- JWT (création token) https://jwt.io/
+- Javascript
+- Html 5
+- Css 3
+### Outils utilisés
 
-Use the adonis command to install the blueprint
+- Filezilla (pour le transfert de fichier en FTP) https://filezilla-project.org/
+- PhpStorm (pour le développement) https://www.jetbrains.com/phpstorm/
 
-```bash
-adonis new yardstick
-```
+## Auteur
 
-or manually clone the repo and then run `npm install`.
+* **Thomas Faure** - *Etudiant* - [Voir mon GitHub](https://github.com/Thomas-Faure)
 
+## License
 
-### Migrations
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-Run the following command to run startup migrations.
+## Connaissances Requises
 
-```js
-adonis migration:run
-```
+* Javascript
+* Jwt
+* Adonis
+* Web en géneral
