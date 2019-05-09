@@ -37,11 +37,15 @@ Route
   .group(() => {
     Route.on('login').render('user.login').middleware(['guest'])
     Route.post('login','UserController.login').validator('LogUser');
+
     Route.get('edit/:id','UserController.edit').middleware(['auth'])
     Route.post('edit/:id','UserController.update').validator('EditUser');
+
     Route.on('register').render('user.register').middleware(['guest'])
     Route.post('register','UserController.store').validator('RegisterUser');
+
     Route.get('logout', 'UserController.logout');
+
     Route.get(':id','UserController.show').middleware(['auth'])
     
   })
@@ -57,9 +61,10 @@ Route
 
 
 
-/**                 PARTIE BID                                     */
-
-Route.post('bid/create','BidController.create');
+/**                 PARTIE announcement                                 */
+Route.get('announcement/store','AnnouncementController.create').middleware(['auth'])
+Route.post('announcement/store','AnnouncementController.store').validator('AddAnnouncement');
+Route.get('announcement/:id','AnnouncementController.show');
 
 
 
@@ -76,7 +81,7 @@ Route.post('bid/create','BidController.create');
 //page accueil admin
 Route.get('backoffice','BackOfficeController.index').middleware(['admin'])
 Route.on('backoffice/users').render('user.register').middleware(['admin'])
-Route.on('backoffice/bid').render('user.register').middleware(['admin'])
+Route.on('backoffice/announcement').render('user.register').middleware(['admin'])
 Route.on('backoffice/message').render('user.register').middleware(['admin'])
 Route.on('backoffice/categoryBis').render('user.register').middleware(['admin'])
 Route.on('backoffice/level').render('user.register').middleware(['admin'])
