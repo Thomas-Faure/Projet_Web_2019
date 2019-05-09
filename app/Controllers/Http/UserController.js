@@ -33,15 +33,18 @@ class UserController {
     }
 
     async show ({ params, request, auth, response, view }) {
-        
-        const user = await auth.getUser()
-        console.log(user)
+        const user = await User.find(params.id)
+        if(user){
         return view.render('user.profile',{user : user})
+        }else{
+            return response.redirect('back')
+        }
+        
     }
 
     
 
-    async create({request, auth, response}) {
+    async store({request, auth, response}) {
         const username = request.input("username")
         const email = request.input("email")
         const password = request.input("password")
@@ -60,14 +63,17 @@ class UserController {
         await user.save()
         let accessToken = await auth.attempt(email, password)
         return user.id
-        //response.redirect('/')
+        response.redirect('/')
     }
 
 
-    async edit ({ auth, view }) {
+    async edit ({ auth, view,params,response }) {
         const user = (await auth.getUser())
+        if(user.id == params.id){
 
         return view.render('user.edit',{user : user.toJSON()})
+        }
+        return response.redirect('back')
         
     }
 
@@ -99,7 +105,6 @@ class UserController {
         catch (error) {
             session.flash({loginError : 'Les identifiants ne correspondent pas'});
             return response.redirect('/user/login')
-
         }
     }
 }

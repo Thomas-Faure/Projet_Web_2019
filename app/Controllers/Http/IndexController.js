@@ -5,6 +5,14 @@ const Database = use('Database')
 
 class IndexController {
     async index ({ view }) {
+       
+        return view.render('index')
+    }
+    async ranking ({ view }) {
+       
+        return view.render('ranking')
+    }
+    async page ({ view }){
         //const bid = await Bid.all()
         const bid = await Database
         .select('bid.name_bid as name_bid',
@@ -14,7 +22,7 @@ class IndexController {
         .from('bid')
         .crossJoin('users', 'bid.user_id', 'users.id')
         .crossJoin('category_bid', 'bid.category_id', 'category_bid.id')
-        return view.render('index',{bids : bid})
+        return view.render('page',{bids : bid})
     }
 
     async edit ({ params, request, response, view }) {

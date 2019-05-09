@@ -17,30 +17,36 @@
 const Route = use('Route');
 
 Route.get('/','IndexController.index')
-
+Route.get('page/:id','IndexController.page').middleware(['auth'])
+Route.get('ranking','IndexController.ranking').middleware(['auth'])
 
 /**                    ERROR                                               */
-
 Route.get('error/:id',async ({view, params }) => {
     return view.render('error',{id : params.id})
   })
 /**                 PARTIE UTILISATEUR                                     */
 
+
 //pour déconnecter un utilisateur
-Route.get('user/logout', 'UserController.logout');
+
 
 //chemin pour la connexion utilisateur
-Route.on('user/login').render('user.login').middleware(['guest'])
-Route.post('user/login','UserController.login').validator('LogUser');
-
-Route.get('user/show','UserController.show').middleware(['auth'])
 
 
-Route.get('user/edit','UserController.edit').middleware(['auth'])
-Route.post('user/edit/:id','UserController.update').validator('EditUser');
-//chemin pour l'inscription utilisateur
-Route.on('user/register').render('user.register').middleware(['guest'])
-Route.post('user/register','UserController.create').validator('RegisterUser');
+Route
+  .group(() => {
+    Route.on('login').render('user.login').middleware(['guest'])
+    Route.post('login','UserController.login').validator('LogUser');
+    Route.get('edit/:id','UserController.edit').middleware(['auth'])
+    Route.post('edit/:id','UserController.update').validator('EditUser');
+    Route.on('register').render('user.register').middleware(['guest'])
+    Route.post('register','UserController.store').validator('RegisterUser');
+    Route.get('logout', 'UserController.logout');
+    Route.get(':id','UserController.show').middleware(['auth'])
+    
+  })
+  .prefix('user')
+
 
 
 /**                 PARTIE BADGE                                     */
@@ -67,4 +73,10 @@ Route.post('bid/create','BidController.create');
 
 /**                 PARTIE BACKOFFICE                                     */
 
-Route.on('backoffice').render('user.register').middleware(['admin'])
+//page accueil admin
+Route.get('backoffice','BackOfficeController.index').middleware(['admin'])
+Route.on('backoffice/users').render('user.register').middleware(['admin'])
+Route.on('backoffice/bid').render('user.register').middleware(['admin'])
+Route.on('backoffice/message').render('user.register').middleware(['admin'])
+Route.on('backoffice/categoryBis').render('user.register').middleware(['admin'])
+Route.on('backoffice/level').render('user.register').middleware(['admin'])

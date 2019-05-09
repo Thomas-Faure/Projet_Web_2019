@@ -21,14 +21,22 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async handle (error, { request, response, session }) {
+    /*if (error.name === 'ValidationException') {
+      session.withErrors(error.messages).flashAll()
+      await session.commit()
+      response.redirect('back')
+      return
+    }else if (error.code === 'E_ROUTE_NOT_FOUND' || error.code === 'E_GUEST_ONLY' || error.code === 'E_INVALID_JWT_TOKEN' || error.status == 401) {
+      return response.redirect('/error/404')
+    }
+    response.status(error.status).send(error.message)*/
     if (error.name === 'ValidationException') {
       session.withErrors(error.messages).flashAll()
       await session.commit()
       response.redirect('back')
       return
-    }else if (error.code === 'E_ROUTE_NOT_FOUND' || error.code === 'E_GUEST_ONLY' || error.code === 'E_INVALID_JWT_TOKEN') {
-      return response.redirect('/error/404')
     }
+
     response.status(error.status).send(error.message)
   }
 

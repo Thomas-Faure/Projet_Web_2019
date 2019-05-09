@@ -19,5 +19,4 @@ class Auth {
     await next()
   }
 }
-
 module.exports = Auth
