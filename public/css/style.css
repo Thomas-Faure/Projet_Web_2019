@@ -7,7 +7,20 @@ body{
     width: 100%;
 
 }
+.navbar-toggler{
+    background: white;
+}
 
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+.color-nav:hover{
+    background: #474646 !important;
+}
 .color-nav{
     color:white !important;
 }
@@ -18,11 +31,38 @@ body{
     color: white;
 }
 
-.navbar-collap,.page-pagination,#add-bid-button{
+.register-button,.login-button{
+    width:100%;
+}
+.navbar-collap,.page-pagination,#add-bid-button,.img-nav{
     display: flex;
     justify-content: center;
 }
 
+.rank-attribut{
+    font-weight: bold;
+}
+.rank-color{
+    color:red;
+}
+.form-success-general{
+    background: green;
+    padding-top :10px;
+    padding-bottom: 10px;
+    padding-left:10px;
+}
+.form-error-general{
+    background: red;
+    padding-top :10px;
+    padding-bottom: 10px;
+    padding-left:10px;
+}
+.form-error-specific{
+    background: red;
+    padding-top :2px;
+    padding-bottom: 2px;
+    padding-left:2px;
+}
 #add-bid-button{
     margin-bottom: 20px;
 }
@@ -36,11 +76,22 @@ body{
 }
 
 .img-nav{
-    width: 40%;
+    width: 10%;
     height: auto;
 }
 
-
+.card{
+    background: #EAEAEA;
+}
+.card-style{
+    background: #333333;
+    color:white;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+    margin-top:20px;
+    
+}
 
 #img-nav-div{
     background:#333333;width:100%;
