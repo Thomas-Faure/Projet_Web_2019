@@ -9,8 +9,6 @@ class EditUser {
       'email': 'required|email|max:254',
       'password': 'min:3|max:60'
 
-
-
     }
   }
 
