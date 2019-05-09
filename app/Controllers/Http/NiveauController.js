@@ -1,9 +1,9 @@
 'use strict'
-const Role = use('App/Models/Role')
+const Niveau = use('App/Models/Niveau')
 const Database = use('Database')
 
 
-class RoleController {
+class NiveauController {
     async destroy ({ params, request, response }) {
     }
 
@@ -12,7 +12,7 @@ class RoleController {
 
     async show ({ params, request, response, view }) {
 		console.log("oui")
-		console.log( await Database.select('*').from('role'))
+		console.log( await Database.select('*').from('niveau'))
     }
 
     async create({request, auth, response}) {
@@ -23,4 +23,4 @@ class RoleController {
 
 }
 
-module.exports = RoleController
+module.exports = NiveauController
