@@ -22,7 +22,15 @@ class IndexController {
             .count() 
             const total = count[0]['count(*)']
         
-            const nbPages = (Math.trunc(total/nbPostPerPage))+1
+            let nbPages = 0;
+           
+            console.log((Math.trunc(total))%5)
+            if((Math.trunc(total))%5 == 0){//pair
+                nbPages = (Math.trunc(total/nbPostPerPage))
+            }else{//impair
+                nbPages = (Math.trunc(total/nbPostPerPage))+1
+            }
+            
             
             if(nbPages<params.id){
                 return response.redirect('/page/'+nbPages)
