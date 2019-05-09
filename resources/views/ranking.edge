@@ -4,22 +4,16 @@ Ranking
 @endsection
 @section('content')
 
+<div class ="card-style">Classement: <strong>Les plus actifs !</strong></div>
 <div class="card">
-        <div class="card-header">
-          Classement: <strong>Les plus actifs !</strong>
-        </div>
         <div class="card-body">
+            @set('i', 1)
+          @each(place in rank)
+          <p class="card-text">{{i}}- <a href="/user/{{place.id}}">{{place.username}}</a> (<span class="rank-attribut">Niveau :</span> <span class="rank-color">{{place.niveau_id}}</span>, <span class="rank-attribut">Exp :</span> <span class="rank-color">{{place.exp}}</span>)</p>
+          @set('i', i+1)
+          @endeach
           
-          <p class="card-text">1- foo</p>
-          <p class="card-text">2- foo</p>
-          <p class="card-text">3- foo</p>
-          <p class="card-text">4- foo</p>
-          <p class="card-text">5- foo</p>
-          <p class="card-text">6- foo</p>
-          <p class="card-text">7- foo</p>
-          <p class="card-text">8- foo</p>
-          <p class="card-text">9- foo</p>
-          <p class="card-text">10- foo</p>
+          
         </div>
 </div>
 

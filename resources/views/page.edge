@@ -3,19 +3,19 @@
 Page
 @endsection
 @section('content')
-<a class="btn btn-primary" href="#" id="add-bid-button"role="button">Ajouter une annonce</a>
+<a class="btn btn-primary" href="/announcement/store" id="add-bid-button" role="button">Ajouter une annonce</a>
 <div data-spy="scroll" data-target="#navbar" data-offset="0">
-   @each(bid in bids)
-    <a href="#" data-popup=".my-popup" onclick="" class="popup-open item-content bid-index-a" data-toggle="modal" data-target="#exampleModal">
+   @each(announcement in announcements)
+    <a href="/announcement/{{ announcement.id }}">
            <div class="card bid-index-div" style="">
-              <div class="card-body" style="background: {{ bid.color }}">
+              <div class="card-body" style="background: {{ announcement.color }}">
                  <div class="item-media"><img src="https://images-na.ssl-images-amazon.com/images/I/81zW27%2BC2DL._SL1500_.jpg" width="44"/></div>
                  <div class="item-inner">
                     <div class="item-title">
-                       <div class="item-header">{{bid.name_cat}}</div>
-                       {{bid.username}}
-                       {{bid.name_bid}}
-                       <div class="item-footer">{{bid.date}}</div>
+                       <div class="item-header">{{announcement.name_cat}}</div>
+                       {{announcement.username}}
+                       {{announcement.name_announcement}}
+                       <div class="item-footer">{{announcement.date}}</div>
                     </div>
                  </div>
               </div>
@@ -34,27 +34,6 @@ Page
         
 </div>
 
-
-
-<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Liste Message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 

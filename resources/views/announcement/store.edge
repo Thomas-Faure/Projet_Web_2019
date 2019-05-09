@@ -1,0 +1,81 @@
+@layout('layouts.main')
+
+@section('title')
+Accueil
+@endsection
+
+@section('content')
+
+@if(flashMessage('MdpError'))
+            <div class='form-error-general'>
+                <span>
+                        <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('MdpError') }}
+                </span>
+            </div>
+@endif
+@if(flashMessage('AnnouncementAddError'))
+<div class='form-error-general'>
+        <span>
+                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('AnnouncementAddError') }}
+        </span>
+    </div>
+ 
+        @endif
+<div class ="card-style">Page d'ajout annonce</div>
+<div class="card">
+        <div class="card-body">
+                <form action="{{ route('AnnouncementController.store') }}" method="POST">
+                        {{ csrfField() }}
+                        <div class="form-group">
+                            <label for="category_id">Catégorie de l'annonce</label>
+                          
+                            <select id="category_id" name="category_id" class="form-control">
+                                @each(category in categorys)
+                            <option value="{{old('category_id', category.id) }}">{{category.name_announcement}}</option>
+                                @endeach
+                            </select>  
+                            @if(hasErrorFor('category_id'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('category_id') }}
+                                        </span>
+                                </div>
+                            @endif
+                    </div>
+                        <div class="form-group">
+                                <label for="name_announcement">Nom annonce</label>
+                
+                                <input type="text" id="name_announcement" name="name_announcement" class="form-control" value="{{old('name_announcement', '') }}"\>
+                                @if(hasErrorFor('name_announcement'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name_announcement') }}
+                                        </span>
+                                </div>
+                                @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description annonce</label>
+            
+                        <textarea class="form-control" name="description" id="description" rows="3">{{old('description', '') }}</textarea>
+                            @if(hasErrorFor('description'))
+                            <div class='form-error-specific'>
+                                    <span>
+                                            <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('description') }}
+                                    </span>
+                            </div>
+                            @endif
+                    </div>
+                       
+                       
+                        
+                    
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                      
+                      </form>
+        
+        </div>
+        
+</div>
+
+@endsection

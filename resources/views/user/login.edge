@@ -6,35 +6,50 @@ Accueil
 
 @section('content')
 @if(flashMessage('loginError'))
+<div class='form-error-general'>
         <span>
-                {{ flashMessage('loginError') }}
+                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('loginError') }}
         </span>
+    </div>
+ 
         @endif
-<h1>page de login</h1>
-<form action="{{ route('UserController.login') }}" method="POST">
-        {{csrfField()}}
+<div class ="card-style">Page connexion</strong></div>
+<div class="card">
+        <div class="card-body">
+                <form action="{{ route('UserController.login') }}" method="POST">
+                        {{csrfField()}}
+                        
+                       
+                        <div class="form-group">
+                
+                                <label>Email</label>
+                                <input type="text" name="email" value="{{old('email', '') }}" class="form-control"\>
+                                @if(hasErrorFor('email'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('email') }}
+                                        </span>
+                                    </div>
+                                                @endif
+                        </div>
+                        <div class="form-group">
+                                <label>Mot de passe</label>
+                                <input type="password" name="password" value="{{old('password', '') }}" class="form-control"\>
+                                @if(hasErrorFor('password'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('password') }}
+                                        </span>
+                                    </div>
+                                                @endif
+                                </div>
+                
+                            <button type="submit" class="btn btn-primary login-button">Envoyer</button>
+                    </form>
         
-       
-        <div class="form-group">
-
-                <label>Mail</label>
-                <input type="text" name="email" value="{{old('email', '') }}" class="form-control"\>
-                @if(hasErrorFor('email'))
-                                    <span>
-                                        {{ getErrorFor('email') }}
-                                    </span>
-                                @endif
         </div>
-        <div class="form-group">
-                <label>mdp</label>
-                <input type="password" name="password" value="{{old('password', '') }}" class="form-control"\>
-                @if(hasErrorFor('password'))
-                                    <span>
-                                        {{ getErrorFor('password') }}
-                                    </span>
-                                @endif
-                </div>
+       
+</div>
 
-            <button type="submit" class="btn btn-primary">Envoyer</button>
-    </form>
+
 @endsection

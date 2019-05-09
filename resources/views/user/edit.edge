@@ -5,65 +5,93 @@ Accueil
 @endsection
 
 @section('content')
-<h1>Modification !</h1>
 @if(flashMessage('EditError'))
-        <span>
-                {{ flashMessage('EditError') }}
-        </span>
-        @endif
-<form action="/user/edit/{{ user.id }}" method="POST">
-        {{ csrfField() }}
-        <div class="form-group">
-                <label for="name">Name</label>
-
-                <input type="text" name="name" class="form-control" value="{{old('name', user.name) }}"\>
-                @if(hasErrorFor('name'))
-                    <span>
-                        {{ getErrorFor('name') }}
-                    </span>
+            <div class='form-error-general'>
+                <span>
+                        <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('EditError') }}
+                </span>
+            </div>
+@endif
+@if(flashMessage('EditSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('EditSuccess') }}
+                </span>
+            </div>
+@endif
+<div class ="card-style">Page Modification</div>
+<div class="card">
+        <div class="card-body">
+            
+        <form action="/user/edit/{{ user.id }}" method="POST">
+                {{ csrfField() }}
+                <div class="form-group">
+                        <label for="name">Name</label>
+        
+                        <input type="text" name="name" class="form-control" value="{{old('name', user.name) }}"\>
+                        @if(hasErrorFor('name'))
+                            <div class='form-error-specific'>
+                                <span>
+                                        <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name') }}
+                                </span>
+                            </div>
+                        @endif
+                        </div>
+                <div class="form-group">
+                <label for="username">Username</label>
+        
+                <input type="text" name="username" class="form-control" value="{{ old('username', user.username) }}"\>
+                @if(hasErrorFor('username'))
+                <div class='form-error-specific'>
+                        <span>
+                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('username') }}
+                        </span>
+                    </div>
                 @endif
                 </div>
-        <div class="form-group">
-        <label for="username">Username</label>
-
-        <input type="text" name="username" class="form-control" value="{{ old('username', user.username) }}"\>
-        @if(hasErrorFor('username'))
-            <span>
-                {{ getErrorFor('username') }}
-            </span>
-        @endif
+               <div class="form-group row">
+                   
+                 <label for="birthday" class="col-2 col-form-label">Birthday</label>
+        
+                   <input class="form-control" type="date" name="birthday" value="{{ old('birthday', user.birthday) }}" id=""\>
+                   @if(hasErrorFor('birthday'))
+                   <div class='form-error-specific'>
+                        <span>
+                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('birthday') }}
+                        </span>
+                    </div>
+                                   @endif
+        
+               </div>
+                 <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ old('email', user.email) }}">
+                @if(hasErrorFor('email'))
+                <div class='form-error-specific'>
+                        <span>
+                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('email') }}
+                        </span>
+                    </div>
+                @endif
+                </div>
+                <div class="form-group">
+                <label for="password">Password  <strong>(laisser en blanc si inchangé)</strong></label>
+                <input type="password"  placeholder="mdp..." class="form-control" name="password" value="{{ old('password', '') }}">
+                <input type="password"  placeholder="mdp confirm..." class="form-control" name="passwordValidation" value="{{ old('password', '') }}">
+                @if(hasErrorFor('password'))
+                <div class='form-error-specific'>
+                        <span>
+                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('password') }}
+                        </span>
+                    </div>
+                @endif
+                </div>
+        
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+              </form>
+                
         </div>
-       <div class="form-group row">
-           {{user.birthday}}
-         <label for="birthday" class="col-2 col-form-label">Birthday</label>
+       
+</div>
 
-           <input class="form-control" type="date" name="birthday" value="{{ old('birthday', user.birthday) }}" id=""\>
-           @if(hasErrorFor('birthday'))
-                               <span>
-                                   {{ getErrorFor('birthday') }}
-                               </span>
-                           @endif
-
-       </div>
-         <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" class="form-control" value="{{ old('email', user.email) }}">
-        @if(hasErrorFor('email'))
-            <span>
-                {{ getErrorFor('email') }}
-            </span>
-        @endif
-        </div>
-         <div class="form-group">
-        <label for="password">Password  <strong>(laisser en blanc si inchangé)</strong></label>
-        <input type="password"  class="form-control" name="password" value="{{ old('password', '') }}">
-        @if(hasErrorFor('password'))
-            <span>
-                {{ getErrorFor('password') }}
-            </span>
-        @endif
-        </div>
-
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-      </form>
 @endsection

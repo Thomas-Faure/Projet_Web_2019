@@ -4,24 +4,45 @@ Accueil
 @endsection
 @section('content')
 <div id="profile-page">
+        <div class ="card-style">Informations:</div>
+        <div class="card" style="">
+                
+                <div class="card-body">
+                                <div style="text-align:center">
+                                                <img class="card-img-top" src="http://media.etudiant.gouv.fr/image/Statut/87/3/who_577873@2x.png" alt="Card image cap" style="width:20%">
+                                </div>
+                @if(user.id == auth.user.id)
+                        <div style="text-align: center">
+                                <a class="btn btn-danger" href="/user/edit/{{user.id}}" role="button">Modifier mes informations</a>
+                        </div>
+                @endif
+                        <p class="card-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
+                        <p class="card-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
+                        <p class="card-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
+                        <p class="card-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.niveau_id}}</p>
+                        <p class="card-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
+                
+                </div>
+        </div>
+        <div class ="card-style">Derniers posts:</div>
         <div class="card" style="">
                 <div style="text-align:center">
                     <img class="card-img-top" src="http://media.etudiant.gouv.fr/image/Statut/87/3/who_577873@2x.png" alt="Card image cap" style="width:20%">
                 </div>
                 <div class="card-body">
                 @if(user.id == auth.user.id)
-                <div style="text-align: center">
-                        <a class="btn btn-danger" href="/user/edit/{{user.id}}" role="button">Modifier mes informations</a>
-                </div>
+                        <div style="text-align: center">
+                                <a class="btn btn-danger" href="/user/edit/{{user.id}}" role="button">Modifier mes informations</a>
+                        </div>
                 @endif
-                  <p class="card-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
-                  <p class="card-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
-                  <p class="card-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
-                  <p class="card-text"><i class="fas fa-chess-king"></i>  Niveau : 1</p>
-                  <p class="card-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
+                        <p class="card-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
+                        <p class="card-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
+                        <p class="card-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
+                        <p class="card-text"><i class="fas fa-chess-king"></i>  Niveau : 1</p>
+                        <p class="card-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
                 
                 </div>
-              </div>
+        </div>
 
 
 </div>
