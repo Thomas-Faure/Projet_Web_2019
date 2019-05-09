@@ -6,13 +6,6 @@ Accueil
 
 @section('content')
 
-@if(flashMessage('MdpError'))
-            <div class='form-error-general'>
-                <span>
-                        <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('MdpError') }}
-                </span>
-            </div>
-@endif
 @if(flashMessage('AnnouncementAddError'))
 <div class='form-error-general'>
         <span>
@@ -31,7 +24,7 @@ Accueil
                           
                             <select id="category_id" name="category_id" class="form-control">
                                 @each(category in categorys)
-                            <option value="{{old('category_id', category.id) }}">{{category.name_announcement}}</option>
+                            <option value="{{old('category_id', category.id) }}">{{category.name_category}}</option>
                                 @endeach
                             </select>  
                             @if(hasErrorFor('category_id'))

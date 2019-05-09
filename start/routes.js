@@ -16,7 +16,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-Route.get('/','IndexController.index')
+Route.on('/').render('index')
 Route.get('page/:id','IndexController.page').middleware(['auth'])
 Route.get('ranking','IndexController.ranking').middleware(['auth'])
 
@@ -44,7 +44,7 @@ Route
     Route.on('register').render('user.register').middleware(['guest'])
     Route.post('register','UserController.store').validator('RegisterUser');
 
-    Route.get('logout', 'UserController.logout');
+    Route.delete('logout', 'UserController.logout');
 
     Route.get(':id','UserController.show').middleware(['auth'])
     

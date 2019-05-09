@@ -37,6 +37,16 @@ class AnnouncementController {
                 announcement.category_id = category_id
                 announcement.user_id = (await auth.getUser()).id //pour récuperer l'id de l'utilisateur connecté
                 await announcement.save()
+
+                // Quand on a ajouté une nouvelle annonce, l'utilisateur gagne 1 d'experience
+                const user = await auth.getUser()
+                if(user.exp >= (user.niveau_id*10)-1){ //si l'experience = 9, on augmente de niveau
+                    user.exp = 0
+                    user.niveau_id=user.niveau_id+1;
+                }else{
+                    user.exp = user.exp+1
+                }
+                user.save()
                 
                 response.redirect('/page/1')
             }else{

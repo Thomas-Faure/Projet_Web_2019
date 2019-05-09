@@ -71,6 +71,20 @@ body{
     padding-top:20px;
 }
 
+.annonce-container {
+    background: yellow;
+    border-radius: 5px;
+    padding: 1em;
+    margin-bottom: 1px;
+    display: grid;
+    grid-template-columns: 95px auto;
+  }
+
+  .blank {
+    width: 80px;
+    border-radius: 5px;
+  }
+
 .container{
     width:100%;
 }
