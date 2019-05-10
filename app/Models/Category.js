@@ -7,6 +7,9 @@ class CategoryAnnouncement extends Model {
     static get table () {
         return 'category_announcement'
     }
+    static get primaryKey () {
+        return 'id_category_announcement'
+    }
 }
 
 module.exports = CategoryAnnouncement

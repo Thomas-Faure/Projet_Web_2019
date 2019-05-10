@@ -7,6 +7,10 @@ class Niveau extends Model {
     static get table () {
         return 'niveau'
     }
+    static get primaryKey () {
+        return 'id_niveau'
+    }
+    
 }
 
 module.exports = Niveau

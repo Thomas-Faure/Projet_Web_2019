@@ -7,6 +7,9 @@ class Message extends Model {
     static get table () {
         return 'message'
     }
+    static get primaryKey () {
+        return 'id_message'
+    }
 }
 
 module.exports = Message
