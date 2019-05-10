@@ -19,9 +19,9 @@ class UserController {
                 const birthday = request.input('birthday')
                 const passwordValidation = request.input('passwordValidation')
                 let userEdit = await User.find(params.id)
-                console.log("mdp --->"+password)
+           
                     if(password != null){
-                        console.log("mdp on change")
+                       
                         if(password == passwordValidation){
                             userEdit.password = password
                         }else{
@@ -36,10 +36,10 @@ class UserController {
                     userEdit.username = username
                 
                 const result = await userEdit.save()
-                console.log(result)
+            
                 if(result){
                     session.flash({EditSuccess : 'Toutes les modifications sont faites !'});
-                    return response.redirect('/user/edit/'+user.id)
+                    return response.redirect('/user/'+user.id+'/edit/')
                 }else{
                    
                     throw "error";
@@ -47,7 +47,7 @@ class UserController {
             }catch(error){
                
                 session.flash({EditError : 'Aucune modification n\' a pu etre faite !'});
-                return response.redirect('/user/edit/'+user.id)
+                return response.redirect('/user/'+user.id+'/edit/')
             }
         }else{
             response.redirect('/')
@@ -57,11 +57,16 @@ class UserController {
     async show ({ params, request, auth, response, view }) {
         const user = await User.find(params.id)
         if(user){
+            //on récupères ses 5 dernieres annonces
+            const announcements = await Database
+            .raw('select a.id_announcement as id,u.username as username,a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  order by a.id_announcement desc limit  ?', [user.id,5])
+            
+            //on récupère les données utilisateurs
             var date = new Date(user.birthday),
             mnth = ("0" + (date.getMonth()+1)).slice(-2),
             day  = ("0" + date.getDate()).slice(-2);
             user.birthday= [ day, mnth, date.getFullYear() ].join("-");
-        return view.render('user.profile',{user : user.toJSON()})
+            return view.render('user.profile',{user : user.toJSON(),announcements : announcements[0]})
         }else{
             return response.redirect('back')
         }
@@ -121,6 +126,7 @@ class UserController {
 
 
     async logout({request, auth, response}) {
+   
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }

@@ -12,7 +12,7 @@ Page
             <img src="{{ assetsUrl('img/'+announcement.image) }}" style="width: 100%;height:auto;"/>
         </div>
         <div>
-          <p><span style="color:black;font-size:15px">{{announcement.username}} (<span style="color:green">+0</span>)</span></p>
+        <p><span style="color:black;font-size:15px">{{announcement.username}} (<span style="color:green">{{announcement.vote}}</span>)</span></p>
           <p style="font-size: 25px;color:black">{{announcement.name_announcement}}</p>
           <p style="font-size: 12px;color:gray">09/05/2019</p>
         </div>

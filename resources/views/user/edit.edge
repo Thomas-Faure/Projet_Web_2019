@@ -23,7 +23,7 @@ Accueil
 <div class="card">
         <div class="card-body">
             
-        <form action="/user/edit/{{ user.id }}" method="POST">
+        <form action="/user/{{ user.id }}/edit/" method="post">
                 {{ csrfField() }}
                 <div class="form-group">
                         <label for="name">Name</label>
@@ -49,9 +49,9 @@ Accueil
                     </div>
                 @endif
                 </div>
-               <div class="form-group row">
+               <div class="form-group">
                    
-                 <label for="birthday" class="col-2 col-form-label">Birthday</label>
+                 <label for="birthday" >Birthday</label>
         
                    <input class="form-control" type="date" name="birthday" value="{{ old('birthday', user.birthday) }}" id=""\>
                    @if(hasErrorFor('birthday'))

@@ -11,6 +11,109 @@ body{
     background: white;
 }
 
+/*   message d'annonce    */
+
+.message-container{
+    padding-bottom:20px;
+}
+
+.message-div{
+    border-radius:10px;
+}
+.message-username{
+    font-weight: bold;
+}
+.message-username-img{
+    width:10%;
+}
+.message-msg{
+    text-align:center;
+    background:white;
+    margin-left:20px;
+    margin-right:20px;
+    border-radius: 10px;
+}
+.message-note{
+    text-align:center;
+    font-size:20px;
+    background:#333333
+}
+.message-note-el{
+    color:white;
+}
+.message-date{
+    display:flex;
+    justify-content:flex-end;
+}
+
+/* annonce   */
+.annonce-page-annonce-note-el{
+    color:white;
+}
+
+#annonce-page-annonce-date{
+    font-size: 12px;
+    color:gray;
+}
+#annonce-page-annonce-note{
+    font-size:20px;
+    background:#333333;
+}
+
+#annonce-page-annonce-username{
+    color:black;
+    font-size:15px;
+}
+#annonce-page-annonce-description{
+    background: white;
+    border-radius: 10px;
+    margin-left:20px;
+    margin-right:20px;
+}
+#annonce-page-annonce-content{
+    text-align: center !important;
+}
+#annonce-page-annonce-title{
+    color:black !important;
+}
+
+#annonce-page-annonce-logo{
+    display: flex;justify-content: center;
+}
+
+#annonce-page-annonce{
+    border-radius:10px;
+}
+
+#button-add-message{
+    text-align:center;
+    font-weight: bold;
+    font-size:25px;
+    color:white;
+    border-radius:60px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -33,6 +136,9 @@ body{
 
 .register-button,.login-button{
     width:100%;
+}
+.navbar-collap{
+    text-align: center;
 }
 .navbar-collap,.page-pagination,#add-bid-button,.img-nav{
     display: flex;

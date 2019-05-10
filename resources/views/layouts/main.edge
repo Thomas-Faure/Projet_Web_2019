@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="csrf_token" content="{{ csrfToken }}">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
@@ -38,7 +39,7 @@
             <a class="nav-link color-nav" href="/user/{{auth.user.id}}">Profil</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link color-nav" href="/page/1">Fil</a>
+            <a class="nav-link color-nav" href="/page/1">Annonces</a>
         </li>
         <li class="nav-item">
             <a class="nav-link color-nav" href="/ranking">Classement</a>

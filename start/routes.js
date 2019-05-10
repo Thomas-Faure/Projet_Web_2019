@@ -38,14 +38,13 @@ Route
     Route.on('login').render('user.login').middleware(['guest'])
     Route.post('login','UserController.login').validator('LogUser');
 
-    Route.get('edit/:id','UserController.edit').middleware(['auth'])
-    Route.post('edit/:id','UserController.update').validator('EditUser');
+    Route.get(':id/edit','UserController.edit').middleware(['auth'])
+    Route.post(':id/edit','UserController.update').validator('EditUser');
 
     Route.on('register').render('user.register').middleware(['guest'])
     Route.post('register','UserController.store').validator('RegisterUser');
 
-    Route.delete('logout', 'UserController.logout');
-
+    Route.get('logout', 'UserController.logout').middleware(['auth'])
     Route.get(':id','UserController.show').middleware(['auth'])
     
   })
@@ -62,16 +61,36 @@ Route
 
 
 /**                 PARTIE announcement                                 */
-Route.get('announcement/store','AnnouncementController.create').middleware(['auth'])
-Route.post('announcement/store','AnnouncementController.store').validator('AddAnnouncement');
-Route.get('announcement/:id','AnnouncementController.show');
+Route
+  .group(() => {
+    Route.get('store','AnnouncementController.create').middleware(['auth'])
+    Route.post('store','AnnouncementController.store').validator('AddAnnouncement');
+    Route.post('increment','AnnouncementController.increment').middleware(['auth'])
+    Route.post('decrement','AnnouncementController.decrement').middleware(['auth'])
+    Route.get(':id/vote','AnnouncementController.vote').middleware(['auth'])
+    Route.get(':id/messages','AnnouncementController.getMessages').middleware(['auth'])
+    Route.get(':id','AnnouncementController.show').middleware(['auth'])
+    
+  })
+  .prefix('announcement')
+
+
+
+
+
 
 
 
 /**                 PARTIE MESSAGE                                     */
-
-
-
+Route
+  .group(() => {
+    Route.get('store/announcement/:id','MessageController.create').middleware(['auth'])
+    Route.post('store/announcement/:id','MessageController.store').validator('AddMessage');
+    Route.post('increment','MessageController.increment').middleware(['auth'])
+    Route.post('decrement','MessageController.decrement').middleware(['auth'])
+    Route.get(':id/vote','MessageController.vote').middleware(['auth'])
+  })
+  .prefix('message')
 /**                 PARTIE CATEGORY_QUESTION                                     */
 
 

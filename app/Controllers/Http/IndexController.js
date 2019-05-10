@@ -12,7 +12,7 @@ class IndexController {
     async ranking ({ view }) {
         const classement = await Database
         .raw('select id,username,exp,niveau_id,(exp+(100*niveau_id)) as points from users order by points desc', [])
-        //console.log(classement[0])
+       
         return view.render('ranking',{rank : classement[0]})
     }
     async page ({ view,params,response }){
@@ -24,7 +24,7 @@ class IndexController {
         
             let nbPages = 0;
            
-            console.log((Math.trunc(total))%5)
+         
             if((Math.trunc(total))%5 == 0){//pair
                 nbPages = (Math.trunc(total/nbPostPerPage))
             }else{//impair
@@ -41,14 +41,23 @@ class IndexController {
             
             var offset = 5*params.id-5;
            
-            console.log(offset)
+ 
         
 
             const announcement = await Database
-            .raw('select a.id as id,u.username as username,a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c on a.category_id = c.id join users u on u.id=a.user_id  order by a.id desc limit ? offset ?', [nbPostPerPage,offset])
-            
-        
-        
+            .raw('select a.id_announcement as id,'+
+            ' u.username as username,'+
+            ' a.name_announcement as name_announcement,'+
+            ' c.color as color,'+
+            ' c.image as image,'+
+            ' sum(COALESCE(v.vote, 0 )) as vote'+
+            ' from announcement a '+
+            ' join category_announcement c on a.category_id = c.id_category_announcement '+
+            ' join users u on u.id=a.user_id '+
+            ' left join announcement_votes v on v.announcement_id=a.id_announcement'+
+            ' group by a.id_announcement,u.username,a.name_announcement,c.color,c.image'+
+            ' order by a.id_announcement desc limit ? offset ?', [nbPostPerPage,offset])
+             
             return view.render('page',{announcements : announcement[0],nbPages : nbPages,id : params.id})
         
     }
