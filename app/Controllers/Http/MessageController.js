@@ -8,12 +8,38 @@ const Database = use('Database')
 
 class MessageController {
     async destroy ({ params, request, response }) {
+        let resultat = "non supprimé"
+        const message = await Message.find(params.id)
+        console.log(message)
+        if(message){
+            resultat="supprimé"
+            await message.delete()
+        }
+        return response.json({
+            valeur : resultat
+        })
+    
     }
 
     async edit ({ params, request, response, view }) {
     }
 
     async show ({ params, request, response, view }) {
+    }
+
+
+    async index({ params, request, response, view }){
+        if (request.ajax()) {
+            
+        const messages =  await await Message.all();
+        
+        return response.json(
+            messages.toJSON()
+        
+        );
+    }else{
+        response.redirect('/')
+    }
     }
 
 
@@ -37,8 +63,8 @@ class MessageController {
                 throw 'error'
             }
         }catch(error){
-            session.flash({MessageAddError : 'Veuillez à ne pas trafiquer le formulaire ;)'});
-            return response.redirect('/store/announcement/'+params.id)
+            session.flash({MessageAddError : 'Veuillez attendre 10 minutes entre chaque message'});
+            return response.redirect('/message/store/announcement/'+params.id)
         }
 
     }
@@ -134,21 +160,24 @@ class MessageController {
     //cette fonction est en fait la note que va attribuer l'utilisateur à l'annonce
     //increment signifie donc une note -1
     async vote({response,params}) {
+        let suppression = false
         const message_id=params.id;
         const message = await Message.find(message_id)
         if(message){
             let vote = await Database.from('message_votes').where('message_id',message_id).sum('vote')
-            
             vote = vote[0]['sum(`vote`)']
             if(vote == null){
                 vote = 0
-            }
+            }else if(vote <= -1){ //les utilisateurs n'aiment pas cette annnonce...on va donc la supprimer
+            await message.delete()
+            suppression=true //on accepte la suppression
+        }
             return response.json({
-                valeur : vote
+                valeur : vote,
+                suppression: suppression
             });
         }
     }
-
 }
 
 module.exports = MessageController

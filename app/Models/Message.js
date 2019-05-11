@@ -10,6 +10,8 @@ class Message extends Model {
     static get primaryKey () {
         return 'id_message'
     }
+    
+    
 }
 
 module.exports = Message

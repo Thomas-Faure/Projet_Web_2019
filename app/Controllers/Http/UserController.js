@@ -5,6 +5,17 @@ const Database = use('Database')
 
 class UserController {
     async destroy ({ params, request, response }) {
+        let resultat = "non supprimé"
+        const user = await User.find(params.id)
+        console.log(user)
+        if(user){
+            resultat="supprimé"
+            await user.delete()
+        }
+        return response.json({
+            valeur : resultat
+        })
+    
     }
 
     async update ({ params,auth, request, response, view,session }) {
@@ -72,6 +83,21 @@ class UserController {
         }
         
     }
+
+    async index({ params, request, response, view }){
+        if (request.ajax()) {
+            
+        const users =  await await User.all();
+        
+        return response.json(
+            users.toJSON()
+        
+        );
+    }else{
+        response.redirect('/')
+    }
+    }
+    
 
     
 

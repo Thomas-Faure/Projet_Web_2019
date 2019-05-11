@@ -9,6 +9,13 @@ class BackOfficeController {
         return view.render('backoffice.index')
     }
 
+
+    async messages({view,params}){
+        
+
+        return view.render('backoffice.message',{id : params.id})
+    }
+
     
 
   
