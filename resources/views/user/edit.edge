@@ -23,7 +23,7 @@ Accueil
 <div class="card">
         <div class="card-body">
             
-        <form action="/user/{{ user.id }}/edit/" method="post">
+        <form action="/user/{{ user.id }}/edit/?_method=PUT" method="post">
                 {{ csrfField() }}
                 <div class="form-group">
                         <label for="name">Name</label>

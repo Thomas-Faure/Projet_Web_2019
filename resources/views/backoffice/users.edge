@@ -1,0 +1,91 @@
+@layout('layouts.main')
+
+@section('title')
+Accueil
+@endsection
+
+@section('content')
+<link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
+<div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Pseudo</th>
+                <th>Action</th>
+                
+            </tr>
+        </thead>
+        <tbody id="data-backoffice">
+
+          
+        </tbody>
+    </table>
+            </div>
+        </div>
+    </div>
+<script>
+
+var objJson;
+
+
+function delete_id(id){
+var resultat = "";
+var xhr = new XMLHttpRequest();
+xhr.open('DELETE', '/user/'+id+'/delete'); 
+xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+xhr.setRequestHeader("x-csrf-token", '{{ csrfToken }}');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                               let value = JSON.parse(xhr.responseText);
+                                resultat = value.valeur;
+                                alert(resultat);
+                                if(resultat=="supprimé"){
+                                    var elem = document.getElementById(+id+"_row");
+                                    elem.parentNode.removeChild(elem);
+                                }   
+                            }
+                            else {
+                                alert('Request failed.  Returned status of ' + xhr.status);
+                            }
+                        };
+                        xhr.send();
+
+}
+
+function setData(data){
+
+document.getElementById('data-backoffice').innerHTML=""
+
+
+for(var i =0; i< data.length;++i){
+    document.getElementById('data-backoffice').innerHTML+='<tr id="'+data[i].id+'_row"><td>'+data[i].id+'</td><td>'+data[i].username+'</td><td><a class="btn btn-danger" onClick="delete_id('+data[i].id+')" role="button">Supprimer</a></td></tr>';
+}
+var myTable = document.querySelector("table");
+var dataTable = new DataTable(myTable);
+}
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/user'); 
+xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                               let value = JSON.parse(xhr.responseText);
+                                objJson = value;
+                                console.log(objJson)
+                                setData(objJson);
+                            }
+                            else {
+                                alert('Request failed.  Returned status of ' + xhr.status);
+                            }
+                        };
+                        xhr.send();
+
+// or
+
+
+</script>
+
+@endsection

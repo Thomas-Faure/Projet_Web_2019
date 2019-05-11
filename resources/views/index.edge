@@ -21,18 +21,44 @@ Accueil
         </div>
         <div class="card-body">
                 <h5 class="card-title">Dernier post</h5>
-                <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">Titre news</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">09/05/2019</h6>
-                      <p class="card-text">Sous-titre</p>
-                      <a href="#" class="card-link">Plus de détails</a>
-    
-                    </div>
+                <div class="card" id="last-post">
+                   
                 </div>
             
             </div>
 </div>
+
+<script>
+var objJson;
+var lastPost = document.getElementById('last-post');
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/announcement/last');
+xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                
+                               let objJson = JSON.parse(xhr.responseText);
+                               
+                                lastPost.innerHTML ='<a href="/announcement/'+objJson.id_announcement+'" style="text-decoration: none">'+
+'      <div class="annonce-container" style="background: '+objJson.color+'">'+
+'        <div class="blank">'+
+'            <img src="/img/'+objJson.image+'" style="width: 100%;height:auto;"/>'+
+'        </div>'+
+'        <div>'+
+'          <p style="font-size: 25px;color:black">'+objJson.name_announcement+'</p>'+
+'        </div>'+
+'    </div>'+
+'  </a>';
+
+                                
+                            }
+                            else {
+                                alert('Request failed.  Returned status of ' + xhr.status);
+                            }
+                        };
+                        xhr.send();
+</script>
+
 
 
 
