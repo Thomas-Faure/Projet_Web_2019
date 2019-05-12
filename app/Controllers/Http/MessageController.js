@@ -63,7 +63,7 @@ class MessageController {
                 throw 'error'
             }
         }catch(error){
-            session.flash({MessageAddError : 'Veuillez attendre 10 minutes entre chaque message'});
+            session.flash({MessageAddError : 'Veuillez attendre 30 secondes entre chaque message'});
             return response.redirect('/message/store/announcement/'+params.id)
         }
 

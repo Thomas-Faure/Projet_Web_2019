@@ -62,6 +62,46 @@ class AnnouncementController {
         response.redirect('/')
     }
     }
+
+
+    async getUserAnnounces({ params, request, response, view }){
+        if (request.ajax()) {
+            
+        const messages =  await Database.raw("select distinct(a.id_announcement),users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
+        " from announcement a"+
+       " join users on users.id=a.user_id"+
+       " join message m on m.announcement_id = a.id_announcement"+
+       " join category_announcement c on c.id_category_announcement=a.category_id"+
+        " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+        " where m.user_id = ? group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.id])
+        return response.json({
+            valeur : messages[0]
+        }
+        );
+    }else{
+        response.redirect('/')
+    }
+    }
+
+    async getUserAnnounces_category({params, request, response, view }){
+        if (request.ajax()) {
+        const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
+        " from announcement a"+
+       " join users on users.id=a.user_id"+
+       " join message m on m.announcement_id = a.id_announcement"+
+       " join category_announcement c on c.id_category_announcement=a.category_id"+
+        " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+        " where c.id_category_announcement= ?"+
+        " and m.user_id = ? group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.cat,params.id])
+        return response.json({
+            valeur : messages[0]
+        }
+        );
+    }else{
+        response.redirect('/')
+    }
+    }
+
     async show ({ params, request, response, view }) {
 
         
@@ -122,12 +162,12 @@ class AnnouncementController {
     async getMessages({response,params}){
       
         //const messages = Message.getMessages(params.id)
-        const messages =  await Database.raw("select users.id as user_id,id_message,message.announcement_id,message.created_at,name_message,username,sum(COALESCE(vote, 0)) as note"+
+        const messages =  await Database.raw("select users.admin as admin,users.id as user_id,id_message,message.announcement_id,message.created_at,name_message,username,sum(COALESCE(vote, 0)) as note"+
         " from message"+
        " join users on users.id=message.user_id"+
         " left join message_votes on message.id_message=message_votes.message_id"+
         " where message.announcement_id=?"+
-        " group by users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message desc",[params.id])
+        " group by users.admin,users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message desc",[params.id])
         
     
         return response.json({

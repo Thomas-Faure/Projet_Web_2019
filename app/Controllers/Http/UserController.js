@@ -20,9 +20,10 @@ class UserController {
 
     async update ({ params,auth, request, response, view,session }) {
         const user = (await auth.getUser())
-        if(user.id == params.id){
+        if(user.id == params.id || user.admin == 1){//si c'est le bon utilisateur ou soit si il est admin
             
             try{
+                const admin = request.input('admin')
                 const name = request.input('name')
                 const username = request.input('username')
                 const email = request.input('email')
@@ -39,6 +40,9 @@ class UserController {
                             throw 'error'
                         }
                     }
+                    if(user.admin ==1 &&  (admin == 0 || admin == 1) ){
+                        userEdit.admin = admin
+                    }
                     userEdit.name = name
                     userEdit.birthday = birthday
              
@@ -50,7 +54,7 @@ class UserController {
             
                 if(result){
                     session.flash({EditSuccess : 'Toutes les modifications sont faites !'});
-                    return response.redirect('/user/'+user.id+'/edit/')
+                    return response.redirect('/user/'+userEdit.id+'/edit/')
                 }else{
                    
                     throw "error";
@@ -87,11 +91,31 @@ class UserController {
     async index({ params, request, response, view }){
         if (request.ajax()) {
             
-        const users =  await await User.all();
+        const users =  await User.all();
         
         return response.json(
             users.toJSON()
         
+        );
+    }else{
+        response.redirect('/')
+    }
+    }
+
+
+    async participation_category({params, request, response, view }){
+        if (request.ajax()) {
+        const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
+        " from announcement a"+
+       " join users on users.id=a.user_id"+
+       " join category_announcement c on c.id_category_announcement=a.category_id"+
+        " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+        " where c.id_category_announcement= ?"+
+        " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.cat])
+        
+        return response.json({
+            valeur : messages[0]
+        }
         );
     }else{
         response.redirect('/')
@@ -123,7 +147,6 @@ class UserController {
         user.admin = 0
         await user.save()
         let accessToken = await auth.attempt(email, password)
-        return user.id
         response.redirect('/')
 
         }catch(error){
@@ -136,8 +159,9 @@ class UserController {
 
 
     async edit ({ auth, view,params,response }) {
-        const user = (await auth.getUser())
-        if(user.id == params.id){
+        const user_actual = await auth.getUser()
+        if(user_actual.id == params.id || user_actual.admin == 1){
+            let user = (await User.find(params.id))
             var date = new Date(user.birthday),
             mnth = ("0" + (date.getMonth()+1)).slice(-2),
             day  = ("0" + date.getDate()).slice(-2);
