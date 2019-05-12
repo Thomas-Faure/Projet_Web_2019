@@ -21,6 +21,7 @@ body{
     border-radius:10px;
 }
 .message-username{
+    color:black;
     font-weight: bold;
 }
 .message-username-img{
@@ -47,13 +48,18 @@ body{
 }
 
 /* annonce   */
+
+.dropdown-category-announce{
+    text-align: center;
+    margin-bottom: 10px !important;
+}
 .annonce-page-annonce-note-el{
     color:white;
 }
 
 #annonce-page-annonce-date{
     font-size: 12px;
-    color:gray;
+    color:black;
 }
 #annonce-page-annonce-note{
     font-size:20px;
@@ -236,3 +242,6 @@ Pour la page d'erreur
 #error-page h1{
     font-size: 70px;
 }
+
+
+
