@@ -25,6 +25,22 @@ Accueil
             
         <form action="/user/{{ user.id }}/edit/?_method=PUT" method="post">
                 {{ csrfField() }}
+                @if(auth.user.admin == 1)
+                <div class="form-group">
+                        <label for="admin">Admin</label>
+                        <select id="admin" name="admin" class="form-control">
+                          @if(user.admin == 1)
+                          <option value="1" selected="selected">oui</option>
+                          <option value="0">non</option>
+                          @else
+                          <option value="1">oui</option>
+                          <option value="0" selected="selected">non</option>
+                          @endif
+
+               
+                        </select>
+                      </div>
+                @endif
                 <div class="form-group">
                         <label for="name">Name</label>
         

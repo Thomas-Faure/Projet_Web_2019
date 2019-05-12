@@ -62,7 +62,7 @@ document.getElementById('data-backoffice').innerHTML=""
 
 
 for(var i =0; i< data.length;++i){
-    document.getElementById('data-backoffice').innerHTML+='<tr id="'+data[i].id+'_row"><td>'+data[i].id+'</td><td>'+data[i].username+'</td><td><a class="btn btn-danger" onClick="delete_id('+data[i].id+')" role="button">Supprimer</a></td></tr>';
+    document.getElementById('data-backoffice').innerHTML+='<tr id="'+data[i].id+'_row"><td>'+data[i].id+'</td><td>'+data[i].username+'</td><td><a class="btn btn-info" href="/user/'+data[i].id+'/edit" role="button">Modifier</a><a class="btn btn-danger" onClick="delete_id('+data[i].id+')" role="button">Supprimer</a></td></tr>';
 }
 var myTable = document.querySelector("table");
 var dataTable = new DataTable(myTable);

@@ -14,6 +14,7 @@ Accueil
                 @if(user.id == auth.user.id)
                         <div style="text-align: center">
                                 <a class="btn btn-danger" href="/user/{{user.id}}/edit" role="button">Modifier mes informations</a>
+                                <a class="btn btn-info" href="/user/{{user.id}}/participation/all" role="button">Mes participations</a>
                         </div>
                 @endif
                         <p class="card-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>

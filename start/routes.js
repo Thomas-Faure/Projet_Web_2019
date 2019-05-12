@@ -1,5 +1,6 @@
 'use strict'
 const Announcement_Category = use('App/Models/Category')
+const User = use('App/Models/User')
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -17,7 +18,6 @@ const Announcement_Category = use('App/Models/Category')
 const Route = use('Route');
 
 Route.on('/').render('index')
-Route.get('page/:id','IndexController.page').middleware(['auth'])
 Route.get('ranking','IndexController.ranking').middleware(['auth'])
 
 /**                    ERROR                                               */
@@ -42,7 +42,25 @@ Route
     Route.get(':id/edit','UserController.edit').middleware(['auth'])
     Route.put(':id/edit','UserController.update').validator('EditUser');
 
+    Route.get(':id/participation/:cat',async ({ view,params,response,auth }) => {
+      const user = await auth.getUser()
+      const user_find = await User.find(params.id)
+      if(user_find){
+        if(user.id != params.id ){
+          if(user.admin !=1){
+            response.redirect('/')
+          }
+        }
+        if(!(params.cat=="all" || (await Announcement_Category.find(params.cat)))){
+          response.redirect('/'+params.id+'/participation/all')
+        }
+        const categorys = await Announcement_Category.all()
+        
+        return view.render('user.participation',{id: params.id,cat: params.cat,categorys: categorys.toJSON()})
+      }
+    })
 
+    Route.get(':id/participation/:cat','AnnouncementController.index_category').middleware(['auth'])
     Route.delete(':id/delete','UserController.destroy').middleware(['auth'])
 
     Route.on('register').render('user.register').middleware(['guest'])
@@ -61,6 +79,17 @@ Route
 
 
 /**                 PARTIE NIVEAU                                     */
+
+Route
+  .group(() => {
+    Route.get('','NiveauController.index').middleware(['auth'])
+    Route.get(':id/edit','NiveauController.edit').middleware(['admin'])
+    Route.put(':id/edit','NiveauController.update').validator('EditLevel')
+
+    Route.on('store').render('level.store').middleware(['admin'])
+    Route.post('store','NiveauController.store').validator('AddLevel')
+  })
+  .prefix('level')
 
 
 
@@ -83,7 +112,8 @@ Route
     Route.get('store','AnnouncementController.create').middleware(['auth'])
     Route.post('store','AnnouncementController.store').validator('AddAnnouncement');
 
-
+    Route.get('user/:id','AnnouncementController.getUserAnnounces').middleware(['auth'])
+    Route.get('user/:id/category/:cat','AnnouncementController.getUserAnnounces_category').middleware(['auth'])
 
     Route.post('increment','AnnouncementController.increment').middleware(['auth'])
     Route.post('decrement','AnnouncementController.decrement').middleware(['auth'])
@@ -116,7 +146,17 @@ Route
   .prefix('message')
 /**                 PARTIE CATEGORY_QUESTION                                     */
 
+Route
+  .group(() => {
+    Route.get('','CategoryAnnouncementController.index').middleware(['auth'])
+    Route.get(':id/edit','CategoryAnnouncementController.edit').middleware(['admin'])
+    Route.put(':id/edit','CategoryAnnouncementController.update').middleware(['admin'])
 
+    Route.on('store').render('category.store').middleware(['admin'])
+    Route.post('store','CategoryAnnouncementController.store').middleware(['admin']).validator('AddCategory')
+
+  })
+  .prefix('category')
 
 /**                 PARTIE BACKOFFICE                                     */
 

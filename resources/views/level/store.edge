@@ -1,0 +1,60 @@
+@layout('layouts.main')
+
+@section('title')
+Accueil
+@endsection
+
+@section('content')
+
+@if(flashMessage('addCategoryError'))
+<div class='form-error-general'>
+        <span>
+                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('addCategoryError') }}
+        </span>
+    </div>
+ 
+        @endif
+
+<div class ="card-style">Page d'ajout niveau</div>
+<div class="card">
+        <div class="card-body">
+                <form action="{{ route('NiveauController.store') }}" method="POST">
+                        {{ csrfField() }}
+                       
+                        <div class="form-group">
+                                <label for="name">Nom niveau</label>
+                
+                                <input type="text" id="name" name="name" class="form-control" value="{{old('name', niveau.name) }}"\>
+                                @if(hasErrorFor('name'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name') }}
+                                        </span>
+                                </div>
+                                @endif
+                        </div>
+                        <div class="form-group">
+                                <label for="color">Couleur</label>
+                
+                                <input type="text" id="color" name="color" class="form-control" value="{{old('color', niveau.color) }}"\>
+                                @if(hasErrorFor('color'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('color') }}
+                                        </span>
+                                </div>
+                                @endif
+                        </div>
+                       
+                       
+                        
+                    
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                      
+                      </form>
+        
+        </div>
+        
+</div>
+
+@endsection
