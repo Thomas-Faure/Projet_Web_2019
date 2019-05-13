@@ -3,33 +3,16 @@
 Page
 @endsection
 @section('content')
-@if(auth.user)
-<a class="btn btn-primary" href="/announcement/store" id="add-bid-button" role="button">Ajouter une annonce</a>
-@endif
-<div class="dropdown dropdown-category-announce" >
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Filtre
-        </button>
-        <div class="dropdown-menu" aria-labelledby="Liste_Category">
-          <a class="dropdown-item" href="/announcement/category/all">Tout</a>
-          @each(category in categorys)
-          <a class="dropdown-item" href="/announcement/category/{{category.id_category_announcement}}">{{category.name_category}}</a>
-          @endeach
-     
-        </div>
-</div>
 
-
-
+<h1>Mes annonces ! </h1>
 <div id="listingTable"></div>
 <p style="text-align:center">page: <span id="page"></span></p>
-
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
           
           <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
          
-          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Suivant</a></li>
+          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Next</a></li>
     
         </ul>
       </nav>
@@ -38,22 +21,20 @@ Page
 var page_actuel = 1;
 var max_page = 5;
 var objJson;
+var id_user = {{id}}
 var xhr = new XMLHttpRequest();
 //pour récuperer tout les messages d'une annonce
-@if(id == "all")
-xhr.open('GET', '/announcement');
-@else
-xhr.open('GET', '/announcement/category/get/{{id}}'); 
-@endif
+xhr.open('GET', '/user/'+id_user+'/getAnnouncements');
+
 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                         xhr.onload = function() {
                             if (xhr.status === 200) {
                                 
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
-                                if(objJson.length >0){
-                                console.log(value.valeur);
-                                changePage(1);
+                                if(objJson.length>0){
+                                    console.log(value.valeur);
+                                    changePage(1);
                                 }else{
                                     document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
                                 }
@@ -79,6 +60,7 @@ function nextPage()
         changePage(page_actuel);
     }
 }
+
 function changePage(page)
 {
     var btn_next = document.getElementById("btn_next");
@@ -91,10 +73,10 @@ function changePage(page)
     if (page > numPages()) page = numPages();
 
     listing_table.innerHTML = "";
-
+    if(objJson.length>0){
     for (var i = (page-1) * max_page; i < (page * max_page) && i <objJson.length; i++) {
 
-        
+        if(objJson[i] != "null"){
         let date = new Date(objJson[i].created_at)
         let month = String(date.getMonth() + 1);
         let day = String(date.getDate());
@@ -107,22 +89,24 @@ function changePage(page)
         if (hour.length < 2) hour = '0' + hour;
 
         let date_converted =  day+'/'+month+"/"+year+" "+hour+":"+minute
-        listing_table.innerHTML +=  '<a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none"><div class ="card-style"><span class="announce-index-username" >Par: '+objJson[i].username+'</span></div>'+
+        
+        listing_table.innerHTML +=  '<div id="'+objJson[i].id_announcement+'_row"><div class ="card-style">Action:  <a class="btn btn-danger" onclick="delete_id('+objJson[i].id_announcement+','+i+')"role="button"><i class="fas fa-trash-alt"></i></a></div><a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none">'+
 '      <div class="annonce-container" style="background: '+objJson[i].color+'">'+
 '        <div class="blank">'+
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+
 '        </div>'+
 '        <div class="announce-index-content">'+
-'          <p>Note actuel : <span style="color:green">'+objJson[i].note+'</span></p>'+
+'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:green">'+objJson[i].note+'</span>)</span></p>'+
 '          <p class="announce-index-name" >'+objJson[i].name_announcement+'</p>'+
 '          <p class="announce-index-date" >'+date_converted+'</p>'+
 '        </div>'+
 '    </div>'+
-'  </a>';
-	
-
-        
-
+'  </a></div>'
+;
+}
+    }
+    }else{
+        listing_table.innerHTML = '<p class="aucune-annonce">aucune annonce</p>';
     }
     page_span.innerHTML = page;
 
@@ -142,6 +126,45 @@ function changePage(page)
 function numPages()
 {
     return Math.ceil(objJson.length / max_page);
+}
+
+function arrayRemove(arr, value) {
+
+return arr.filter(function(ele){
+    return ele != value;
+});
+
+}
+
+function delete_id(id,elid){
+var resultat = "";
+var xhr = new XMLHttpRequest();
+xhr.open('DELETE', '/announcement/'+id+'/delete'); 
+xhr.setRequestHeader("x-csrf-token", '{{ csrfToken }}');
+xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                               let value = JSON.parse(xhr.responseText);
+                                resultat = value.valeur;
+                                
+                                if(resultat=="supprimé"){
+                                    var elem = document.getElementById(+id+"_row");
+                                    elem.parentNode.removeChild(elem);
+                                   
+                                    objJson = arrayRemove(objJson,objJson[elid])
+                                    console.log(objJson)
+                                    
+                                    changePage(page_actuel);
+                                }
+
+                                
+                            }
+                            else {
+                                alert('Request failed.  Returned status of ' + xhr.status);
+                            }
+                        };
+                        xhr.send();
+
 }
 
 </script>

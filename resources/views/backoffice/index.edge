@@ -26,10 +26,10 @@ Accueil
                     </tr>
                 </thead>
                 <tbody>
-                        <tr><td>Utilisateur</td><td><a class="btn btn-primary" href="/backoffice/users" role="button">Voir</a></td></tr>
-                        <tr><td>Annonces</td><td><a class="btn btn-primary" href="/backoffice/announcement" role="button">Voir</a></td></tr>
-                        <tr><td>Catégories</td><td><a class="btn btn-success" href="/category/store" role="button">Ajouter</a> <a class="btn btn-primary" href="/backoffice/category" role="button">Voir</a></td></tr>
-                        <tr><td>Niveau</td><td><a class="btn btn-success" href="/level/store" role="button">Ajouter</a> <a class="btn btn-primary" href="/backoffice/level" role="button">Voir</a></td></tr>
+                        <tr><td>Utilisateur</td><td><a class="btn btn-primary" href="/backoffice/users" role="button"><i class="fas fa-angle-right"></i></a></td></tr>
+                        <tr><td>Annonces</td><td><a class="btn btn-primary" href="/backoffice/announcement" role="button"><i class="fas fa-angle-right"></i></a></td></tr>
+                        <tr><td>Catégories</td><td><a class="btn btn-success" href="/category/store" role="button"><i class="fas fa-plus"></i></a> <a class="btn btn-primary" href="/backoffice/category" role="button"><i class="fas fa-angle-right"></i></a></td></tr>
+                        <tr><td>Niveau</td><td><a class="btn btn-success" href="/level/store" role="button"><i class="fas fa-plus"></i></a> <a class="btn btn-primary" href="/backoffice/level" role="button"><i class="fas fa-angle-right"></i></a></td></tr>
                   
                 </tbody>
             </table>
@@ -44,9 +44,6 @@ Accueil
 <script>
 var myTable = document.querySelector("table");
 var dataTable = new DataTable(myTable);
-
-
-// or
 </script>
 
 @endsection

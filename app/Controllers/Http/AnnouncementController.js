@@ -8,12 +8,15 @@ const Database = use('Database')
 
 
 class AnnouncementController {
-    async destroy ({ params, request, response }) {
+    async destroy ({ params, request,auth, response }) {
+        const user = await auth.getUser()
         let resultat = "non supprimé"
         const announcement = await Announcement.find(params.id)
         if(announcement){
-            resultat="supprimé"
-            await announcement.delete()
+            if(announcement.user_id == user.id || user.admin ==1){
+                resultat="supprimé"
+                await announcement.delete()
+            }
         }
         return response.json({
             valeur : resultat

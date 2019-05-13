@@ -1,5 +1,6 @@
 'use strict'
 const User = use('App/Models/User')
+const Announcement = use('App/Models/Announcement')
 const Database = use('Database')
 const erreurPerso = use('App/Exceptions/errorQCT')
 
@@ -134,7 +135,14 @@ class UserController {
         const passwordValidation = request.input("passwordValidation")
         const birthday = request.input("birthday")
         const name = request.input("name")
+        console.log(username)
+        console.log(email)
+        console.log(password)
+        console.log(passwordValidation)
+        console.log(birthday)
+        console.log(name)
         if(password != passwordValidation){
+            console.log("erreur")
             throw "error"
         }
         let user = new User()
@@ -151,6 +159,7 @@ class UserController {
         response.redirect('/')
 
         }catch(error){
+            console.log(error)
             session.flash({MdpError : 'Le mot de passe de confirmation ne correpond pas !'});
                 return response.redirect('/user/register')
 
@@ -169,12 +178,62 @@ class UserController {
             user.birthday= [ date.getFullYear(), mnth, day ].join("-");
        
         return view.render('user.edit',{user : user})
+        }else{
+            try{
+                throw 'error'
+                
+            }catch(e){
+            throw new erreurPerso()}
         }
-
-        try{
-            console.log("oui")
-            throw new erreurPerso()}catch(e){}
         
+    }
+
+    async announcements({request, auth, view,response,params}) {
+         
+            const user = await auth.getUser()
+       
+            if(user.id == params.id){
+                console.log('oui')
+                return view.render('user.announcement',{id : params.id})
+            }else{
+                try{
+                    throw 'error'
+                    
+                }catch(e){
+                throw new erreurPerso()}
+
+            }
+    }
+    
+    async getAnnouncements({request, auth, response,params}) {
+        if (request.ajax()) {
+            const user = await auth.getUser()
+          
+            if(user.id == params.id){
+                try{
+                    const announcements =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
+                    " from announcement a"+
+                   " join users on users.id=a.user_id"+
+                   " join category_announcement c on c.id_category_announcement=a.category_id"+
+                    " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+                    " where a.user_id= ?"+
+                    " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.id])
+                    
+                return response.json({
+                    valeur : announcements[0]
+                })
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        }else{
+            try{
+                throw 'error'
+                
+            }catch(e){
+            throw new erreurPerso()}
+
+        }
     }
 
 
@@ -184,6 +243,8 @@ class UserController {
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }
+
+
 
     
     
