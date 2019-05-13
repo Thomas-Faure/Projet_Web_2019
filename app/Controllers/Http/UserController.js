@@ -1,6 +1,7 @@
 'use strict'
 const User = use('App/Models/User')
 const Database = use('Database')
+const erreurPerso = use('App/Exceptions/errorQCT')
 
 
 class UserController {
@@ -65,7 +66,7 @@ class UserController {
                 return response.redirect('/user/'+user.id+'/edit/')
             }
         }else{
-            response.redirect('/')
+            try{throw new erreurPerso()}catch(e){}
         }
     }
 
@@ -169,7 +170,10 @@ class UserController {
        
         return view.render('user.edit',{user : user})
         }
-        return response.redirect('back')
+
+        try{
+            console.log("oui")
+            throw new erreurPerso()}catch(e){}
         
     }
 

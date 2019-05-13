@@ -3,7 +3,9 @@
 Page
 @endsection
 @section('content')
+@if(auth.user)
 <a class="btn btn-primary" href="/announcement/store" id="add-bid-button" role="button">Ajouter une annonce</a>
+@endif
 <div class="dropdown dropdown-category-announce" >
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Filtre
@@ -20,6 +22,8 @@ Page
 
 
 <div id="listingTable"></div>
+<p style="text-align:center">page: <span id="page"></span></p>
+
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
           
@@ -30,7 +34,6 @@ Page
         </ul>
       </nav>
 
-page: <span id="page"></span>
 <script>
 var page_actuel = 1;
 var max_page = 5;
@@ -48,8 +51,12 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                                 
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
+                                if(objJson.length >0){
                                 console.log(value.valeur);
                                 changePage(1);
+                                }else{
+                                    document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
+                                }
                             }
                             else {
                                 alert('Request failed.  Returned status of ' + xhr.status);

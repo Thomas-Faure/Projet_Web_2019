@@ -3,9 +3,11 @@
 Accueil
 @endsection
 @section('content')
+@if(auth.user)
 <div style="display: flex;justify-content:center">
 <a href="/message/store/announcement/{{announcement.id_announcement}}" id="button-add-message"class="btn btn-primary" role="button">+</a>
 </div>
+@endif
 <h1>Annonce:</h1>
 <div>
         <div id="annonce-page-annonce" style="background: {{announcement.color}}">
@@ -25,7 +27,7 @@ Accueil
         </div>
        
         <script>
-            
+                @if(auth.user)
                 function decrementValueA(id)
                     {            
                         
@@ -95,6 +97,7 @@ Accueil
 
                         
                 }
+            @endif
             </script>
        
 
@@ -204,7 +207,7 @@ function numPages()
 
 
 <script>
-            
+        @if(auth.user)
         function decrementValueM(id)
             {            
                 var xhr = new XMLHttpRequest();
@@ -274,6 +277,7 @@ function numPages()
 
                 
         }
+    @endif
     </script>
 
 

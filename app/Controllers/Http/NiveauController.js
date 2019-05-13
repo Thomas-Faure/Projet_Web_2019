@@ -35,7 +35,7 @@ class NiveauController {
 
     async update ({ params, request, response, view , session}) {
         try{
-            
+            console.log("je suis dedans")
             const name = request.input('name')
             const color = request.input('color')
             let level = await Niveau.find(params.id)

@@ -3,32 +3,44 @@
 @section('title')
 Accueil
 @endsection
-
+@section('extracssjs')
+{{ script('js/datatable') }}
+{{ style('css/datatable') }}
+@endsection
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
-<script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
-<div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table">
-        <thead>
-            <tr>
-                <th>Table</th>
-                <th>Action</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-                <tr><td>Utilisateur</td><td><a class="btn btn-primary" href="/backoffice/users" role="button">Voir</a></td></tr>
-                <tr><td>Annonces</td><td><a class="btn btn-primary" href="/backoffice/announcement" role="button">Voir</a></td></tr>
-                <tr><td>Catégories</td><td><a class="btn btn-success" href="/category/store" role="button">Ajouter</a> <a class="btn btn-primary" href="/backoffice/category" role="button">Voir</a></td></tr>
-                <tr><td>Niveau</td><td><a class="btn btn-primary" href="/backoffice/level" role="button">Voir</a></td></tr>
-          
-        </tbody>
-    </table>
+<!--<link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>-->
+<div class ="card-style">Infos</div>
+<div class="card">
+      
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr><td>Utilisateur</td><td><a class="btn btn-primary" href="/backoffice/users" role="button">Voir</a></td></tr>
+                        <tr><td>Annonces</td><td><a class="btn btn-primary" href="/backoffice/announcement" role="button">Voir</a></td></tr>
+                        <tr><td>Catégories</td><td><a class="btn btn-success" href="/category/store" role="button">Ajouter</a> <a class="btn btn-primary" href="/backoffice/category" role="button">Voir</a></td></tr>
+                        <tr><td>Niveau</td><td><a class="btn btn-success" href="/level/store" role="button">Ajouter</a> <a class="btn btn-primary" href="/backoffice/level" role="button">Voir</a></td></tr>
+                  
+                </tbody>
+            </table>
+                    </div>
+                </div>
             </div>
+        
         </div>
-    </div>
+        
+</div>
+
 <script>
 var myTable = document.querySelector("table");
 var dataTable = new DataTable(myTable);

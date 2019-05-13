@@ -11,7 +11,7 @@
       {{ style('css/styleBootstrap') }}
       {{ style('css/style') }}
       {{ script('js/bootstrap') }}
-  @!section('extracss')
+  @!section('extracssjs')
   <title>
     @!section('title')
   </title>
@@ -33,33 +33,34 @@
           <a class="nav-link color-nav" href="/"><strong>Accueil</strong><span class="sr-only">(current)</span></a>
         </li>
         @if(auth.user)
-        
+        <li class="nav-item">
+          <a class="nav-link color-nav" href="/user/logout">Deconnexion</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link color-nav" href="/user/{{auth.user.id}}">Profil</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link color-nav" href="/announcement/category/all">Annonces</a>
-        </li>
+        
         <li class="nav-item">
             <a class="nav-link color-nav" href="/ranking">Classement</a>
+        </li>
+        @else
+        <li class="nav-item">
+          <a class="nav-link color-nav" href="/user/login">Connexion</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link color-nav" href="/user/register">Inscription</a>
+        </li>
+        @endif
+        <li class="nav-item">
+            <a class="nav-link color-nav" href="/announcement/category/all">Annonces</a>
         </li>
         @if(auth.user.admin == 1)
         <li class="nav-item">
             <a class="nav-link color-nav-admin" href="/backoffice"><strong>BackOffice</strong></a>
         </li>
         @endif
-        <li class="nav-item">
-          <a class="nav-link color-nav" href="/user/logout">Deconnexion</a>
-        </li>
-
-        @else
-        <li class="nav-item">
-                  <a class="nav-link color-nav" href="/user/login">Connexion</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link color-nav" href="/user/register">Inscription</a>
-                </li>
-        @endif
+        
+        @
 
       </ul>
     </div>

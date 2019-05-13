@@ -20,6 +20,7 @@ Page
 
 
 <div id="listingTable"></div>
+<p style="text-align:center">page: <span id="page"></span></p>
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
           
@@ -52,8 +53,12 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                                 
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
-                                console.log(value.valeur);
-                                changePage(1);
+                                if(objJson.length>0){
+                                    console.log(value.valeur);
+                                    changePage(1);
+                                }else{
+                                    document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
+                                }
                             }
                             else {
                                 alert('Request failed.  Returned status of ' + xhr.status);

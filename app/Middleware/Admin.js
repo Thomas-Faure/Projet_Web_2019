@@ -2,7 +2,7 @@
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
-
+const erreurPerso = use('App/Exceptions/errorQCT')
 class Admin {
   /**
    * @param {object} ctx
@@ -11,15 +11,16 @@ class Admin {
    */
   async handle ({ request,auth,response }, next) {
     try{
+
         const user =await auth.getUser()
         console.log(user.admin)
         if(user.admin == 1){
             await next()
         }else{
-            response.status(403).send("non autorisé")
+          throw new erreurPerso()
         }
     }catch(error){
-        response.status(403).send("non autorisé")
+      throw new erreurPerso()
     }
   }
 }
