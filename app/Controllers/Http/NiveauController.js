@@ -7,6 +7,7 @@ class NiveauController {
     async destroy ({ }) {
     }
 
+    //permet de génerer la page pour modifier un niveau déja existant
     async edit ({ params, response, view }) {
         let niveau = (await Niveau.find(params.id))
             if(niveau){
@@ -18,7 +19,7 @@ class NiveauController {
      
     }
 
-
+    //retourne tout les niveaux existants
     async index ({request, response}) {
         if (request.ajax()) {
             
@@ -33,6 +34,8 @@ class NiveauController {
         }
     }
 
+    //permet de mettre à jour un niveau , l'id du niveau est passé en paramètre d'uri (params.id)
+    //cette fonction redirige vers le backoffice des niveaux après modification
     async update ({ params, request, response, session}) {
         try{
             console.log("je suis dedans")
@@ -52,19 +55,16 @@ class NiveauController {
         }
 
     }
-
+    //permet de créer un nouveau niveau
     async store({request, response}) {
         try{
             const name = request.input("name")
             const color = request.input("color")
-            if(password != passwordValidation){
-                throw "error"
-            }
             let level = new Niveau()
             level.color = color
             level.name = name
             
-            await name.save()
+            await level.save()
 
             response.redirect('/backoffice')
     

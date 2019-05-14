@@ -1,13 +1,16 @@
 'use strict'
+
+//appel des Modèles
 const Announcement = use('App/Models/Announcement')
 const Announcement_votes = use('App/Models/Announcement_votes')
 const Announcement_Category = use('App/Models/Category')
-
 const User = use('App/Models/User')
 const Database = use('Database')
 
 
 class AnnouncementController {
+
+    //permet de supprimer une annonce dont l'id est passé en paramètre d'uri (params.id)
     async destroy ({ params,auth, response }) {
         const user = await auth.getUser()
         let resultat = "non supprimé"
@@ -24,10 +27,11 @@ class AnnouncementController {
     
     }
 
+    //permet d'éditer une annonce 
     async edit ({}) {
     }
 
-    //donne toutes les annonces en format json
+    //donne toutes les annonces de la base de donnée sous le format JSON
     async index({request, response}){
         if (request.ajax()) {
             
@@ -66,7 +70,7 @@ class AnnouncementController {
     }
     }
 
-
+    //permet de récuperer toutes les annonces posté par un utilisateur passé en paramètre dans l'uri (params.id)
     async getUserAnnounces({ params, request, response}){
         if (request.ajax()) {
             
@@ -86,6 +90,7 @@ class AnnouncementController {
     }
     }
 
+    //fonction qui récupère et envoie au format JSON les annonces d'une certaine catégorie correspondant à un utilisateur passé en paramètre d'uri (params.id et params.cat)
     async getUserAnnounces_category({params, request, response}){
         if (request.ajax()) {
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
@@ -105,6 +110,7 @@ class AnnouncementController {
     }
     }
 
+    //fonction qui récupère une annonce via un paramètre passé dans l'uri (params.id)
     async show ({ params, response, view }) {
 
         
@@ -126,6 +132,7 @@ class AnnouncementController {
         }
     }
 
+    //fonction qui permet de créer une annonce
     async store({request, auth, response, session}) {
         try{
             const name_announcement = request.input("name_announcement")
@@ -154,6 +161,7 @@ class AnnouncementController {
         }
 
     }
+    //fonction qui permet d'acceder à la page de création d'annonce (le formulaire)
     async create({view}){
         const category =  await Announcement_Category.all()
         
@@ -161,13 +169,14 @@ class AnnouncementController {
     } 
 
     
-
+    //fonction qui permet de récuperer tout les messages d'une annonce spécifié en paramètre (params.id)
     async getMessages({response,params}){
       
-        //const messages = Message.getMessages(params.id)
-        const messages =  await Database.raw("select users.admin as admin,users.id as user_id,id_message,message.announcement_id,message.created_at,name_message,username,sum(COALESCE(vote, 0)) as note"+
+      
+        const messages =  await Database.raw("select users.admin as admin,level.color,users.id as user_id,id_message,message.announcement_id,message.created_at,name_message,username,sum(COALESCE(vote, 0)) as note"+
         " from message"+
        " join users on users.id=message.user_id"+
+       " join level on users.level_id=level.id_level"+
         " left join message_votes on message.id_message=message_votes.message_id"+
         " where message.announcement_id=?"+
         " group by users.admin,users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message desc",[params.id])
@@ -180,9 +189,10 @@ class AnnouncementController {
         
     }
 
+
+    //fonction qui permet de retourner la dernière annonce posté
     async getLastAnnouncement({response,params,request}){
         if(request.ajax()){
-        //const messages = Message.getMessages(params.id)
         const announce =  await Announcement.query().innerJoin('category_announcement','category_announcement.id_category_announcement','announcement.category_id').orderBy('id_announcement','desc').limit(1).first()
     
         return response.json(
@@ -304,11 +314,6 @@ class AnnouncementController {
             suppression: false
         });
     }
-
- 
-
-
-
 }
 
 module.exports = AnnouncementController

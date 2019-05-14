@@ -1,4 +1,6 @@
 'use strict'
+
+//les modèles
 const Category = use('App/Models/Category')
 const Database = use('Database')
 const Helpers = use('Helpers')
@@ -6,10 +8,11 @@ const Helpers = use('Helpers')
 
 
 class CategoryAnnouncementController {
-    async destroy ({ params, request, response }) {
+    //permet de supprimer une catégorie
+    async destroy ({}) {
     }
 
-
+    //permet de mettre à jour une catégorie
     async update ({ params, request, response }) {
         const name_category = request.input('name_category')
         const color = request.input('color')
@@ -55,6 +58,7 @@ class CategoryAnnouncementController {
 
     }
 
+    //récupère les informations d'une catégorie , génère la vue de modification de catégorie
     async edit ({view,params,response }) {
             let category = (await Category.find(params.id))
             if(category){
@@ -67,6 +71,7 @@ class CategoryAnnouncementController {
         
     }
 
+    //permet de récuperer toutes les catégories
     async index ({request, response }) {
         if (request.ajax()) {
             
@@ -81,7 +86,7 @@ class CategoryAnnouncementController {
     }
 
   
-
+    //fonction qui permet de créer une nouvelle catégorie
     async store({request, response, session}) {
         try{
         const name_category = request.input("name_category")

@@ -1,4 +1,5 @@
 'use strict'
+//les modèles
 const Message = use('App/Models/Message')
 const Announcement = use('App/Models/Announcement')
 const Message_votes = use('App/Models/Message_votes')
@@ -8,10 +9,11 @@ const erreurPerso = use('App/Exceptions/errorQCT')
 
 
 class MessageController {
+    //permet de supprimer un message , l'id du message est en paramètre d'uri (params.id)
     async destroy ({ params, request, response }) {
         let resultat = "non supprimé"
         const message = await Message.find(params.id)
-        console.log(message)
+     
         if(message){
             resultat="supprimé"
             await message.delete()
@@ -28,7 +30,7 @@ class MessageController {
     async show ({ params, request, response, view }) {
     }
 
-
+    //fonction qui permet de récuperer tout les messages
     async index({ params, request, response, view }){
         if (request.ajax()) {
             
@@ -43,7 +45,7 @@ class MessageController {
     }
     }
 
-
+    //fonction qui permet de créer un nouveau message, en paramètre d'uri l'id de l'annonce correspondant au nouveau message (params.id)
     async store({request, auth,params, response, session}) {
         try{
             const name_message = request.input("name_message")
@@ -70,6 +72,8 @@ class MessageController {
 
     }
 
+    //fonction qui permet de generer la vue de création de message (formulaire)
+    //verifie que l'annonce existe avant de generer la vue
     async create({view,params}){
         
         const announce = await Announcement.find(params.id)
@@ -84,9 +88,9 @@ class MessageController {
         }
     } 
 
-        //fonction Ajax qui retourne la nouvelle valeur d'un message
+    //fonction Ajax 
     //cette fonction est en fait la note que va attribuer l'utilisateur au message
-    //increment signifie donc une note +1
+    //increment signifie donc une note +1 pour un message
     async increment({response,auth,request}) {
         const user= await auth.getUser()
         const message_id=request.input("id");
@@ -126,7 +130,7 @@ class MessageController {
         });
     }
     
-        //fonction Ajax qui retourne la nouvelle valeur d'un message
+    //fonction Ajax
     //cette fonction est en fait la note que va attribuer l'utilisateur au message
     //increment signifie donc une note -1
     async decrement({response,auth,request}) {
@@ -165,9 +169,9 @@ class MessageController {
         });
     }
 
-    //fonction Ajax qui retourne la nouvelle valeur de l'annonce
-    //cette fonction est en fait la note que va attribuer l'utilisateur à l'annonce
-    //increment signifie donc une note -1
+    //fonction Ajax
+    //cette fonction va récuperer toutes les notes attribué à un message, va les additionner et va retourner la valeur de cette note
+    //si on remarque que la note finale est "-10" le message est jugé comme non pertinent, on va donc automatiquement le supprimer
     async vote({response,params}) {
         let suppression = false
         const message_id=params.id;

@@ -1,10 +1,13 @@
 'use strict'
 const User = use('App/Models/User')
+const Level = use('App/Models/Niveau')
 const Database = use('Database')
 const erreurPerso = use('App/Exceptions/errorQCT')
 
 
 class UserController {
+
+    //fonction qui permet de supprimer un utilsiateur
     async destroy ({ params, response }) {
         let resultat = "non supprimé"
         const user = await User.find(params.id)
@@ -17,7 +20,8 @@ class UserController {
         })
 
     }
-
+    //fonction qui permet de mettre à jour un utilisateur
+    //seulement un administrateur ou bien l'utilisateur lui même à le droit d'effectuer cette modification
     async update ({ params,auth, request, response,session }) {
         const user = (await auth.getUser())
         if(user.id == params.id || user.admin == 1){//si c'est le bon utilisateur ou soit si il est admin
@@ -69,6 +73,8 @@ class UserController {
         }
     }
 
+    //fonction qui permet de récuperer les informations d'un utilisateur 
+    //permet également de récuperer ses 5 dernières annonces postées
     async show ({ params, response, view }) {
         const user = await User.find(params.id)
         if(user){
@@ -76,18 +82,20 @@ class UserController {
             const announcements = await Database
             .raw('select a.id_announcement as id,u.username as username,a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  order by a.id_announcement desc limit  ?', [user.id,5])
 
-            //on récupère les données utilisateurs
+            const level = await Level.query().select('level.color','level.name').innerJoin('users','users.level_id','level.id_level').where('users.id',params.id).first()
+            //on transforme la date
             var date = new Date(user.birthday),
             mnth = ("0" + (date.getMonth()+1)).slice(-2),
             day  = ("0" + date.getDate()).slice(-2);
             user.birthday= [ day, mnth, date.getFullYear() ].join("-");
-            return view.render('user.profile',{user : user.toJSON(),announcements : announcements[0]})
+            return view.render('user.profile',{user : user.toJSON(),announcements : announcements[0],level : level.toJSON()})
         }else{
             return response.redirect('back')
         }
 
     }
 
+    //permet de récuperer tout les utilisateurs de la base de donnée
     async index({request, response}){
         if (request.ajax()) {
 
@@ -103,6 +111,7 @@ class UserController {
     }
 
 
+    //permet de récuperer toutes les annonces dans lesquels un utilisateur a participé (pas les siennes)
     async participation_category({params, request, response}){
         if (request.ajax()) {
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
@@ -122,6 +131,8 @@ class UserController {
     }
     }
 
+    //permet de créer un nouvel utilisateur
+    //redirige vers la page principale dès que cela est fait, sinon retourne vers le formulairec d'inscription avec un message d'erreur
     async store({request, auth, response, session}) {
         try{
         const username = request.input("username")
@@ -157,7 +168,7 @@ class UserController {
         user.birthday= birthday
         user.name = name
         await user.save()
-        let accessToken = await auth.attempt(email, password)
+        //let accessToken = await auth.attempt(email, password)
         response.redirect('/')
 
         }catch(error){
@@ -169,7 +180,7 @@ class UserController {
 
     }
 
-
+    //permet de mettre à jour un utilisateur
     async edit ({auth, view,params}) {
         const user_actual = await auth.getUser()
         if(user_actual.id == params.id || user_actual.admin == 1){
@@ -190,7 +201,9 @@ class UserController {
 
     }
 
-    async announcements({auth, view,response,params}) {
+    //permet de génerer la page des annonces posté par l'utilisateur
+    //dans cette vue , il y a un appel (Ajax) qui va récuperer toutes les annonces d'un utilisateur qui est passé en paramètre de cette fonction (params.id)
+    async announcements({auth, view,params}) {
 
             const user = await auth.getUser()
 
@@ -207,6 +220,7 @@ class UserController {
             }
     }
 
+    //permet de récuperer les annonces qu'un utilisateur à posté (son id est passé en paramètre d'uri (params.id))
     async getAnnouncements({request, auth, response,params}) {
         if (request.ajax()) {
             const user = await auth.getUser()
@@ -237,12 +251,14 @@ class UserController {
 
         }
     }
+    //permet à un utilisateur connecté de se déconnecter
     async logout({response}) {
 
-        response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
+        response.cookie('Authorization', 1,{ httpOnly: true, path: '/' }) // on enlève le token du cookie
         response.redirect('/')
     }
 
+    //permet à un utilisateur de se connecter
     async login({request, auth, response,session}) {
 
         let {email, password} = request.all();
@@ -264,5 +280,4 @@ class UserController {
         }
     }
 }
-
 module.exports = UserController
