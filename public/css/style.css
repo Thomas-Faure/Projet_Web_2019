@@ -1,16 +1,13 @@
+/** HTML basique **/
 body{
     background: white;
 }
-.navbar{
-    background:#333333;
 
-    width: 100%;
 
-}
-.navbar-toggler{
-    background: white;
-}
 
+
+
+/** Annonces et messages **/
 .aucune-annonce{
     text-align:center;
     font-size:30px;
@@ -19,6 +16,10 @@ body{
 
 /*   message d'annonce    */
 
+
+.announcement-page-annonce-username-profile{
+    color:white;
+}
 .message-container{
     padding-bottom:20px;
 }
@@ -27,15 +28,19 @@ body{
     border-radius:10px;
 }
 .message-username{
+    
     color:black;
     font-weight: bold;
 }
 .message-username-img{
+    padding-top:5px;
+    padding-left: 5px;
     width:10%;
 }
 .message-msg{
     text-align:center;
     background:white;
+    font-size:26px;
     margin-left:20px;
     margin-right:20px;
     border-radius: 10px;
@@ -49,11 +54,13 @@ body{
     color:white;
 }
 .message-date{
+    font-size:10px;
+    padding-right:5px;
     display:flex;
     justify-content:flex-end;
 }
 
-/* annonce   */
+/* annonces   */
 
 .dropdown-category-announce{
     text-align: center;
@@ -79,6 +86,7 @@ body{
 #annonce-page-annonce-description{
     background: white;
     border-radius: 10px;
+    font-size: 26px;
     margin-left:20px;
     margin-right:20px;
 }
@@ -105,27 +113,33 @@ body{
     border-radius:60px;
 }
 
+/** Back office **/
+
+.button-bo{
+    color:white !important;
+}
+
+
+/*  Announce index   */
+.announce-index-content{
+    color:white;
+}
+.announce-index-username{
+    font-size:15px;
+}
+.announce-index-name{
+    font-size:25px;
+}
+.announce-index-date{
+    font-size:12px;
+}
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/** NAVBAR **/
 .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -133,6 +147,12 @@ body{
     margin-left: auto;
   }
 
+.navbar{
+    background:#333333;
+
+    width: 100%;
+
+}
 .color-nav:hover{
     background: #474646 !important;
 }
@@ -157,12 +177,16 @@ body{
     justify-content: center;
 }
 
+/** RANK   **/
+
 .rank-attribut{
     font-weight: bold;
 }
 .rank-color{
     color:red;
 }
+
+/**  FORM **/
 .form-success-general{
     background: green;
     padding-top :10px;

@@ -39,7 +39,8 @@ Route
 
     Route.get(':id/edit','UserController.edit').middleware(['auth'])
     Route.put(':id/edit','UserController.update').validator('EditUser');
-
+    Route.get(':id/getannouncements','UserController.getAnnouncements').middleware(['auth'])
+    Route.get(':id/announcements','UserController.announcements').middleware(['auth'])
     Route.get(':id/participation/:cat',async ({ view,params,response,auth }) => {
       
       const user_find = await User.find(params.id)

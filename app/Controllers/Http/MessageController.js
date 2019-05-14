@@ -4,6 +4,7 @@ const Announcement = use('App/Models/Announcement')
 const Message_votes = use('App/Models/Message_votes')
 const User = use('App/Models/User')
 const Database = use('Database')
+const erreurPerso = use('App/Exceptions/errorQCT')
 
 
 class MessageController {
@@ -71,8 +72,16 @@ class MessageController {
 
     async create({view,params}){
         
-
+        const announce = await Announcement.find(params.id)
+        if(announce){
         return view.render('message.store',{id : params.id})
+        }else{
+            try{
+                throw 'error'
+                
+            }catch(e){console.log("test")
+            throw new erreurPerso()}
+        }
     } 
 
         //fonction Ajax qui retourne la nouvelle valeur d'un message

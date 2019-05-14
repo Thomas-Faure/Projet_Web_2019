@@ -1,59 +1,24 @@
-@layout('layouts.main')
-@section('title')
-Page
-@endsection
-@section('content')
-<div class="dropdown dropdown-category-announce" >
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Filtre
-        </button>
-        <div class="dropdown-menu" aria-labelledby="Liste_Category">
-          <a class="dropdown-item" href="/user/{{id}}/participation/all">Tout</a>
-          @each(category in categorys)
-          <a class="dropdown-item" href="/user/{{id}}/participation/{{category.id_category_announcement}}">{{category.name_category}}</a>
-          @endeach
-     
-        </div>
-</div>
-
-
-
-<div id="listingTable"></div>
-<p style="text-align:center">page: <span id="page"></span></p>
-<nav class="page-pagination" aria-label="Page navigation example">
-        <ul class="pagination">
-          
-          <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
-         
-          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Next</a></li>
-    
-        </ul>
-      </nav>
-
-<script>
 var page_actuel = 1;
-var max_page = 2;
+var max_page = 5;
 var objJson;
-var id_user = {{id}}
-@if(cat != "all")
-var id_cat = {{cat}}
-@endif
 var xhr = new XMLHttpRequest();
+function getAnnounces(id){
 //pour récuperer tout les messages d'une annonce
-@if(cat == "all")
-xhr.open('GET', '/announcement/user/'+id_user);
-@else
-xhr.open('GET', '/announcement/user/'+id_user+'/category/'+id_cat); 
-@endif
+if(id=="all"){
+xhr.open('GET', '/announcement');
+}
+else{
+xhr.open('GET', '/announcement/category/get/'+id); 
+}
 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                         xhr.onload = function() {
                             if (xhr.status === 200) {
                                 
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
-                                if(objJson.length>0){
-                                    console.log(value.valeur);
-                                    changePage(1);
+                                if(objJson.length >0){
+                                console.log(value.valeur);
+                                changePage(1);
                                 }else{
                                     document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
                                 }
@@ -64,6 +29,7 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                         };
                         xhr.send();
 
+                    }
 //acceder à la page précedente                      
 function prevPage()
 {
@@ -79,7 +45,6 @@ function nextPage()
         changePage(page_actuel);
     }
 }
-
 function changePage(page)
 {
     var btn_next = document.getElementById("btn_next");
@@ -95,7 +60,6 @@ function changePage(page)
 
     for (var i = (page-1) * max_page; i < (page * max_page) && i <objJson.length; i++) {
 
-        
         let date = new Date(objJson[i].created_at)
         let month = String(date.getMonth() + 1);
         let day = String(date.getDate());
@@ -108,21 +72,18 @@ function changePage(page)
         if (hour.length < 2) hour = '0' + hour;
 
         let date_converted =  day+'/'+month+"/"+year+" "+hour+":"+minute
-        listing_table.innerHTML +=  '<a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none">'+
+        listing_table.innerHTML +=  '<a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none"><div class ="card-style"><span class="announce-index-username" >Par: '+objJson[i].username+'</span></div>'+
 '      <div class="annonce-container" style="background: '+objJson[i].color+'">'+
 '        <div class="blank">'+
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+
 '        </div>'+
 '        <div class="announce-index-content">'+
-'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:green">'+objJson[i].note+'</span>)</span></p>'+
+'          <p>Note actuel : <span style="color:green">'+objJson[i].note+'</span></p>'+
 '          <p class="announce-index-name" >'+objJson[i].name_announcement+'</p>'+
 '          <p class="announce-index-date" >'+date_converted+'</p>'+
 '        </div>'+
 '    </div>'+
-'  </a>';
-	
-
-        
+'  </a>';     
 
     }
     page_span.innerHTML = page;
@@ -145,12 +106,5 @@ function numPages()
     return Math.ceil(objJson.length / max_page);
 }
 
-</script>
 
 
-
-@endsection
-
-
-
-@endsection

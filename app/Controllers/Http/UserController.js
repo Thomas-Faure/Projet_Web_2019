@@ -1,5 +1,6 @@
 'use strict'
 const User = use('App/Models/User')
+const Announcement = use('App/Models/Announcement')
 const Database = use('Database')
 const erreurPerso = use('App/Exceptions/errorQCT')
 
@@ -8,7 +9,6 @@ class UserController {
     async destroy ({ params, request, response }) {
         let resultat = "non supprimé"
         const user = await User.find(params.id)
-        console.log(user)
         if(user){
             resultat="supprimé"
             await user.delete()
@@ -134,23 +134,40 @@ class UserController {
         const passwordValidation = request.input("passwordValidation")
         const birthday = request.input("birthday")
         const name = request.input("name")
+
+        //pour verifier que la date n'est pas trop ancienne ni trop recente
+        var q = new Date()
+        var m = q.getMonth()+1
+        var d = q.getDay()
+        var y = q.getFullYear()
+        var date = new Date(y,m,d)
+        let temp = new Date(birthday)
+        if((temp.getMonth()+1)>=date.getMonth() && temp.getFullYear() >=date.getFullYear()){
+            session.flash({MdpError : 'La date de naissance est trop grosse!'});
+                return response.redirect('/user/register')
+        }else if(temp.getFullYear() < 1900){
+            session.flash({MdpError : 'La date de naissance est trop ancienne... !'});
+                return response.redirect('/user/register')
+        }else{
+            console.log("c'est bon")
+        }
         if(password != passwordValidation){
+            console.log("erreur")
             throw "error"
         }
+       
         let user = new User()
         user.username = username
         user.email = email
         user.password = password
         user.birthday= birthday
         user.name = name
-        user.niveau_id = 1
-        user.exp = 0
-        user.admin = 0
         await user.save()
         let accessToken = await auth.attempt(email, password)
         response.redirect('/')
 
         }catch(error){
+            console.log(error)
             session.flash({MdpError : 'Le mot de passe de confirmation ne correpond pas !'});
                 return response.redirect('/user/register')
 
@@ -169,12 +186,62 @@ class UserController {
             user.birthday= [ date.getFullYear(), mnth, day ].join("-");
        
         return view.render('user.edit',{user : user})
+        }else{
+            try{
+                throw 'error'
+                
+            }catch(e){
+            throw new erreurPerso()}
         }
-
-        try{
-            console.log("oui")
-            throw new erreurPerso()}catch(e){}
         
+    }
+
+    async announcements({request, auth, view,response,params}) {
+         
+            const user = await auth.getUser()
+       
+            if(user.id == params.id){
+   
+                return view.render('user.announcement',{id : params.id})
+            }else{
+                try{
+                    throw 'error'
+                    
+                }catch(e){
+                throw new erreurPerso()}
+
+            }
+    }
+    
+    async getAnnouncements({request, auth, response,params}) {
+        if (request.ajax()) {
+            const user = await auth.getUser()
+          
+            if(user.id == params.id){
+                try{
+                    const announcements =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
+                    " from announcement a"+
+                   " join users on users.id=a.user_id"+
+                   " join category_announcement c on c.id_category_announcement=a.category_id"+
+                    " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+                    " where a.user_id= ?"+
+                    " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.id])
+                    
+                return response.json({
+                    valeur : announcements[0]
+                })
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        }else{
+            try{
+                throw 'error'
+                
+            }catch(e){
+            throw new erreurPerso()}
+
+        }
     }
 
 
@@ -184,6 +251,8 @@ class UserController {
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }
+
+
 
     
     

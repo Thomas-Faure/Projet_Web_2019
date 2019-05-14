@@ -13,7 +13,6 @@ class Admin {
     try{
 
         const user =await auth.getUser()
-        console.log(user.admin)
         if(user.admin == 1){
             await next()
         }else{
