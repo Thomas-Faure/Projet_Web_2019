@@ -16,13 +16,13 @@ class UserController {
         return response.json({
             valeur : resultat
         })
-    
+
     }
 
     async update ({ params,auth, request, response, view,session }) {
         const user = (await auth.getUser())
         if(user.id == params.id || user.admin == 1){//si c'est le bon utilisateur ou soit si il est admin
-            
+
             try{
                 const admin = request.input('admin')
                 const name = request.input('name')
@@ -32,9 +32,9 @@ class UserController {
                 const birthday = request.input('birthday')
                 const passwordValidation = request.input('passwordValidation')
                 let userEdit = await User.find(params.id)
-           
+
                     if(password != null){
-                       
+
                         if(password == passwordValidation){
                             userEdit.password = password
                         }else{
@@ -46,22 +46,22 @@ class UserController {
                     }
                     userEdit.name = name
                     userEdit.birthday = birthday
-             
+
                     userEdit.email = email
-    
+
                     userEdit.username = username
-                
+
                 const result = await userEdit.save()
-            
+
                 if(result){
                     session.flash({EditSuccess : 'Toutes les modifications sont faites !'});
                     return response.redirect('/user/'+userEdit.id+'/edit/')
                 }else{
-                   
+
                     throw "error";
                 }
             }catch(error){
-               
+
                 session.flash({EditError : 'Aucune modification n\' a pu etre faite !'});
                 return response.redirect('/user/'+user.id+'/edit/')
             }
@@ -76,7 +76,7 @@ class UserController {
             //on récupères ses 5 dernieres annonces
             const announcements = await Database
             .raw('select a.id_announcement as id,u.username as username,a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  order by a.id_announcement desc limit  ?', [user.id,5])
-            
+
             //on récupère les données utilisateurs
             var date = new Date(user.birthday),
             mnth = ("0" + (date.getMonth()+1)).slice(-2),
@@ -86,17 +86,17 @@ class UserController {
         }else{
             return response.redirect('back')
         }
-        
+
     }
 
     async index({ params, request, response, view }){
         if (request.ajax()) {
-            
+
         const users =  await User.all();
-        
+
         return response.json(
             users.toJSON()
-        
+
         );
     }else{
         response.redirect('/')
@@ -113,7 +113,7 @@ class UserController {
         " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
         " where c.id_category_announcement= ?"+
         " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.cat])
-        
+
         return response.json({
             valeur : messages[0]
         }
@@ -122,9 +122,9 @@ class UserController {
         response.redirect('/')
     }
     }
-    
 
-    
+
+
 
     async store({request, auth, response, session}) {
         try{
@@ -155,7 +155,7 @@ class UserController {
             console.log("erreur")
             throw "error"
         }
-       
+
         let user = new User()
         user.username = username
         user.email = email
@@ -172,7 +172,7 @@ class UserController {
                 return response.redirect('/user/register')
 
         }
-        
+
     }
 
 
@@ -184,39 +184,39 @@ class UserController {
             mnth = ("0" + (date.getMonth()+1)).slice(-2),
             day  = ("0" + date.getDate()).slice(-2);
             user.birthday= [ date.getFullYear(), mnth, day ].join("-");
-       
+
         return view.render('user.edit',{user : user})
         }else{
             try{
                 throw 'error'
-                
+
             }catch(e){
             throw new erreurPerso()}
         }
-        
+
     }
 
     async announcements({request, auth, view,response,params}) {
-         
+
             const user = await auth.getUser()
-       
+
             if(user.id == params.id){
-   
+
                 return view.render('user.announcement',{id : params.id})
             }else{
                 try{
                     throw 'error'
-                    
+
                 }catch(e){
                 throw new erreurPerso()}
 
             }
     }
-    
+
     async getAnnouncements({request, auth, response,params}) {
         if (request.ajax()) {
             const user = await auth.getUser()
-          
+
             if(user.id == params.id){
                 try{
                     const announcements =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
@@ -226,7 +226,7 @@ class UserController {
                     " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
                     " where a.user_id= ?"+
                     " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.id])
-                    
+
                 return response.json({
                     valeur : announcements[0]
                 })
@@ -237,7 +237,7 @@ class UserController {
         }else{
             try{
                 throw 'error'
-                
+
             }catch(e){
             throw new erreurPerso()}
 
@@ -247,15 +247,15 @@ class UserController {
 
 
     async logout({request, auth, response}) {
-   
+
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }
 
 
 
-    
-    
+
+
 
     async login({request, auth, response,session}) {
 
@@ -267,7 +267,7 @@ class UserController {
                 let user = await User.findBy('email', email)
                let token = await auth.generate(user)
                 response.cookie('Authorization', token,{ httpOnly: true, path: '/' })
-                
+
                 response.redirect('/')
             }
 

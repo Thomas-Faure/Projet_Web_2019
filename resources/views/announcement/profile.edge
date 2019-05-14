@@ -28,24 +28,24 @@ Accueil
                   <p id="annonce-page-annonce-date">{{announcement.created_at}}</p>
                 </div>
         </div>
-       
-        
+
+
 
 <div id="listingTable"></div>
 <p style="text-align:center">page: <span id="page"></span><p>
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
-          
+
           <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
-         
+
           <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Suivant</a></li>
-    
+
         </ul>
       </nav>
 
 
       {{ script('js/announcement/profile_getAnnounces') }}
-      
+
 
     @if(auth.user)
     {{ script('js/announcement/incdecM') }}
