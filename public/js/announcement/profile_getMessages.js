@@ -1,4 +1,4 @@
-
+var message_color = 0;
 var page_actuel = 1;
 var max_page = 1;
 var objJson;
@@ -23,22 +23,10 @@ xhr.open('GET', '/announcement/'+idAnnouncement+'/messages');
                         };
                         xhr.send();
 }
-//acceder à la page précedente                      
-function prevPage()
-{
-    if (page_actuel > 1) {
-        page_actuel--;
-        changePage(page_actuel);
-    }
-}
-function nextPage()
-{
-    if (page_actuel < numPages()) {
-        page_actuel++;
-        changePage(page_actuel);
-    }
-}
 
+function setMessageColor(color){
+    message_color=color;
+}
 function changePage(page)
 {
     var btn_next = document.getElementById("btn_next");
@@ -68,7 +56,7 @@ function changePage(page)
         listing_table.innerHTML += '<div class="row message-container" id="div-message-'+objJson[i].id_message+'" style="padding-bottom:20px;">'+
 '        <div class="col-2"></div>'+
 '        <div class="col-8">'+
-'            <div class="message-div" style="background:white">'+
+'            <div class="message-div" style="background:'+message_color+'">'+
 '                    <a class="message-username" href="/user/'+objJson[i].user_id+'"><p> <img class="message-username-img" src="/img/icon.png" />'+((objJson[i].admin == 1) ? '<span > 👑 </span>' : "")+objJson[i].username+((user_announcement_creator_id == objJson[i].user_id) ? '<span> ⭐ </span>' : "")+'</p></a>'+
 '                    <div class="message-msg"><p>'+objJson[i].name_message+'</p></div>'+                
 '                    <p class="message-note">'+
@@ -99,9 +87,4 @@ function changePage(page)
     } else {
         btn_next.disabled = false;
     }
-}
-
-function numPages()
-{
-    return Math.ceil(objJson.length / max_page);
 }
