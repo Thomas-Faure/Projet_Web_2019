@@ -2,13 +2,13 @@
 const Announcement = use('App/Models/Announcement')
 const Announcement_votes = use('App/Models/Announcement_votes')
 const Announcement_Category = use('App/Models/Category')
-const Message = use('App/Models/Message')
+
 const User = use('App/Models/User')
 const Database = use('Database')
 
 
 class AnnouncementController {
-    async destroy ({ params, request,auth, response }) {
+    async destroy ({ params,auth, response }) {
         const user = await auth.getUser()
         let resultat = "non supprimé"
         const announcement = await Announcement.find(params.id)
@@ -24,11 +24,11 @@ class AnnouncementController {
     
     }
 
-    async edit ({ params, request, response, view }) {
+    async edit ({}) {
     }
 
     //donne toutes les annonces en format json
-    async index({ params, request, response, view }){
+    async index({request, response}){
         if (request.ajax()) {
             
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
@@ -47,7 +47,7 @@ class AnnouncementController {
     }
     }
     //donne toutes les annonces (suivant un filtre) en format json
-    async index_category({params, request, response, view }){
+    async index_category({params, request, response}){
         if (request.ajax()) {
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
         " from announcement a"+
@@ -67,7 +67,7 @@ class AnnouncementController {
     }
 
 
-    async getUserAnnounces({ params, request, response, view }){
+    async getUserAnnounces({ params, request, response}){
         if (request.ajax()) {
             
         const messages =  await Database.raw("select distinct(a.id_announcement),users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
@@ -86,7 +86,7 @@ class AnnouncementController {
     }
     }
 
-    async getUserAnnounces_category({params, request, response, view }){
+    async getUserAnnounces_category({params, request, response}){
         if (request.ajax()) {
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
         " from announcement a"+
@@ -105,7 +105,7 @@ class AnnouncementController {
     }
     }
 
-    async show ({ params, request, response, view }) {
+    async show ({ params, response, view }) {
 
         
         const announcement = await Announcement.find(params.id)
@@ -207,7 +207,7 @@ class AnnouncementController {
             const user_createur_announcement = await User.find(announcement.user_id)
             let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
             let voteExist = vote.length
-           // vote =vote[0]['count(`id`)'] //0 si jamais voté avec ce compte
+          
             if(voteExist >0){
                
                 if(!(vote[0]['vote']==1)){
@@ -248,7 +248,7 @@ class AnnouncementController {
             const user_createur_announcement = await User.find(announcement.user_id)
             let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
             let voteExist = vote.length
-           // vote =vote[0]['count(`id`)'] //0 si jamais voté avec ce compte
+          
             if(voteExist >0){
                
                 if(!(vote[0]['vote']==-1)){
@@ -290,7 +290,7 @@ class AnnouncementController {
             vote = vote[0]['sum(`vote`)']
             if(vote == null){
                 vote = 0
-            }else if(vote <= -1){ //les utilisateurs n'aiment pas cette annnonce...on va donc la supprimer
+            }else if(vote <= -10){ //les utilisateurs n'aiment pas cette annnonce...on va donc la supprimer (10 votes négatifs !)
                 await announcement.delete()
                 suppression=true //on accepte la suppression
             }

@@ -55,7 +55,7 @@ class CategoryAnnouncementController {
 
     }
 
-    async edit ({ auth, view,params,response }) {
+    async edit ({view,params,response }) {
             let category = (await Category.find(params.id))
             if(category){
            
@@ -67,7 +67,7 @@ class CategoryAnnouncementController {
         
     }
 
-    async index ({ params, request, response, view }) {
+    async index ({request, response }) {
         if (request.ajax()) {
             
             const categorys =  await Category.all()
@@ -82,7 +82,7 @@ class CategoryAnnouncementController {
 
   
 
-    async store({request, auth, response, session}) {
+    async store({request, response, session}) {
         try{
         const name_category = request.input("name_category")
         const color = request.input("color")

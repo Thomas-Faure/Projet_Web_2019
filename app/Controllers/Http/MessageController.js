@@ -177,7 +177,7 @@ class MessageController {
             vote = vote[0]['sum(`vote`)']
             if(vote == null){
                 vote = 0
-            }else if(vote <= -1){ //les utilisateurs n'aiment pas cette annnonce...on va donc la supprimer
+            }else if(vote <= -10){ //les utilisateurs n'aiment pas cette annnonce...on va donc la supprimer
             await message.delete()
             suppression=true //on accepte la suppression
         }

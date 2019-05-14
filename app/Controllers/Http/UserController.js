@@ -1,12 +1,11 @@
 'use strict'
 const User = use('App/Models/User')
-const Announcement = use('App/Models/Announcement')
 const Database = use('Database')
 const erreurPerso = use('App/Exceptions/errorQCT')
 
 
 class UserController {
-    async destroy ({ params, request, response }) {
+    async destroy ({ params, response }) {
         let resultat = "non supprimé"
         const user = await User.find(params.id)
         if(user){
@@ -19,7 +18,7 @@ class UserController {
 
     }
 
-    async update ({ params,auth, request, response, view,session }) {
+    async update ({ params,auth, request, response,session }) {
         const user = (await auth.getUser())
         if(user.id == params.id || user.admin == 1){//si c'est le bon utilisateur ou soit si il est admin
 
@@ -70,7 +69,7 @@ class UserController {
         }
     }
 
-    async show ({ params, request, auth, response, view }) {
+    async show ({ params, response, view }) {
         const user = await User.find(params.id)
         if(user){
             //on récupères ses 5 dernieres annonces
@@ -89,7 +88,7 @@ class UserController {
 
     }
 
-    async index({ params, request, response, view }){
+    async index({request, response}){
         if (request.ajax()) {
 
         const users =  await User.all();
@@ -104,7 +103,7 @@ class UserController {
     }
 
 
-    async participation_category({params, request, response, view }){
+    async participation_category({params, request, response}){
         if (request.ajax()) {
         const messages =  await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note"+
         " from announcement a"+
@@ -122,9 +121,6 @@ class UserController {
         response.redirect('/')
     }
     }
-
-
-
 
     async store({request, auth, response, session}) {
         try{
@@ -148,8 +144,6 @@ class UserController {
         }else if(temp.getFullYear() < 1900){
             session.flash({MdpError : 'La date de naissance est trop ancienne... !'});
                 return response.redirect('/user/register')
-        }else{
-            console.log("c'est bon")
         }
         if(password != passwordValidation){
             console.log("erreur")
@@ -176,7 +170,7 @@ class UserController {
     }
 
 
-    async edit ({ auth, view,params,response }) {
+    async edit ({auth, view,params}) {
         const user_actual = await auth.getUser()
         if(user_actual.id == params.id || user_actual.admin == 1){
             let user = (await User.find(params.id))
@@ -196,7 +190,7 @@ class UserController {
 
     }
 
-    async announcements({request, auth, view,response,params}) {
+    async announcements({auth, view,response,params}) {
 
             const user = await auth.getUser()
 
@@ -243,19 +237,11 @@ class UserController {
 
         }
     }
-
-
-
-    async logout({request, auth, response}) {
+    async logout({response}) {
 
         response.cookie('Authorization', 1,{ httpOnly: true, path: '/' })
         response.redirect('/')
     }
-
-
-
-
-
 
     async login({request, auth, response,session}) {
 

@@ -4,10 +4,10 @@ const Database = use('Database')
 
 
 class NiveauController {
-    async destroy ({ params, request, response }) {
+    async destroy ({ }) {
     }
 
-    async edit ({ params, request, response, view }) {
+    async edit ({ params, response, view }) {
         let niveau = (await Niveau.find(params.id))
             if(niveau){
            
@@ -19,7 +19,7 @@ class NiveauController {
     }
 
 
-    async index ({ params, request, response, view }) {
+    async index ({request, response}) {
         if (request.ajax()) {
             
             const level =  await await Niveau.all();
@@ -33,7 +33,7 @@ class NiveauController {
         }
     }
 
-    async update ({ params, request, response, view , session}) {
+    async update ({ params, request, response, session}) {
         try{
             console.log("je suis dedans")
             const name = request.input('name')
@@ -53,7 +53,7 @@ class NiveauController {
 
     }
 
-    async store({request, auth, response}) {
+    async store({request, response}) {
         try{
             const name = request.input("name")
             const color = request.input("color")
