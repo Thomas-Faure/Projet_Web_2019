@@ -5,10 +5,10 @@ const Model = use('Model')
 
 class Niveau extends Model {
     static get table () {
-        return 'niveau'
+        return 'level'
     }
     static get primaryKey () {
-        return 'id_niveau'
+        return 'id_level'
     }
     
 }
