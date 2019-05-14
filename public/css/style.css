@@ -3,9 +3,19 @@ body{
     background: white;
 }
 
+/** USER */
 
-
-
+.user-profile-text{
+    color:white !important;
+}
+#user-profile-announcement-name{
+    font-size: 25px;
+    color:white;
+}
+#user-profile-announcement-username{
+    color:white;
+    font-size:15px;
+}
 
 /** Annonces et messages **/
 .aucune-annonce{

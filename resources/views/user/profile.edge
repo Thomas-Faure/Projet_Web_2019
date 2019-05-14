@@ -22,15 +22,15 @@ User
                                 @endif
                         </div>
                
-                        <p class="card-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
-                        <p class="card-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
-                        <p class="card-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
-                        <p class="card-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.level_id}} (<span>{{level.name}}</span>)</p>
-                        <p class="card-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
+                        <p class="card-text user-profile-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
+                        <p class="card-text user-profile-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
+                        <p class="card-text user-profile-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
+                        <p class="card-text user-profile-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.level_id}} (<span>{{level.name}}</span>)</p>
+                        <p class="card-text user-profile-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
                 
                 </div>
         </div>
-        <div class ="card-style">5 derniers posts:</div>
+        <div class ="card-style">5 derniers postes:</div>
         <div class="card" style="">
       @each(announcement in announcements)
       <a href="/announcement/{{announcement.id}}" style="text-decoration: none">
@@ -39,9 +39,9 @@ User
             <img src="{{ assetsUrl('img/'+announcement.image) }}" style="width: 100%;height:auto;"/>
         </div>
         <div>
-          <p><span style="color:black;font-size:15px">{{announcement.username}} (<span style="color:green">+0</span>)</span></p>
-          <p style="font-size: 25px;color:black">{{announcement.name_announcement}}</p>
-          <p style="font-size: 12px;color:gray">09/05/2019</p>
+          <p><span id="user-profile-announcement-username">{{announcement.username}} (<span style="color:black">+0</span>)</span></p>
+          <p id="user-profile-announcement-name">{{announcement.name_announcement}}</p>
+          <p style="font-size: 12px;color:black">09/05/2019</p>
         </div>
     </div>
   </a>
