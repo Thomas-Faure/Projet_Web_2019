@@ -44,11 +44,14 @@ Accueil
       </nav>
 
 
-      {{ script('js/announcement/profile_getAnnounces') }}
+      {{ script('js/announcement/profile_getMessages') }}
+      {{ script('js/pagination') }}
 
 
     @if(auth.user)
     {{ script('js/announcement/incdecM') }}
     @endif
-    <script>getMessages('{{id}}','{{ csrfToken }}')</script>
+    <script>
+    setMessageColor('{{announcement.color}}')
+    getMessages('{{id}}','{{ csrfToken }}')</script>
        @endsection
