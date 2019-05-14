@@ -38,7 +38,7 @@ function decrementValueA(id,token)
                 };
                 function incrementValueA(id,token)
                     {
-                        console.log(id)
+                   
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', '/announcement/increment');
                         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

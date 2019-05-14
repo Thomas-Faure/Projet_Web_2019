@@ -17,7 +17,7 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
                                 if(objJson.length >0){
-                                console.log(value.valeur);
+                         
                                 changePage(1);
                                 }else{
                                     document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
@@ -30,21 +30,8 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                         xhr.send();
 
                     }
-//acceder à la page précedente                      
-function prevPage()
-{
-    if (page_actuel > 1) {
-        page_actuel--;
-        changePage(page_actuel);
-    }
-}
-function nextPage()
-{
-    if (page_actuel < numPages()) {
-        page_actuel++;
-        changePage(page_actuel);
-    }
-}
+                  
+
 function changePage(page)
 {
     var btn_next = document.getElementById("btn_next");
@@ -78,7 +65,7 @@ function changePage(page)
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+
 '        </div>'+
 '        <div class="announce-index-content">'+
-'          <p>Note actuel : <span style="color:green">'+objJson[i].note+'</span></p>'+
+'          <p>Note actuel : <span style="color:black">'+objJson[i].note+'</span></p>'+
 '          <p class="announce-index-name" >'+objJson[i].name_announcement+'</p>'+
 '          <p class="announce-index-date" >'+date_converted+'</p>'+
 '        </div>'+
@@ -101,10 +88,7 @@ function changePage(page)
     }
 }
 
-function numPages()
-{
-    return Math.ceil(objJson.length / max_page);
-}
+
 
 
 

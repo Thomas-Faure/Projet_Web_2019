@@ -1,10 +1,12 @@
 var message_color = 0;
 var page_actuel = 1;
-var max_page = 1;
+var max_page = 5;
 var objJson;
 var idAnnouncement = 0;
+var user_announcement_creator_id= 0;
 var token =  0;
-function getMessages(id,token_temp){
+function getMessages(id,token_temp,idUser){
+user_announcement_creator_id = idUser
 token = token_temp
 idAnnouncement = id;
 var xhr = new XMLHttpRequest();
@@ -34,7 +36,7 @@ function changePage(page)
     var listing_table = document.getElementById("listingTable");
     var page_span = document.getElementById("page");
 
-    var user_announcement_creator_id= idAnnouncement;
+    
     if (page < 1) page = 1;
     if (page > numPages()) page = numPages();
 
@@ -56,7 +58,7 @@ function changePage(page)
         listing_table.innerHTML += '<div class="row message-container" id="div-message-'+objJson[i].id_message+'" style="padding-bottom:20px;">'+
 '        <div class="col-2"></div>'+
 '        <div class="col-8">'+
-'            <div class="message-div" style="background:'+message_color+'">'+
+'            <div class="message-div" style="background:'+objJson[i].color+'">'+
 '                    <a class="message-username" href="/user/'+objJson[i].user_id+'"><p> <img class="message-username-img" src="/img/icon.png" />'+((objJson[i].admin == 1) ? '<span > 👑 </span>' : "")+objJson[i].username+((user_announcement_creator_id == objJson[i].user_id) ? '<span> ⭐ </span>' : "")+'</p></a>'+
 '                    <div class="message-msg"><p>'+objJson[i].name_message+'</p></div>'+                
 '                    <p class="message-note">'+

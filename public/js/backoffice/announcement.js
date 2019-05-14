@@ -49,7 +49,6 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                             if (xhr.status === 200) {
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
-                                console.log(objJson)
                                 setData(objJson);
                             }
                             else {

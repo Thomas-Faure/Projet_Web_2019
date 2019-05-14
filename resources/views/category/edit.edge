@@ -1,7 +1,7 @@
 @layout('layouts.main')
 
 @section('title')
-Accueil
+Catégorie
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@ Accueil
     </div>
  
         @endif
-<div class ="card-style">Page modification annonce</div>
+<div class ="card-style">Page modification catégorie</div>
 <div class="card">
         <div class="card-body">
                 <form action="/category/{{ category.id_category_announcement }}/edit/?_method=PUT" method="POST" action="upload" enctype="multipart/form-data">

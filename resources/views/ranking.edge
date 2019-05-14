@@ -9,7 +9,7 @@ Ranking
         <div class="card-body">
             @set('i', 1)
           @each(place in rank)
-          <p class="card-text">{{i}}- <a href="/user/{{place.id}}">{{place.username}}</a> (<span class="rank-attribut">Niveau :</span> <span class="rank-color">{{place.niveau_id}}</span>, <span class="rank-attribut">Exp :</span> <span class="rank-color">{{place.exp}}</span>)</p>
+          <p class="card-text">{{i}}- <a href="/user/{{place.id}}">{{place.username}}</a> (<span class="rank-attribut">Niveau :</span> <span class="rank-color">{{place.level_id}}</span>, <span class="rank-attribut">Exp :</span> <span class="rank-color">{{place.exp}}</span>)<i class="fas fa-arrow-right"></i>  <span style="color:{{place.color}}">{{place.name}}</span></p>
           @set('i', i+1)
           @endeach
           

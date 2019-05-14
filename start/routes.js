@@ -17,20 +17,13 @@ const User = use('App/Models/User')
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
+
+/**  LES ROUTES VERS INDEX  */
 Route.on('/').render('index')
 Route.get('ranking','IndexController.ranking').middleware(['auth'])
 
-/**                    ERROR                                               */
 
 /**                 PARTIE UTILISATEUR                                     */
-
-
-//pour déconnecter un utilisateur
-
-
-//chemin pour la connexion utilisateur
-
-
 Route
   .group(() => {
     Route.get('','UserController.index').middleware(['auth'])
@@ -54,7 +47,6 @@ Route
       }
     })
 
-   // Route.get(':id/participation/:cat','AnnouncementController.index_category')
     Route.delete(':id/delete','UserController.destroy').middleware(['admin'])
 
     Route.on('register').render('user.register').middleware(['guest'])
@@ -65,10 +57,6 @@ Route
     
   })
   .prefix('user')
-
-
-
-/**                 PARTIE BADGE                                     */
 
 
 
@@ -90,7 +78,6 @@ Route
 /**                 PARTIE announcement                                 */
 Route
   .group(() => {
-    //Route.on('/category/all').render('announcement.index').middleware(['auth'])
     Route.get('','AnnouncementController.index')
 
     Route.get('category/:id',async ({ view,params,response }) => {
@@ -132,7 +119,8 @@ Route
     Route.get(':id/vote','MessageController.vote').middleware(['auth'])
   })
   .prefix('message')
-/**                 PARTIE CATEGORY_QUESTION                                     */
+
+/**                 PARTIE CATEGORY_ANNOUNCEMENT                                     */
 
 Route
   .group(() => {
@@ -148,17 +136,19 @@ Route
 
 /**                 PARTIE BACKOFFICE                                     */
 
-//page accueil admin
-Route.get('backoffice','BackOfficeController.index').middleware(['admin'])
-Route.on('backoffice/users').render('backoffice.users').middleware(['admin'])
-Route.get('backoffice/announcement/:id/messages','BackofficeController.messages').middleware(['admin'])
-Route.on('backoffice/announcement').render('backoffice.announcement').middleware(['admin'])
-Route.on('backoffice/category').render('backoffice.category').middleware(['admin'])
-Route.on('backoffice/level').render('backoffice.level').middleware(['admin'])
+Route
+  .group(() => {
+    Route.get('','BackOfficeController.index').middleware(['admin'])
+    Route.on('users').render('backoffice.users').middleware(['admin'])
+    Route.get('announcement/:id/messages','BackofficeController.messages').middleware(['admin'])
+    Route.on('announcement').render('backoffice.announcement').middleware(['admin'])
+    Route.on('category').render('backoffice.category').middleware(['admin'])
+    Route.on('level').render('backoffice.level').middleware(['admin'])
 
+  })
+  .prefix('backoffice')
 
-
-
+/**                PARTIE ERREUR */
 Route
   .group(() => {
     Route.on('401').render('error.401');

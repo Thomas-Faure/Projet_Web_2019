@@ -1,7 +1,7 @@
 @layout('layouts.main')
 
 @section('title')
-Accueil
+Level
 @endsection
 
 @section('content')
@@ -14,15 +14,15 @@ Accueil
     </div>
  
         @endif
-<div class ="card-style">Page d'ajout annonce</div>
+<div class ="card-style">Page de modification</div>
 <div class="card">
         <div class="card-body">
-                <form action="/level/{{ niveau.id_niveau }}/edit/?_method=PUT" method="POST" action="upload" enctype="multipart/form-data">
+                <form action="/level/{{ niveau.id_level }}/edit/?_method=PUT" method="POST" action="upload" enctype="multipart/form-data">
                         {{ csrfField() }}
                         <div class="form-group">
                             <label for="level">Niveau concerné</label>
             
-                            <input type="text" id="level" class="form-control" value="{{niveau.id_niveau}}" disabled>
+                            <input type="text" id="level" class="form-control" value="{{niveau.id_level}}" disabled>
                             
                     </div>
                         <div class="form-group">

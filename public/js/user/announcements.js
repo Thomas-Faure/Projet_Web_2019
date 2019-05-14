@@ -66,7 +66,7 @@ function changePage(page)
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+
 '        </div>'+
 '        <div class="announce-index-content">'+
-'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:green">'+objJson[i].note+'</span>)</span></p>'+
+'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:black">'+objJson[i].note+'</span>)</span></p>'+
 '          <p class="announce-index-name" >'+objJson[i].name_announcement+'</p>'+
 '          <p class="announce-index-date" >'+date_converted+'</p>'+
 '        </div>'+
@@ -119,7 +119,7 @@ if(result){
                                         var elem = document.getElementById(+id+"_row");
                                         elem.parentNode.removeChild(elem);
                                         objJson = arrayRemove(objJson,objJson[elid])
-                                        console.log(objJson)
+                                     
                                         
                                         changePage(page_actuel);
                                     }

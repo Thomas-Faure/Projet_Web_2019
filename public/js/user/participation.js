@@ -1,5 +1,5 @@
 var page_actuel = 1;
-var max_page = 2;
+var max_page = 5;
 var objJson;
 var id_user = 0
 var id_cat = 0
@@ -20,7 +20,7 @@ xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                                let value = JSON.parse(xhr.responseText);
                                 objJson = value.valeur;
                                 if(objJson.length>0){
-                                    console.log(value.valeur);
+                   
                                     changePage(1);
                                 }else{
                                     document.getElementById("listingTable").innerHTML='<p class="aucune-annonce">aucune annonce</p>'
@@ -69,7 +69,7 @@ function changePage(page)
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+
 '        </div>'+
 '        <div class="announce-index-content">'+
-'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:green">'+objJson[i].note+'</span>)</span></p>'+
+'        <p><span class="announce-index-username" >'+objJson[i].username+'(<span style="color:black">'+objJson[i].note+'</span>)</span></p>'+
 '          <p class="announce-index-name" >'+objJson[i].name_announcement+'</p>'+
 '          <p class="announce-index-date" >'+date_converted+'</p>'+
 '        </div>'+
