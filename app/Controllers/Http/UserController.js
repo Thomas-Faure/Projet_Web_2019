@@ -28,8 +28,6 @@ class UserController {
 
             try{
                 var format = /[ !@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]/;
-
-
                 const admin = request.input('admin')
                 const name = request.input('name')
                 const username = request.input('username')

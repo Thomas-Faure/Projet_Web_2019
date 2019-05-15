@@ -5,10 +5,10 @@ Annonces
 @section('content')
 @if(auth.user)
 <div style="display: flex;justify-content:center">
-<a href="/message/store/announcement/{{announcement.id_announcement}}" id="button-add-message"class="btn btn-primary" role="button"> Ajouter un message +</a>
+<a  id="button-add-message"class="btn btn-primary" onclick="window.scrollTo(0,document.body.scrollHeight);" role="button"> Ajouter un message +</a>
 </div>
 @endif
-<h1>Annonce:</h1>
+<h1 style="text-align:center">Annonce:</h1>
 @if(auth.user)
 {{ script('js/announcement/incdecA') }}
 @endif
@@ -30,8 +30,9 @@ Annonces
         </div>
 
 
- <h1>Réponses:</h1>
+
 <div id="listingTable"></div>
+
 <p style="text-align:center">page: <span id="page"></span><p>
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
@@ -41,7 +42,39 @@ Annonces
           <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Suivant</a></li>
 
         </ul>
-      </nav>
+</nav>
+
+<div class="card">
+        <div class="card-body">
+                <form action="/message/store/announcement/{{id}}" method="POST">
+                        {{ csrfField() }}
+                        
+                        <div class="form-group">
+                                <label for="name_message">Message:</label>
+                
+                                <textarea type="text" id="name_message" name="name_message" class="form-control">{{old('name_message', '') }}</textarea>
+                                @if(hasErrorFor('name_message'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name_message') }}
+                                        </span>
+                                </div>
+                                @endif
+                        </div>
+                       
+                    </div>
+                       
+                       
+                        
+                    
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                      
+                      </form>
+        
+        </div>
+        
+</div>
+
 
 
       {{ script('js/announcement/profile_getMessages') }}
