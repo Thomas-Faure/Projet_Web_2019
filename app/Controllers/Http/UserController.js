@@ -27,6 +27,9 @@ class UserController {
         if(user.id == params.id || user.admin == 1){//si c'est le bon utilisateur ou soit si il est admin
 
             try{
+                var format = /[ !@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]/;
+
+
                 const admin = request.input('admin')
                 const name = request.input('name')
                 const username = request.input('username')
@@ -34,6 +37,13 @@ class UserController {
                 const password = request.input('password')
                 const birthday = request.input('birthday')
                 const passwordValidation = request.input('passwordValidation')
+                if(format.test(name)){
+                    session.flash({EditError : 'Votre nom contient des caractères non accepté'});
+                    return response.redirect('/user/'+params.id+'/edit/')
+                }else if(format.test(username)){
+                    session.flash({EditError : 'Votre pseudo contient des caractères non accepté'});
+                    return response.redirect('/user/'+params.id+'/edit/')
+                }
                 let userEdit = await User.find(params.id)
 
                     if(password != null){
@@ -135,12 +145,21 @@ class UserController {
     //redirige vers la page principale dès que cela est fait, sinon retourne vers le formulairec d'inscription avec un message d'erreur
     async store({request, auth, response, session}) {
         try{
+        var format = /[ !@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]/;
         const username = request.input("username")
         const email = request.input("email")
         const password = request.input("password")
         const passwordValidation = request.input("passwordValidation")
         const birthday = request.input("birthday")
         const name = request.input("name")
+
+        if(format.test(name)){
+            session.flash({RegisterError : 'Votre nom contient des caractères non accepté'});
+            return response.redirect('/user/register')
+        }else if(format.test(username)){
+            session.flash({RegisterError : 'Votre pseudo contient des caractères non accepté'});
+            return response.redirect('/user/register')
+        }
 
         //pour verifier que la date n'est pas trop ancienne ni trop recente
         var q = new Date()
@@ -150,10 +169,10 @@ class UserController {
         var date = new Date(y,m,d)
         let temp = new Date(birthday)
         if((temp.getMonth()+1)>=date.getMonth() && temp.getFullYear() >=date.getFullYear()){
-            session.flash({MdpError : 'La date de naissance est trop grosse!'});
+            session.flash({RegisterError : 'La date de naissance est trop grosse!'});
                 return response.redirect('/user/register')
         }else if(temp.getFullYear() < 1900){
-            session.flash({MdpError : 'La date de naissance est trop ancienne... !'});
+            session.flash({RegisterError : 'La date de naissance est trop ancienne... !'});
                 return response.redirect('/user/register')
         }
         if(password != passwordValidation){
@@ -173,7 +192,7 @@ class UserController {
 
         }catch(error){
             console.log(error)
-            session.flash({MdpError : 'Le mot de passe de confirmation ne correpond pas !'});
+            session.flash({RegisterError : 'Le mot de passe de confirmation ne correspond pas !'});
                 return response.redirect('/user/register')
 
         }
