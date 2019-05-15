@@ -60,7 +60,7 @@ function changePage(page)
 
         let date_converted =  day+'/'+month+"/"+year+" "+hour+":"+minute
         
-        listing_table.innerHTML +=  '<div id="'+objJson[i].id_announcement+'_row"><div class ="card-style">Action:  <a class="btn btn-danger" onclick="delete_id('+objJson[i].id_announcement+','+i+')"role="button"><i class="fas fa-trash-alt"></i></a></div><a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none">'+
+        listing_table.innerHTML +=  '<div id="'+objJson[i].id_announcement+'_row"><div class ="card-style">Action:  <a class="btn btn-danger" onclick="delete_id('+objJson[i].id_announcement+','+i+')"role="button"><i class="fas fa-trash-alt"></i></a>  <a href="/announcement/'+objJson[i].id_announcement+'/edit"class="btn btn-info" role="button"><i class="fas fa-cog"></i></a></div><a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none">'+
 '      <div class="annonce-container" style="background: '+objJson[i].color+'">'+
 '        <div class="blank">'+
 '            <img src="/img/'+objJson[i].image+'" style="width: 100%;height:auto;"/>'+

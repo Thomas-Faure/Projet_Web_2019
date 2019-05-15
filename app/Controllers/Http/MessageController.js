@@ -88,6 +88,46 @@ class MessageController {
         }
     } 
 
+    //permet de mettre à jour une annonce
+    async edit ({auth, view,params}) {
+        const message = await Message.find(params.id)
+        if(message){
+            const user = await auth.getUser()
+            
+            if(user.id == message.user_id || user.admin == 1){
+            
+                return view.render('message.edit',{message : message,id:params.id})
+            }
+        }else{
+            try{
+                throw 'error'
+            }catch(e){
+            throw new erreurPerso()}
+        }
+
+    }
+    async update({params,session,response,request}){
+        try{
+            const name_message = request.input('name_message')
+            let message = await Message.find(params.id)
+            if(message){
+               
+                message.name_message=name_message;
+         
+                message.save();
+                session.flash({ editMessageSuccess: 'Modifié avec success'});
+                return response.redirect('/message/'+params.id+'/edit')
+            }
+            return response.redirect('/')
+        }catch(error){
+          
+            session.flash({editMessageError : 'Impossible de modifier le message'});
+            return response.redirect('/message/'+params.id+'/edit')
+            
+        }
+
+    }
+
     //fonction Ajax 
     //cette fonction est en fait la note que va attribuer l'utilisateur au message
     //increment signifie donc une note +1 pour un message

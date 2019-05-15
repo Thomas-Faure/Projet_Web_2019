@@ -1,0 +1,55 @@
+@layout('layouts.main')
+
+@section('title')
+Catégorie
+@endsection
+
+@section('content')
+
+@if(flashMessage('editMessageError'))
+            <div class='form-error-general'>
+                <span>
+                        <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('editMessageError') }}
+                </span>
+            </div>
+@endif
+@if(flashMessage('editMessageSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('editMessageSuccess') }}
+                </span>
+            </div>
+@endif
+<div class ="card-style">Page modification d'un message</div>
+<div class="card">
+        <div class="card-body">
+            <form action="/message/{{id}}/edit?_method=PUT" method="POST">
+                {{ csrfField() }}
+                
+                <div class="form-group">
+                        <label for="name_message">Message</label>
+        
+                        <textarea type="text" id="name_message" name="name_message" class="form-control">{{old('name_message', message.name_message) }}</textarea>
+                        @if(hasErrorFor('name_message'))
+                        <div class='form-error-specific'>
+                                <span>
+                                        <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name_message') }}
+                                </span>
+                        </div>
+                        @endif
+                </div>
+               
+            </div>
+               
+               
+                
+            
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+              
+              </form>
+        
+        </div>
+        
+</div>
+
+@endsection

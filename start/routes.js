@@ -99,6 +99,9 @@ Route
     Route.get(':id/vote','AnnouncementController.vote').middleware(['auth'])
     Route.get(':id/messages','AnnouncementController.getMessages')
 
+    Route.get(':id/edit','AnnouncementController.edit').middleware(['auth'])
+    Route.put(':id/edit','AnnouncementController.update').validator('EditAnnouncement');
+
     Route.delete(':id/delete','AnnouncementController.destroy').middleware(['auth'])
     Route.get(':id','AnnouncementController.show')
     
@@ -116,6 +119,11 @@ Route
     Route.post('store/announcement/:id','MessageController.store').validator('AddMessage')
     Route.post('increment','MessageController.increment').middleware(['auth'])
     Route.post('decrement','MessageController.decrement').middleware(['auth'])
+
+
+    Route.get(':id/edit','MessageController.edit').middleware(['auth'])
+    Route.put(':id/edit','MessageController.update').validator('EditMessage');
+    
     Route.get(':id/vote','MessageController.vote').middleware(['auth'])
   })
   .prefix('message')

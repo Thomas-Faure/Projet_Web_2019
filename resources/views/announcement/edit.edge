@@ -1,0 +1,87 @@
+@layout('layouts.main')
+
+@section('title')
+Catégorie
+@endsection
+
+@section('content')
+
+@if(flashMessage('editAnnouncementError'))
+            <div class='form-error-general'>
+                <span>
+                        <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('editAnnouncementError') }}
+                </span>
+            </div>
+@endif
+@if(flashMessage('editAnnouncementSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('editAnnouncementSuccess') }}
+                </span>
+            </div>
+@endif
+<div class ="card-style">Page modification d'une annonce</div>
+<div class="card">
+        <div class="card-body">
+            <form action="/announcement/{{id}}/edit?_method=PUT" method="POST">
+                {{ csrfField() }}
+                <div class="form-group">
+                    <label for="category_id">Catégorie de l'annonce</label>
+                  
+                    <select id="category_id" name="category_id" class="form-control">
+                        @each(category in categorys)
+                        @if(category.id_category_announcement == announcement.category_id)
+                        <option value="{{old('category_id', category.id_category_announcement) }}" selected>{{category.name_category}}</option>
+
+                        @else
+                        <option value="{{old('category_id', category.id_category_announcement) }}">{{category.name_category}}</option>
+                        @endif
+                        @endeach
+                    </select>  
+                    @if(hasErrorFor('category_id'))
+                        <div class='form-error-specific'>
+                                <span>
+                                        <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('category_id') }}
+                                </span>
+                        </div>
+                    @endif
+            </div>
+                <div class="form-group">
+                        <label for="name_announcement">Nom annonce</label>
+        
+                        <input type="text" id="name_announcement" name="name_announcement" class="form-control" value="{{old('name_announcement', announcement.name_announcement) }}"\>
+                        @if(hasErrorFor('name_announcement'))
+                        <div class='form-error-specific'>
+                                <span>
+                                        <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('name_announcement') }}
+                                </span>
+                        </div>
+                        @endif
+                </div>
+                <div class="form-group">
+                    <label for="description">Description annonce</label>
+    
+                <textarea class="form-control" name="description" id="description" rows="3">{{old('description', announcement.description) }}</textarea>
+                    @if(hasErrorFor('description'))
+                    <div class='form-error-specific'>
+                            <span>
+                                    <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('description') }}
+                            </span>
+                    </div>
+                    @endif
+            </div>
+               
+               
+                
+            
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+              
+              </form>
+              
+        
+        </div>
+        <a class="btn btn-secondary" href="/announcement/{{id}}" role="button">Voir l'annonce</a>
+        
+</div>
+
+@endsection

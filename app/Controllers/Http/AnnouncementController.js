@@ -132,6 +132,49 @@ class AnnouncementController {
         }
     }
 
+    //permet de mettre à jour une annonce
+    async edit ({auth, view,params}) {
+        const announcement = await Announcement.find(params.id)
+        if(announcement){
+            const user = await auth.getUser()
+            
+            if(user.id == announcement.user_id || user.admin == 1){
+                const category = await Announcement_Category.all()
+
+                return view.render('announcement.edit',{announcement : announcement,categorys:category.toJSON(),id:params.id})
+            }
+        }else{
+            try{
+                throw 'error'
+            }catch(e){
+            throw new erreurPerso()}
+        }
+
+    }
+    async update({auth,view,params,session,response,request}){
+        try{
+            const category_id = request.input('category_id')
+            const name_announcement = request.input('name_announcement')
+            const description = request.input('description')
+            let announcement = await Announcement.find(params.id)
+            if(announcement){
+                announcement.category_id=category_id;
+                announcement.name_announcement=name_announcement;
+                announcement.description=description;
+                announcement.save();
+                session.flash({ editAnnouncementSuccess: 'Modifié avec success'});
+                return response.redirect('/announcement/'+params.id+'/edit')
+            }
+            return response.redirect('/')
+        }catch(error){
+          
+            session.flash({editAnnouncementError : 'Impossible de modifier l\'annonce'});
+            return response.redirect('/announcement/'+params.id+'/edit')
+            
+        }
+
+    }
+
     //fonction qui permet de créer une annonce
     async store({request, auth, response, session}) {
         try{

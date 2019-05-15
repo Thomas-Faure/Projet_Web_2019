@@ -37,7 +37,7 @@ document.getElementById('data-backoffice').innerHTML=""
 
 
 for(var i =0; i< data.length;++i){
-    document.getElementById('data-backoffice').innerHTML+='<tr id="'+data[i].id_announcement+'_row"><td>'+data[i].id_announcement+'</td><td>'+data[i].name_announcement+'</td><td><a class="btn btn-danger button-bo" onClick="delete_id('+data[i].id_announcement+')" role="button"><i class="fas fa-trash-alt"></i></a> <a class="btn btn-info button-bo" href="/backoffice/announcement/'+data[i].id_announcement+'/messages" role="button">Messages</a></td></tr>';
+    document.getElementById('data-backoffice').innerHTML+='<tr id="'+data[i].id_announcement+'_row"><td>'+data[i].id_announcement+'</td><td>'+data[i].name_announcement+'</td><td><a class="btn btn-danger button-bo" onClick="delete_id('+data[i].id_announcement+')" role="button"><i class="fas fa-trash-alt"></i></a> <a class="btn btn-info button-bo" href="/announcement/'+data[i].id_announcement+'/edit" role="button"><i class="fas fa-cog"></i></a> <a class="btn btn-info button-bo" href="/backoffice/announcement/'+data[i].id_announcement+'/messages" role="button">Messages</a></td></tr>';
 }
 var myTable = document.querySelector("table");
 var dataTable = new DataTable(myTable);
