@@ -4,6 +4,14 @@ Annonces
 @endsection
 @section('content')
 @if(auth.user)
+@if(flashMessage('MessageAddError'))
+<div class='form-error-general'>
+        <span>
+                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('MessageAddError') }}
+        </span>
+    </div>
+ 
+        @endif
 <div style="display: flex;justify-content:center">
 <a  id="button-add-message"class="btn btn-primary" onclick="window.scrollTo(0,document.body.scrollHeight);" role="button"> Ajouter un message +</a>
 </div>

@@ -10,13 +10,16 @@ const erreurPerso = use('App/Exceptions/errorQCT')
 
 class MessageController {
     //permet de supprimer un message , l'id du message est en paramètre d'uri (params.id)
-    async destroy ({ params, request, response }) {
+    async destroy ({ params, response,auth }) {
         let resultat = "non supprimé"
+        const user = await auth.getUser();
         const message = await Message.find(params.id)
      
         if(message){
-            resultat="supprimé"
-            await message.delete()
+            if(message.user_id==user.id || user.admin == 1){
+                resultat="supprimé"
+                await message.delete()
+            }
         }
         return response.json({
             valeur : resultat
@@ -24,8 +27,7 @@ class MessageController {
     
     }
 
-    async edit ({ params, request, response, view }) {
-    }
+   
 
     async show ({ params, request, response, view }) {
     }
@@ -67,7 +69,7 @@ class MessageController {
             }
         }catch(error){
             session.flash({MessageAddError : 'Veuillez attendre 30 secondes entre chaque message'});
-            return response.redirect('/message/store/announcement/'+params.id)
+            return response.redirect('/announcement/'+params.id)
         }
 
     }
@@ -106,17 +108,21 @@ class MessageController {
         }
 
     }
-    async update({params,session,response,request}){
+    async update({params,session,response,request,auth}){
         try{
+            const user = await auth.getUser();
             const name_message = request.input('name_message')
             let message = await Message.find(params.id)
             if(message){
-               
-                message.name_message=name_message;
-         
-                message.save();
-                session.flash({ editMessageSuccess: 'Modifié avec success'});
-                return response.redirect('/message/'+params.id+'/edit')
+                if(message.user_id == user.id || user.admin == 1){
+                    message.name_message=name_message;
+            
+                    message.save();
+                    session.flash({ editMessageSuccess: 'Modifié avec success'});
+                    return response.redirect('/message/'+params.id+'/edit')
+                }else{
+                    throw 'error'
+                }
             }
             return response.redirect('/')
         }catch(error){

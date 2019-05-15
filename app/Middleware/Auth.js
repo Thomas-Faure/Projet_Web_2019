@@ -10,10 +10,10 @@ class Auth {
    * @param {Function} next
    */
   async handle ({ request }, next) {
-    const cartTotal = request.cookie('Authorization')
-    if(cartTotal != null) {
-      const token = cartTotal['token']
-      request.request.headers.authorization = `Bearer ${token}`
+    const token = request.cookie('Authorization')
+    if(token != null) {
+      const send_token = token['token']
+      request.request.headers.authorization = `Bearer ${send_token}`
     }
 
     await next()

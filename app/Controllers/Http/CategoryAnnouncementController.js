@@ -87,8 +87,13 @@ class CategoryAnnouncementController {
 
   
     //fonction qui permet de créer une nouvelle catégorie
-    async store({request, response, session}) {
+    async store({request, response, session,auth}) {
         try{
+        const user = await auth.getUser()
+        if(user.admin != 1)
+        {
+            throw 'error'
+        }
         const name_category = request.input("name_category")
         const color = request.input("color")
         let category = new Category()

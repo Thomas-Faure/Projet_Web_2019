@@ -1,8 +1,24 @@
 /** HTML basique **/
+html{
+    height: 100%;
+}
 body{
-    background: white;
+    background : #C1C1C1;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+ 
 }
 
+footer{
+   
+    width:100%;
+    background:#333333;
+    position: absolute;
+     bottom: 0;
+    
+    }
 /** USER */
 
 .user-profile-text{
@@ -15,6 +31,13 @@ body{
 #user-profile-announcement-username{
     color:white;
     font-size:15px;
+}
+.rank-users-title{
+    font-size: 20px;
+    text-align:center;
+}
+.rank-users{
+    text-align:center;
 }
 
 /** Annonces et messages **/
@@ -222,6 +245,7 @@ body{
 
 #main-container{
     padding-top:20px;
+    padding-bottom:40px;
 }
 
 .annonce-container {

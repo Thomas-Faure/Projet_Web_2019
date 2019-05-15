@@ -8,10 +8,11 @@ class NiveauController {
     }
 
     //permet de génerer la page pour modifier un niveau déja existant
-    async edit ({ params, response, view }) {
+    async edit ({ params, response, view,auth }) {
+     
         let niveau = (await Niveau.find(params.id))
             if(niveau){
-           
+            
                 return view.render('level.edit',{niveau : niveau,'id':params.id})
             }else{
                 response.redirect('back')

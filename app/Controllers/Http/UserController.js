@@ -186,7 +186,8 @@ class UserController {
         user.name = name
         await user.save()
         //let accessToken = await auth.attempt(email, password)
-        response.redirect('/')
+        session.flash({ RegisterSuccess: 'Vous êtes maintenant inscrit ! Veuillez vous connecter'});
+        return response.redirect('/')
 
         }catch(error){
             console.log(error)
@@ -270,8 +271,8 @@ class UserController {
     }
     //permet à un utilisateur connecté de se déconnecter
     async logout({response}) {
-
-        response.cookie('Authorization', 1,{ httpOnly: true, path: '/' }) // on enlève le token du cookie
+        response.clearCookie('Authorization')
+      //  response.cookie('Authorization', 1,{ httpOnly: true, path: '/' }) // on enlève le token du cookie
         response.redirect('/')
     }
 

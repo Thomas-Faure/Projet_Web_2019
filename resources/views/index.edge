@@ -3,6 +3,13 @@
 Accueil
 @endsection
 @section('content')
+@if(flashMessage('RegisterSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('RegisterSuccess') }}
+                </span>
+            </div>
+@endif
 <div class ="card-style">Infos</div>
 <div class="card">
       

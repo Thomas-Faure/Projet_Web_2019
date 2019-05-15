@@ -27,9 +27,7 @@ class AnnouncementController {
     
     }
 
-    //permet d'éditer une annonce 
-    async edit ({}) {
-    }
+
 
     //donne toutes les annonces de la base de donnée sous le format JSON
     async index({request, response}){
@@ -153,17 +151,22 @@ class AnnouncementController {
     }
     async update({auth,view,params,session,response,request}){
         try{
+            const user = await auth.getUser()
             const category_id = request.input('category_id')
             const name_announcement = request.input('name_announcement')
             const description = request.input('description')
             let announcement = await Announcement.find(params.id)
             if(announcement){
-                announcement.category_id=category_id;
-                announcement.name_announcement=name_announcement;
-                announcement.description=description;
-                announcement.save();
-                session.flash({ editAnnouncementSuccess: 'Modifié avec success'});
-                return response.redirect('/announcement/'+params.id+'/edit')
+                if(announcement.user_id==user.id || user.admin ==1){
+                    announcement.category_id=category_id;
+                    announcement.name_announcement=name_announcement;
+                    announcement.description=description;
+                    announcement.save();
+                    session.flash({ editAnnouncementSuccess: 'Modifié avec success'});
+                    return response.redirect('/announcement/'+params.id+'/edit')
+                }else{
+                    throw 'error'
+                }
             }
             return response.redirect('/')
         }catch(error){
@@ -258,30 +261,32 @@ class AnnouncementController {
         const announcement = await Announcement.find(announcement_id)
         if(announcement){
             const user_createur_announcement = await User.find(announcement.user_id)
-            let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
-            let voteExist = vote.length
-          
-            if(voteExist >0){
-               
-                if(!(vote[0]['vote']==1)){
+            if(announcement.user_id != user.id){
+                let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
+                let voteExist = vote.length
+            
+                if(voteExist >0){
                 
-                const affectedRows = await Database
-                .table('announcement_votes')
-                .where({ user_id: user.id,announcement_id: announcement_id })
-                .update('vote', 1)
-                //on enleve le poste negatif donc +1 et +1 pour le vote
-                User.incrementUserLevel(user_createur_announcement,2)
+                    if(!(vote[0]['vote']==1)){
+                    
+                    const affectedRows = await Database
+                    .table('announcement_votes')
+                    .where({ user_id: user.id,announcement_id: announcement_id })
+                    .update('vote', 1)
+                    //on enleve le poste negatif donc +1 et +1 pour le vote
+                    User.incrementUserLevel(user_createur_announcement,2)
+                    }
+                }else{
+                    
+                    let vote_user = new Announcement_votes()
+                    vote_user.user_id = user.id
+                    vote_user.announcement_id = announcement_id
+                    vote_user.vote=1
+                    await vote_user.save()
+                    //on ajoute 1 à l'experience du créateur
+                    User.incrementUserLevel(user_createur_announcement,1)
+                
                 }
-            }else{
-                
-                let vote_user = new Announcement_votes()
-                vote_user.user_id = user.id
-                vote_user.announcement_id = announcement_id
-                vote_user.vote=1
-                await vote_user.save()
-                //on ajoute 1 à l'experience du créateur
-                User.incrementUserLevel(user_createur_announcement,1)
-               
             }
             
         }
@@ -299,34 +304,36 @@ class AnnouncementController {
         const announcement = await Announcement.find(announcement_id)
         if(announcement){
             const user_createur_announcement = await User.find(announcement.user_id)
-            let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
-            let voteExist = vote.length
-          
-            if(voteExist >0){
-               
-                if(!(vote[0]['vote']==-1)){
-                const affectedRows = await Database
-                .table('announcement_votes')
-                .where({ user_id: user.id,announcement_id: announcement_id })
-                .update('vote', -1)
-                //on enleve le poste negatif donc +1 et +1 pour le vote
-                User.decrementUserLevel(user_createur_announcement,2)
+            if(announcement.user_id != user.id){
+                let vote = await Database.from('announcement_votes').where({ user_id: user.id,announcement_id: announcement_id })
+                let voteExist = vote.length
+            
+                if(voteExist >0){
+                
+                    if(!(vote[0]['vote']==-1)){
+                    const affectedRows = await Database
+                    .table('announcement_votes')
+                    .where({ user_id: user.id,announcement_id: announcement_id })
+                    .update('vote', -1)
+                    //on enleve le poste negatif donc +1 et +1 pour le vote
+                    User.decrementUserLevel(user_createur_announcement,2)
+                    }
+                }else{
+                
+                    let vote_user = new Announcement_votes()
+                    vote_user.user_id = user.id
+                    vote_user.announcement_id = announcement_id
+                    vote_user.vote=-1
+                    await vote_user.save()
+                    //on enlenve 1 à l'experience du créateur
+                    User.decrementUserLevel(user_createur_announcement,1)
+                
                 }
-            }else{
-              
-                let vote_user = new Announcement_votes()
-                vote_user.user_id = user.id
-                vote_user.announcement_id = announcement_id
-                vote_user.vote=-1
-                await vote_user.save()
-                //on enlenve 1 à l'experience du créateur
-                User.decrementUserLevel(user_createur_announcement,1)
-               
             }
             
         }
         return response.json({
-            valeur : 'great'
+            valeur : 'success'
         });
     }
 
