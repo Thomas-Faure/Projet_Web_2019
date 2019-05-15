@@ -37,7 +37,7 @@ class AnnouncementController {
         " from announcement a"+
        " join users on users.id=a.user_id"+
        " join category_announcement c on c.id_category_announcement=a.category_id"+
-        " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
+        " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id where a.created_at between adddate(now(),-7) and now()"+
         " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[])
         
         return response.json({
@@ -56,7 +56,7 @@ class AnnouncementController {
        " join users on users.id=a.user_id"+
        " join category_announcement c on c.id_category_announcement=a.category_id"+
         " left join announcement_votes on a.id_announcement=announcement_votes.announcement_id"+
-        " where c.id_category_announcement= ?"+
+        " where c.id_category_announcement= ? and a.created_at between adddate(now(),-7) and now() "+
         " group by a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color order by a.id_announcement desc",[params.id])
         
         return response.json({

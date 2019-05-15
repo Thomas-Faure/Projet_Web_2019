@@ -5,10 +5,12 @@ var objJson;
 var idAnnouncement = 0;
 var user_announcement_creator_id= 0;
 var token =  0;
-function getMessages(id,token_temp,idUser){
+var userVisitorID = 0;
+function getMessages(id,token_temp,idUser,visitorID){
 user_announcement_creator_id = idUser
 token = token_temp
 idAnnouncement = id;
+userVisitorID = visitorID;
 var xhr = new XMLHttpRequest();
 //pour récuperer tout les messages d'une annonce
 xhr.open('GET', '/announcement/'+idAnnouncement+'/messages'); 
@@ -65,6 +67,8 @@ function changePage(page)
 '                            <a onClick="decrementValueM('+objJson[i].id_message+','+i+',\''+token+'\')"><i class="fas fa-minus-square message-note-el"></i></a>'+
 '                            <span class="message-note-el" id="'+objJson[i].id_message+'_message">'+objJson[i].note+'</span>'+
 '                            <a onClick="incrementValueM('+objJson[i].id_message+',\''+token+'\')"><i class="fas fa-plus-square message-note-el"></i></a></p>'+
+'                            '+((objJson[i].user_id == userVisitorID) ? '<div class="message-date"><a class="btn btn-warning" onclick="delete_id('+objJson[i].id_message+','+i+')" role="button"><i class="fas fa-trash"></i></a>' : "")+
+'                                </div>     '+
 '                            <div class="message-date">'+
 '                                    '+date_converted+
 '                                </div>     '+
@@ -90,3 +94,35 @@ function changePage(page)
         btn_next.disabled = false;
     }
 }
+
+
+//id = id du visiteur, elid est l'idée de l'élement objet c'est à dire un numéro correspondant à un index du tableau objJson
+function delete_id(id,elid){
+    var resultat = "";
+    var result = confirm("Vous confirmez la suppression ?");
+    if(result){
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', '/message/'+id+'/delete'); 
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.setRequestHeader("x-csrf-token", token);
+                                xhr.onload = function() {
+                                    if (xhr.status === 200) {
+                                    let value = JSON.parse(xhr.responseText);
+                                        resultat = value.valeur;
+                                        if(resultat=="supprimé"){
+                                            var elem = document.getElementById("div-message-"+id);
+                                            elem.parentNode.removeChild(elem);
+                                            objJson = arrayRemove(objJson,objJson[elid])
+                                            changePage(page_actuel);
+                                        }   
+                                    }
+                                    else {
+                                        alert('Request failed.  Returned status of ' + xhr.status);
+                                    }
+                                };
+                                xhr.send();
+    
+        }
+    }
+
+

@@ -19,7 +19,7 @@ if(result){
                                 if (xhr.status === 200) {
                                 let value = JSON.parse(xhr.responseText);
                                     resultat = value.valeur;
-                                    alert(resultat);
+                                   
                                     if(resultat=="supprimé"){
                                         var elem = document.getElementById(+id+"_row");
                                         elem.parentNode.removeChild(elem);

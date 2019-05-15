@@ -85,7 +85,7 @@ Annonces
 
 
 
-      {{ script('js/announcement/profile_getMessages') }}
+      {{ script('js/announcement/profile_Messages') }}
       {{ script('js/pagination') }}
 
 
@@ -94,5 +94,5 @@ Annonces
     @endif
     <script>
     setMessageColor('{{announcement.color}}')
-    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}')</script>
+    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}')</script>
        @endsection
