@@ -47,18 +47,7 @@ function changePage(page)
 
     for (var i = (page-1) * max_page; i < (page * max_page) && i <objJson.length; i++) {
 
-        let date = new Date(objJson[i].created_at)
-        let month = String(date.getMonth() + 1);
-        let day = String(date.getDate());
-        const year = String(date.getFullYear());
-        let minute = String(date.getMinutes());
-        let hour = String(date.getHours());
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        if (minute.length < 2) minute = '0' + minute;
-        if (hour.length < 2) hour = '0' + hour;
-
-        let date_converted =  day+'/'+month+"/"+year+" "+hour+":"+minute
+        let date_converted = date_converter(objJson[i].created_at);
         listing_table.innerHTML +=  '<a href="/announcement/'+objJson[i].id_announcement+'" style="text-decoration: none"><div class ="card-style"><span class="announce-index-username" >Par: '+objJson[i].username+'</span></div>'+
 '      <div class="annonce-container" style="background: '+objJson[i].color+'">'+
 '        <div class="blank">'+
@@ -73,7 +62,7 @@ function changePage(page)
 '  </a>';     
 
     }
-    page_span.innerHTML = page;
+    page_span.innerHTML = page+"/"+numPages();
 
     if (page == 1) {
         btn_prev.disabled = true;

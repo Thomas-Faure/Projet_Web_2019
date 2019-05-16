@@ -45,17 +45,8 @@ function changePage(page)
     listing_table.innerHTML = "";
     if(objJson.length>0){
     for (var i = (page-1) * max_page; i < (page * max_page) && i < objJson.length; i++) {
-        let date = new Date(objJson[i].created_at)
-        let month = String(date.getMonth() + 1);
-        let day = String(date.getDate());
-        const year = String(date.getFullYear());
-        let minute = String(date.getMinutes());
-        let hour = String(date.getHours());
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        if (minute.length < 2) minute = '0' + minute;
-        if (hour.length < 2) hour = '0' + hour;
-        let date_converted =  day+'/'+month+"/"+year+" "+hour+":"+minute
+
+        let date_converted = date_converter(objJson[i].created_at)
         
         listing_table.innerHTML += '<div class="row message-container" id="div-message-'+objJson[i].id_message+'" style="padding-bottom:20px;">'+
 '        <div class="col-2"></div>'+
@@ -80,7 +71,8 @@ function changePage(page)
 }else{
     listing_table.innerHTML = '<p class="aucune-annonce">aucun message</p>';
 }
-    page_span.innerHTML = page;
+    page_span.innerHTML = page+"/"+numPages();
+
 
     if (page == 1) {
         btn_prev.disabled = true;
@@ -125,3 +117,31 @@ function delete_id(id,elid){
     }
 
 
+    function postMessage(id,token,id_announcement,auth_id){
+        var form = document.getElementById('form-message');
+        var FD = new FormData(form);
+        var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/message/store/announcement/'+id);
+    
+              xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                                      xhr.onload = function() {
+                                          if (xhr.status === 200) {
+                                            let value = JSON.parse(xhr.responseText);
+                                    
+                                            if(value.result==true){
+                                                    document.getElementById('message-error-field').innerHTML='';
+                                                    document.getElementById("name_message").value='';
+                                                    getMessages(id,token,id_announcement,auth_id)
+                                            }else{
+                                                    document.getElementById('message-error-field').innerHTML='<div class="form-error-general">'+
+                    '<span>'+
+                            '<i class="fas fa-exclamation-triangle"></i>Vous devez attendre avant denvoyer un nouveau message'+
+                   '</span>'+
+            '</div>';
+                                            }
+    
+                                          }
+                                         
+                                      };
+                                      xhr.send(FD);             
+         }
