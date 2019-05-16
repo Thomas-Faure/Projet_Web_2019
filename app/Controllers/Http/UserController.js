@@ -4,7 +4,6 @@ const Level = use('App/Models/Niveau')
 const Database = use('Database')
 const erreurPerso = use('App/Exceptions/errorQCT')
 
-
 class UserController {
 
     //fonction qui permet de supprimer un utilsiateur
@@ -43,9 +42,7 @@ class UserController {
                     return response.redirect('/user/' + params.id + '/edit/')
                 }
                 let userEdit = await User.find(params.id)
-
                 if (password != null) {
-
                     if (password == passwordValidation) {
                         userEdit.password = password
                     } else {
@@ -57,18 +54,13 @@ class UserController {
                 }
                 userEdit.name = name
                 userEdit.birthday = birthday
-
                 userEdit.email = email
-
                 userEdit.username = username
-
                 const result = await userEdit.save()
-
                 if (result) {
                     session.flash({ EditSuccess: 'Toutes les modifications sont faites !' });
                     return response.redirect('/user/' + userEdit.id + '/edit/')
                 } else {
-
                     throw "error";
                 }
             } catch (error) {
@@ -88,9 +80,15 @@ class UserController {
         if (user) {
             //on récupères ses 5 dernieres annonces
             const announcements = await Database
-                .raw('select a.id_announcement as id,u.username as username,a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  order by a.id_announcement desc limit  ?', [user.id, 5])
-
-            const level = await Level.query().select('level.color', 'level.name').innerJoin('users', 'users.level_id', 'level.id_level').where('users.id', params.id).first()
+                .raw('select a.id_announcement as id,u.username as username,'+
+                'a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c'+
+                ' on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  '+
+                'order by a.id_announcement desc limit  ?', [user.id, 5])
+            const level = await Level.query()
+            .select('level.color', 'level.name')
+            .innerJoin('users', 'users.level_id', 'level.id_level')
+            .where('users.id', params.id)
+            .first()
             //on transforme la date
             var date = new Date(user.birthday),
                 mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -100,18 +98,14 @@ class UserController {
         } else {
             return response.redirect('back')
         }
-
     }
 
     //permet de récuperer tout les utilisateurs de la base de donnée
     async index({ request, response }) {
         if (request.ajax()) {
-
             const users = await User.all();
-
             return response.json(
                 users.toJSON()
-
             );
         } else {
             response.redirect('/')
@@ -122,7 +116,8 @@ class UserController {
     //permet de récuperer toutes les annonces dans lesquels un utilisateur a participé (pas les siennes)
     async participation_category({ params, request, response }) {
         if (request.ajax()) {
-            const messages = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note" +
+            const messages = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,"+
+            "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
                 " from announcement a" +
                 " join users on users.id=a.user_id" +
                 " join category_announcement c on c.id_category_announcement=a.category_id" +
@@ -138,10 +133,9 @@ class UserController {
             response.redirect('/')
         }
     }
-
     //permet de créer un nouvel utilisateur
     //redirige vers la page principale dès que cela est fait, sinon retourne vers le formulairec d'inscription avec un message d'erreur
-    async store({ request, auth, response, session }) {
+    async store({ request, response, session }) {
         try {
             var format = /[ !@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]/;
             const username = request.input("username")
@@ -150,7 +144,6 @@ class UserController {
             const passwordValidation = request.input("passwordValidation")
             const birthday = request.input("birthday")
             const name = request.input("name")
-
             if (format.test(name)) {
                 session.flash({ RegisterError: 'Votre nom contient des caractères non accepté' });
                 return response.redirect('/user/register')
@@ -177,7 +170,6 @@ class UserController {
                 console.log("erreur")
                 throw "error"
             }
-
             let user = new User()
             user.username = username
             user.email = email
@@ -193,7 +185,6 @@ class UserController {
             console.log(error)
             session.flash({ RegisterError: 'Le mot de passe de confirmation ne correspond pas !' });
             return response.redirect('/user/register')
-
         }
 
     }
@@ -212,31 +203,24 @@ class UserController {
         } else {
             try {
                 throw 'error'
-
             } catch (e) {
                 throw new erreurPerso()
             }
         }
-
     }
 
     //permet de génerer la page des annonces posté par l'utilisateur
     //dans cette vue , il y a un appel (Ajax) qui va récuperer toutes les annonces d'un utilisateur qui est passé en paramètre de cette fonction (params.id)
     async announcements({ auth, view, params }) {
-
         const user = await auth.getUser()
-
         if (user.id == params.id) {
-
             return view.render('user.announcement', { id: params.id })
         } else {
             try {
                 throw 'error'
-
             } catch (e) {
                 throw new erreurPerso()
             }
-
         }
     }
 
@@ -244,10 +228,10 @@ class UserController {
     async getAnnouncements({ request, auth, response, params }) {
         if (request.ajax()) {
             const user = await auth.getUser()
-
             if (user.id == params.id) {
                 try {
-                    const announcements = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,c.image,c.color,sum(COALESCE(vote, 0)) as note" +
+                    const announcements = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,"+
+                    "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
                         " from announcement a" +
                         " join users on users.id=a.user_id" +
                         " join category_announcement c on c.id_category_announcement=a.category_id" +
@@ -265,11 +249,9 @@ class UserController {
         } else {
             try {
                 throw 'error'
-
             } catch (e) {
                 throw new erreurPerso()
             }
-
         }
     }
     //permet à un utilisateur connecté de se déconnecter
@@ -279,21 +261,15 @@ class UserController {
     }
     //permet à un utilisateur de se connecter
     async login({ request, auth, response, session }) {
-
-
         let { email, password } = request.all();
-
         try {
-
             if (await auth.attempt(email, password)) {
                 let user = await User.findBy('email', email)
                 let token = await auth.generate(user)
                 console.log(token);
-                response.cookie('Authorization', token, { httpOnly: true, path: '/' })
-
+                response.cookie('Authorization', token, { httpOnly: true, path: '/' }) //Création du cookie qui va servie pour l'authentification
                 response.redirect('/')
             }
-
         }
         catch (error) {
             session.flash({ loginError: 'Les identifiants ne correspondent pas' });

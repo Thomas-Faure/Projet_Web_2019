@@ -1,13 +1,11 @@
 'use strict'
-const Announcement = use('App/Models/Announcement')
-const Announcement_Category = use('App/Models/Category')
+
 const Database = use('Database')
 
 
 class IndexController {
     //afficher la vue d'accueil
     async index({ view }) {
-
         return view.render('index')
     }
     //récupère les utilisateurs ainsi que leur niveau et rend la page de classement

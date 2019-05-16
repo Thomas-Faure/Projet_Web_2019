@@ -14,7 +14,6 @@ class MessageController {
         let resultat = "non supprimé"
         const user = await auth.getUser();
         const message = await Message.find(params.id)
-
         if (message) {
             if (message.user_id == user.id || user.admin == 1) {
                 resultat = "supprimé"
@@ -29,24 +28,17 @@ class MessageController {
 
 
 
-    async show({ params, request, response, view }) {
-    }
-
     //fonction qui permet de récuperer tout les messages
-    async index({ params, request, response, view }) {
+    async index({request, response}) {
         if (request.ajax()) {
-
             const messages = await await Message.all();
-
             return response.json(
                 messages.toJSON()
-
             );
         } else {
             response.redirect('/')
         }
     }
-
     //fonction qui permet de créer un nouveau message, en paramètre d'uri l'id de l'annonce correspondant au nouveau message (params.id)
     async store({ request, auth, params, response }) {
         let result = false;
@@ -68,7 +60,6 @@ class MessageController {
             }
             return response.json({
                 result: result
-
             });
         } catch (error) {
             return response.json({
@@ -77,20 +68,16 @@ class MessageController {
         }
 
     }
-
     //fonction qui permet de generer la vue de création de message (formulaire)
     //verifie que l'annonce existe avant de generer la vue
     async create({ view, params }) {
-
         const announce = await Announcement.find(params.id)
         if (announce) {
             return view.render('message.store', { id: params.id })
         } else {
             try {
                 throw 'error'
-
             } catch (e) {
-                console.log("test")
                 throw new erreurPerso()
             }
         }
@@ -101,9 +88,7 @@ class MessageController {
         const message = await Message.find(params.id)
         if (message) {
             const user = await auth.getUser()
-
             if (user.id == message.user_id || user.admin == 1) {
-
                 return view.render('message.edit', { message: message, id: params.id })
             }
         } else {
@@ -115,6 +100,8 @@ class MessageController {
         }
 
     }
+
+    //permet de mettre à jour un message
     async update({ params, session, response, request, auth }) {
         try {
             const user = await auth.getUser();
@@ -133,7 +120,6 @@ class MessageController {
             }
             return response.redirect('/')
         } catch (error) {
-
             session.flash({ editMessageError: 'Impossible de modifier le message' });
             return response.redirect('/message/' + params.id + '/edit')
 
@@ -155,9 +141,7 @@ class MessageController {
                 let voteExist = vote.length
                 // vote =vote[0]['count(`id`)'] //0 si jamais voté avec ce compte
                 if (voteExist > 0) {//on a deja voté sur ce poste
-
                     if (!(vote[0]['vote'] == 1)) {//on avait voté -1 la fois précedente
-
                         const affectedRows = await Database
                             .table('message_votes')
                             .where({ user_id: user.id, message_id: message_id })
@@ -179,7 +163,6 @@ class MessageController {
 
                 }
             }
-
         }
         return response.json({
             valeur: 'great'
@@ -199,9 +182,7 @@ class MessageController {
                 let vote = await Database.from('message_votes').where({ user_id: user.id, message_id: message_id })
                 let voteExist = vote.length
                 if (voteExist > 0) {//on a deja voté
-
                     if (!(vote[0]['vote'] == -1)) {//on avait voté +1 la première fois
-
                         const affectedRows = await Database
                             .table('message_votes')
                             .where({ user_id: user.id, message_id: message_id })
@@ -221,7 +202,6 @@ class MessageController {
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
                 }
             }
-
         }
         return response.json({
             valeur: 'great'

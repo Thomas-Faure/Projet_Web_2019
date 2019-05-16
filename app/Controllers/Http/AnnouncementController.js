@@ -7,7 +7,6 @@ const Announcement_Category = use('App/Models/Category')
 const User = use('App/Models/User')
 const Database = use('Database')
 
-
 class AnnouncementController {
 
     //permet de supprimer une annonce dont l'id est passé en paramètre d'uri (params.id)
@@ -26,8 +25,6 @@ class AnnouncementController {
         })
 
     }
-
-
 
     //donne toutes les annonces de la base de donnée sous le format JSON
     async index({ request, response }) {
@@ -110,20 +107,17 @@ class AnnouncementController {
 
     //fonction qui récupère une annonce via un paramètre passé dans l'uri (params.id)
     async show({ params, response, view }) {
-
-
         const announcement = await Announcement.find(params.id)
         if (announcement) {
             let announce_note = await Database.from('announcement_votes').where('announcement_id', params.id).sum('vote')
-
             announce_note = announce_note[0]['sum(`vote`)']
-
             if (announce_note == null || announce_note == 0) {
                 announce_note = '0'
             }
-
-            const announce = await Announcement.query().innerJoin('category_announcement', 'announcement.category_id', 'category_announcement.id_category_announcement').innerJoin('users', 'users.id', 'announcement.user_id').where('announcement.id_announcement', params.id).fetch()
-
+            const announce = await Announcement.query()
+            .innerJoin('category_announcement', 'announcement.category_id', 'category_announcement.id_category_announcement')
+            .innerJoin('users', 'users.id', 'announcement.user_id').where('announcement.id_announcement', params.id)
+            .fetch()
             return view.render('announcement.profile', { announcement: announce.toJSON()[0], announce_note: announce_note, id: params.id })
         } else {
             return response.redirect('back')
@@ -135,7 +129,6 @@ class AnnouncementController {
         const announcement = await Announcement.find(params.id)
         if (announcement) {
             const user = await auth.getUser()
-
             if (user.id == announcement.user_id || user.admin == 1) {
                 const category = await Announcement_Category.all()
 
@@ -148,9 +141,9 @@ class AnnouncementController {
                 throw new erreurPerso()
             }
         }
-
     }
-    async update({ auth, view, params, session, response, request }) {
+    //permet de mettre à jour une annonce
+    async update({ auth, params, session, response, request }) {
         try {
             const user = await auth.getUser()
             const category_id = request.input('category_id')
@@ -171,12 +164,9 @@ class AnnouncementController {
             }
             return response.redirect('/')
         } catch (error) {
-
             session.flash({ editAnnouncementError: 'Impossible de modifier l\'annonce' });
             return response.redirect('/announcement/' + params.id + '/edit')
-
         }
-
     }
 
     //fonction qui permet de créer une annonce
@@ -206,20 +196,16 @@ class AnnouncementController {
             session.flash({ AnnouncementAddError: 'Veuillez attendre 10 minutes entre chaque création d\'annonce;)' });
             return response.redirect('/announcement/store')
         }
-
     }
     //fonction qui permet d'acceder à la page de création d'annonce (le formulaire)
     async create({ view }) {
         const category = await Announcement_Category.all()
-
         return view.render('announcement.store', { categorys: category.toJSON() })
     }
 
 
     //fonction qui permet de récuperer tout les messages d'une annonce spécifié en paramètre (params.id)
     async getMessages({ response, params }) {
-
-
         const messages = await Database.raw("select users.admin as admin,level.color,users.id as user_id,id_message,message.announcement_id,message.created_at,name_message,username,sum(COALESCE(vote, 0)) as note" +
             " from message" +
             " join users on users.id=message.user_id" +
@@ -227,8 +213,6 @@ class AnnouncementController {
             " left join message_votes on message.id_message=message_votes.message_id" +
             " where message.announcement_id=?" +
             " group by users.admin,users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message asc", [params.id])
-
-
         return response.json({
             valeur: messages[0]
         }
@@ -238,20 +222,18 @@ class AnnouncementController {
 
 
     //fonction qui permet de retourner la dernière annonce posté
-    async getLastAnnouncement({ response, params, request }) {
+    async getLastAnnouncement({ response, request }) {
         if (request.ajax()) {
-            const announce = await Announcement.query().innerJoin('category_announcement', 'category_announcement.id_category_announcement', 'announcement.category_id').orderBy('id_announcement', 'desc').limit(1).first()
-
+            const announce = await Announcement.query().innerJoin('category_announcement', 'category_announcement.id_category_announcement', 'announcement.category_id').orderBy('id_announcement', 'desc')
+            .limit(1)
+            .first()
             return response.json(
                 announce.toJSON()
-
             );
         } else {
             response.redirect('/')
         }
-
     }
-
 
     //fonction Ajax qui retourne la nouvelle valeur de l'annonce
     //cette fonction est en fait la note que va attribuer l'utilisateur à l'annonce
@@ -265,11 +247,8 @@ class AnnouncementController {
             if (announcement.user_id != user.id) {
                 let vote = await Database.from('announcement_votes').where({ user_id: user.id, announcement_id: announcement_id })
                 let voteExist = vote.length
-
                 if (voteExist > 0) {
-
                     if (!(vote[0]['vote'] == 1)) {
-
                         const affectedRows = await Database
                             .table('announcement_votes')
                             .where({ user_id: user.id, announcement_id: announcement_id })
@@ -278,7 +257,6 @@ class AnnouncementController {
                         User.incrementUserLevel(user_createur_announcement, 2)
                     }
                 } else {
-
                     let vote_user = new Announcement_votes()
                     vote_user.user_id = user.id
                     vote_user.announcement_id = announcement_id
@@ -287,10 +265,8 @@ class AnnouncementController {
                     //on ajoute 1 à l'experience du créateur
                     User.incrementUserLevel(user_createur_announcement, 1)
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
-
                 }
             }
-
         }
         return response.json({
             valeur: 'great'
@@ -309,9 +285,7 @@ class AnnouncementController {
             if (announcement.user_id != user.id) {
                 let vote = await Database.from('announcement_votes').where({ user_id: user.id, announcement_id: announcement_id })
                 let voteExist = vote.length
-
                 if (voteExist > 0) {
-
                     if (!(vote[0]['vote'] == -1)) {
                         const affectedRows = await Database
                             .table('announcement_votes')
@@ -321,7 +295,6 @@ class AnnouncementController {
                         User.decrementUserLevel(user_createur_announcement, 2)
                     }
                 } else {
-
                     let vote_user = new Announcement_votes()
                     vote_user.user_id = user.id
                     vote_user.announcement_id = announcement_id
@@ -330,10 +303,8 @@ class AnnouncementController {
                     //on enlenve 1 à l'experience du créateur
                     User.decrementUserLevel(user_createur_announcement, 1)
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
-
                 }
             }
-
         }
         return response.json({
             valeur: 'success'
@@ -349,7 +320,6 @@ class AnnouncementController {
         const announcement = await Announcement.find(announcement_id)
         if (announcement) {
             let vote = await Database.from('announcement_votes').where('announcement_id', announcement_id).sum('vote')
-
             vote = vote[0]['sum(`vote`)']
             if (vote == null) {
                 vote = 0
@@ -368,5 +338,4 @@ class AnnouncementController {
         });
     }
 }
-
 module.exports = AnnouncementController

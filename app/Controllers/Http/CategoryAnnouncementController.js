@@ -2,15 +2,10 @@
 
 //les modèles
 const Category = use('App/Models/Category')
-const Database = use('Database')
 const Helpers = use('Helpers')
 
 
-
 class CategoryAnnouncementController {
-    //permet de supprimer une catégorie
-    async destroy({ }) {
-    }
 
     //permet de mettre à jour une catégorie
     async update({ params, request, response }) {
@@ -50,15 +45,11 @@ class CategoryAnnouncementController {
                     }
                     console.log("on met la nouvelle image")
                     category.image = fileName
-
-
                 }
-
             }
             await category.save()
         }
         return response.redirect('/backoffice/category')
-
     }
 
     //récupère les informations d'une catégorie , génère la vue de modification de catégorie
@@ -70,14 +61,10 @@ class CategoryAnnouncementController {
         } else {
             response.redirect('back')
         }
-
-
     }
-
     //permet de récuperer toutes les catégories
     async index({ request, response }) {
         if (request.ajax()) {
-
             const categorys = await Category.all()
             return response.json({
                 valeur: categorys.toJSON()
@@ -87,7 +74,6 @@ class CategoryAnnouncementController {
             response.redirect('/')
         }
     }
-
 
     //fonction qui permet de créer une nouvelle catégorie
     async store({ request, response, session, auth }) {
@@ -102,7 +88,6 @@ class CategoryAnnouncementController {
             category.name_category = name_category
             category.color = color
             category.image = "default.png" //c'est une image par defaut
-
             let id = await category.save()
             if (request.file('image') != null) { //on a une image à mettre
                 const file = request.file('image', {
