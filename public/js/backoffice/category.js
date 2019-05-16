@@ -1,11 +1,11 @@
-var objJson;
+var objJson; //tableau de catégories
 
 var token = 0
 function setToken(token_temp) {
     token = token_temp
 }
 
-
+//permet de placer le tableau de catégorie dans notre tableau html
 function setData(data) {
 
     document.getElementById('data-backoffice').innerHTML = ""
@@ -31,5 +31,3 @@ xhr.onload = function () {
     }
 };
 xhr.send();
-
-// or

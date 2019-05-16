@@ -1,25 +1,16 @@
-var objJson;
+var objJson; //est un tableau d'annonce
 var lastPost = document.getElementById('last-post');
 var xhr = new XMLHttpRequest();
-xhr.open('GET', '/announcement/last');
+xhr.open('GET', '/announcement/last'); //pour récuperer la dernière annonce
 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 xhr.onload = function () {
     if (xhr.status === 200) {
 
         let objJson = JSON.parse(xhr.responseText);
         if (objJson != null) {
-            let date = new Date(objJson.created_at)
-            let month = String(date.getMonth() + 1);
-            let day = String(date.getDate());
-            const year = String(date.getFullYear());
-            let minute = String(date.getMinutes());
-            let hour = String(date.getHours());
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-            if (minute.length < 2) minute = '0' + minute;
-            if (hour.length < 2) hour = '0' + hour;
 
-            let date_converted = day + '/' + month + "/" + year + " " + hour + ":" + minute
+
+            let date_converted = date_converter(objJson.created_at)
             lastPost.innerHTML = '<a href="/announcement/' + objJson.id_announcement + '" style="text-decoration: none">' +
                 '      <div class="annonce-container" style="background: ' + objJson.color + '">' +
                 '        <div class="blank">' +
@@ -36,7 +27,7 @@ xhr.onload = function () {
         }
     }
     else {
-        lastPost.innerHTML = "Il n'y a aucun poste pour le moment"
+        lastPost.innerHTML = "Il n'y a aucun poste pour le moment" //si la fonction ajax ne retourne rien, ca indique qu'aucune annonce a été posté
     }
 };
 xhr.send();

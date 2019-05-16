@@ -1,9 +1,11 @@
-var objJson;
+var objJson; //tableau d'utlisateurs
 var token
 function setToken(token_temp) {
     token = token_temp
 }
 
+//permet de supprimer un utilisateur
+//l'id de l'utlilisateur à supprimé est le paramètre
 function delete_id(id) {
     var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
@@ -31,6 +33,7 @@ function delete_id(id) {
     }
 }
 
+//permet de placer tout les éléments du tableau d'utilisateurs dans le tableau HTML
 function setData(data) {
 
     document.getElementById('data-backoffice').innerHTML = ""
@@ -41,6 +44,8 @@ function setData(data) {
     var dataTable = new DataTable(myTable);
 }
 
+
+//permet de récuperer tout les utlisateurs
 function getUsers() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/user');
@@ -58,6 +63,3 @@ function getUsers() {
     };
     xhr.send();
 }
-
-// or
-

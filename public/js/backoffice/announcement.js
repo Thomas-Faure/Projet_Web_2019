@@ -1,14 +1,20 @@
-var token = 0
+var token = 0 //id du token CSRF
+
+//permet d'initiliser la variable token
 function setToken(token_temp) {
     token = token_temp
 }
-var objJson;
+
+var objJson; //tableau d'annonce
+
+//fonction qui permet de supprimer une annonce via une requete ajax
+//id de l'annonce est en paramètre
 function delete_id(id) {
     var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
-        xhr.open('DELETE', '/announcement/' + id + '/delete');
+        xhr.open('DELETE', '/announcement/' + id + '/delete'); //suppression en DELETE
         xhr.setRequestHeader("x-csrf-token", token);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.onload = function () {
@@ -31,6 +37,10 @@ function delete_id(id) {
 
     }
 }
+
+//fonction qui permet de placer des elements dans un tableau appelé myTable
+//DataTable est une bibliothèque qui permet de génerer un tableau automatiquement, qui rend l'administration plus pratique
+//data est un tableau d'objets (contient ici toutes les annonces sous format JSON)
 function setData(data) {
 
     document.getElementById('data-backoffice').innerHTML = ""
@@ -43,7 +53,7 @@ function setData(data) {
     var dataTable = new DataTable(myTable);
 }
 var xhr = new XMLHttpRequest();
-xhr.open('GET', '/announcement');
+xhr.open('GET', '/announcement'); //recupère toutes les annonces (de la semaine)
 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 xhr.onload = function () {
     if (xhr.status === 200) {

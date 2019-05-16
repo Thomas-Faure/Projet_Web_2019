@@ -1,7 +1,10 @@
-var page_actuel = 1;
-var max_page = 5;
-var objJson;
-var xhr = new XMLHttpRequest();
+var page_actuel = 1; //pâge de base
+var max_page = 5; //nombre d'annonce par page
+var objJson; //tableau d'objets
+var xhr = new XMLHttpRequest(); //requete ajax
+
+//fonction qui va récuperer les annonces via une requete Ajax (vanilla)
+//le paramètre id correspond à "all" ou "id catégorie" permet de selectionner soit toutes les annonces soit une catégorie d'annonce
 function getAnnounces(id) {
     //pour récuperer tout les messages d'une annonce
     if (id == "all") {
@@ -31,17 +34,20 @@ function getAnnounces(id) {
 
 }
 
-
+//fonction qui permet de changer de page
+//le paramètre est le numéro de page souhaité (à afficher)
 function changePage(page) {
     var btn_next = document.getElementById("btn_next");
     var btn_prev = document.getElementById("btn_prev");
     var listing_table = document.getElementById("listingTable");
     var page_span = document.getElementById("page");
 
-    // Validate page
+    //permet de ne pas tomber à 0
     if (page < 1) page = 1;
+    //permet de ne pas depasser le nombre page max
     if (page > numPages()) page = numPages();
 
+    //initialise l'element qui va recevoir les annonces
     listing_table.innerHTML = "";
 
     for (var i = (page - 1) * max_page; i < (page * max_page) && i < objJson.length; i++) {
@@ -61,8 +67,10 @@ function changePage(page) {
             '  </a>';
 
     }
+    //permet d'afficher la page actuel
     page_span.innerHTML = page + "/" + numPages();
 
+    //permet d'autoriser un clique sur les boutons précedent/suivant du système de pagination
     if (page == 1) {
         btn_prev.disabled = true;
     } else {

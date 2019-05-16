@@ -1,8 +1,10 @@
 "use strict";
+
+//fonction qui prend en paramètre un id correspondant à l'id de l'annonce, et un token correspondant à CSRF
 function decrementValueA(id, token) {
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/announcement/decrement');
+    xhr.open('POST', '/announcement/decrement'); //on poste le decrement
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
@@ -16,12 +18,12 @@ function decrementValueA(id, token) {
                     let value = JSON.parse(xhr2.responseText);
                     document.getElementById(id + '_announcement').innerHTML = value.valeur;
 
-                    if (value.suppression == true) {
+                    if (value.suppression == true) {//si c'est supprimé on revient sur la page principale
                         window.location.href = "/announcement/category/all";
                     }
                 }
                 else {
-                    alert('Request failed.  Returned status of ' + xhr2.status);
+                    alert('Request failed.  Returned status of ' + xhr2.status); //la requete n'a pas fonctionné
                 }
             };
             xhr2.send();
@@ -30,15 +32,17 @@ function decrementValueA(id, token) {
             alert('Request failed.  Returned status of ' + xhr.status);
         }
     };
-    xhr.send("id=" + id);
+    xhr.send("id=" + id);//on envoie l'id de l'annonce
 
 
 
 };
+
+//fonction qui permet d'incrementer le vote d'une annonce, elle a en paramètre l'id de l'annonce et le token CSRF
 function incrementValueA(id, token) {
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/announcement/increment');
+    xhr.open('POST', '/announcement/increment'); //on post sur cette route
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
@@ -63,7 +67,7 @@ function incrementValueA(id, token) {
             alert('Request failed.  Returned status of ' + xhr.status);
         }
     };
-    xhr.send("id=" + id);
+    xhr.send("id=" + id);//on envoie l'id de l'annonce
 
 
 }

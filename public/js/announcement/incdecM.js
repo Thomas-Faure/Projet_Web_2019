@@ -1,9 +1,12 @@
+//permet d'enlever un element d'un tableau
 function arrayRemove(arr, value) {
 
     return arr.filter(function (ele) {
         return ele != value;
     });
 }
+//fonction qui permet de décrementer le vote pour un message, elle a en paramètre l'id du message à decrementer, elid qui correspond à l'index du message
+//dans notre objet objJson (qui va permettre la suppression eventuel du message) ainsi que token qui est le token CSRF
 function decrementValueM(id, elid, token) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/message/decrement');
@@ -44,6 +47,9 @@ function decrementValueM(id, elid, token) {
 
 
 };
+
+//fonction qui permet d'incrementer le vote pour un message, elle a en paramètre l'id du message à incrementer, elid qui correspond à l'index du message
+//dans notre objet objJson (qui va permettre la suppression eventuel du message) ainsi que token qui est le token CSRF
 function incrementValueM(id, token) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/message/increment');

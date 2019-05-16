@@ -1,12 +1,19 @@
-var message_color = 0;
-var page_actuel = 1;
-var max_page = 5;
-var objJson;
-var idAnnouncement = 0;
-var user_announcement_creator_id = 0;
-var token = 0;
-var userVisitorID = 0;
-var administrator = 0;
+var message_color = 0; //couleur du message 
+var page_actuel = 1; //page actuel
+var max_page = 5; //max de message par page
+var objJson; //tableau qui va contenir les messages
+var idAnnouncement = 0; //id de l'annonce 
+var user_announcement_creator_id = 0; //id de l'utilisateur créateur de l'annonce
+var token = 0; //token CSRF
+var userVisitorID = 0; //id du visiteur actuellement en train d'être sur la page
+var administrator = 0; //1 si administrateur , 0 sinon
+
+//permet de récuperer les messages d'une annonce dont l'id est passé en paramètre
+//le tocken est également en paramètre
+//l'id de l'utlisateur créateur de l'annonce y est aussi
+//l'id de l'utlisateur visiteur de la page
+//et un paramètre admin (1 ou 0), PS: si on s'amuse à changer ce 0 en 1 , rien ne change vu que c'est géré dans le backend//
+//ce paramètre administrateur ne sert uniquement à afficher la poubelle de suppression de message/Annonce
 function getMessages(id, token_temp, idUser, visitorID, admin) {
     administrator = admin
     user_announcement_creator_id = idUser
@@ -30,9 +37,14 @@ function getMessages(id, token_temp, idUser, visitorID, admin) {
     xhr.send();
 }
 
+
+//permet d'affecter une couleur
 function setMessageColor(color) {
     message_color = color;
 }
+
+//fonction de changement de page propre aux messages (cette fonction reviens dans les autres fichiers .js mais le résultat n'est pas le même)
+//en paramètre un integer représentant la page souhaité
 function changePage(page) {
     var btn_next = document.getElementById("btn_next");
     var btn_prev = document.getElementById("btn_prev");
@@ -87,7 +99,7 @@ function changePage(page) {
 }
 
 
-//id = id du visiteur, elid est l'idée de l'élement objet c'est à dire un numéro correspondant à un index du tableau objJson
+//id = id du visiteur, elid est l'id de l'élement du tableau comportant les messages 
 function delete_message(id, elid) {
     var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
@@ -116,6 +128,8 @@ function delete_message(id, elid) {
     }
 }
 
+//permet de supprimer une annonce dont l'id est placé en paramètre
+//une verification en backend permet d'autoriser la suppression
 function delete_announcement(id) {
     var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
@@ -142,6 +156,11 @@ function delete_announcement(id) {
     }
 }
 
+//fonction qui permet à un utilsateur de poster un message dans l'annonce actuellement visité
+//id correspond au créateur de l'annonce
+//token correspond au token CSRF
+//id_annoncement correspond à l'id de l'annonce
+//auth_id correspond à l'identifiant de l'utilsateur visitant actuellement la page
 function postMessage(id, token, id_announcement, auth_id) {
     var form = document.getElementById('form-message');
     var FD = new FormData(form);
@@ -167,5 +186,5 @@ function postMessage(id, token, id_announcement, auth_id) {
         }
 
     };
-    xhr.send(FD);
+    xhr.send(FD);//envoi le formulaire 
 }

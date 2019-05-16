@@ -1,5 +1,5 @@
 
-var objJson;
+var objJson; //tableau de messages
 var token = 0
 var id = 0;
 function setTokenAndId(token_temp, id_temp) {
@@ -7,6 +7,8 @@ function setTokenAndId(token_temp, id_temp) {
     id = id_temp
 }
 
+
+//permet de supprimer un message dont l'id est placé en paramètre
 function delete_id(id) {
     var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
@@ -34,6 +36,7 @@ function delete_id(id) {
     }
 }
 
+//permet de ranger dans le tableau HTML tout les element du tableau de niveaux
 function setData(data) {
 
     document.getElementById('data-backoffice').innerHTML = ""
@@ -48,6 +51,8 @@ function setData(data) {
     var myTable = document.querySelector("table");
     var dataTable = new DataTable(myTable);
 }
+
+//permet de récuperer tout les messages qui ont été posté
 function getMessages() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/announcement/' + id + '/messages');

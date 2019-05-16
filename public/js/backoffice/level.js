@@ -1,36 +1,12 @@
-var objJson;
+var objJson; //tableau de niveaux
 
 var token = 0
 function setToken(token_temp) {
     token = token_temp
 }
 
-function delete_id(id) {
-    var resultat = "";
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/announcement/' + id + '/delete');
-    xhr.setRequestHeader("x-csrf-token", token);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let value = JSON.parse(xhr.responseText);
-            resultat = value.valeur;
-            alert(resultat);
-            if (resultat == "supprimé") {
-                var elem = document.getElementById(+id + "_row");
-                elem.parentNode.removeChild(elem);
-            }
 
-
-        }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
-    };
-    xhr.send();
-
-}
-
+//permet de placer tout le tableau de niveau dans un tableau HTML
 function setData(data) {
 
     document.getElementById('data-backoffice').innerHTML = ""

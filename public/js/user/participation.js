@@ -1,8 +1,10 @@
-var page_actuel = 1;
-var max_page = 5;
-var objJson;
-var id_user = 0
-var id_cat = 0
+var page_actuel = 1; //page actuelle
+var max_page = 5; //nombre d'element max par page
+var objJson; //tableau d'annonces
+var id_user = 0 //id de l'ulisateur
+var id_cat = 0 //id de la catégorie
+
+//permet de récuperer toutes les annonces d'un utilisateur (id) dans une catégorie d'annonce (cat)
 function getParticipations(id, cat) {
     var id_user = id
     var id_cat = cat
@@ -32,16 +34,16 @@ function getParticipations(id, cat) {
     };
     xhr.send();
 }
-//acceder à la page précedente                      
+                   
 
-
+//permet de changer de page dans la pagination
 function changePage(page) {
     var btn_next = document.getElementById("btn_next");
     var btn_prev = document.getElementById("btn_prev");
     var listing_table = document.getElementById("listingTable");
     var page_span = document.getElementById("page");
 
-    // Validate page
+   
     if (page < 1) page = 1;
     if (page > numPages()) page = numPages();
 
