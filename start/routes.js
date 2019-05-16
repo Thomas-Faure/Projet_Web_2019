@@ -115,7 +115,6 @@ Route
 Route
   .group(() => {
     Route.delete(':id/delete','MessageController.destroy').middleware(['auth'])
-    Route.get('store/announcement/:id','MessageController.create').middleware(['auth'])
     Route.post('store/announcement/:id','MessageController.store').validator('AddMessage')
     Route.post('increment','MessageController.increment').middleware(['auth'])
     Route.post('decrement','MessageController.decrement').middleware(['auth'])

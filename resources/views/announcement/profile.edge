@@ -4,14 +4,7 @@ Annonces
 @endsection
 @section('content')
 @if(auth.user)
-@if(flashMessage('MessageAddError'))
-<div class='form-error-general'>
-        <span>
-                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('MessageAddError') }}
-        </span>
-    </div>
- 
-        @endif
+
 <div style="display: flex;justify-content:center">
 <a  id="button-add-message"class="btn btn-primary" onclick="window.scrollTo(0,document.body.scrollHeight);" role="button"> Ajouter un message +</a>
 </div>
@@ -51,10 +44,14 @@ Annonces
 
         </ul>
 </nav>
+@if(auth.user)
+<div id="message-error-field">
+        
+</div>
 
 <div class="card">
         <div class="card-body">
-                <form action="/message/store/announcement/{{id}}" method="POST">
+                <form id="form-message">
                         {{ csrfField() }}
                         
                         <div class="form-group">
@@ -73,20 +70,20 @@ Annonces
                     </div>
                        
                        
-                        
-                    
-                        <button type="submit" class="btn btn-primary">Envoyer</button>
-                      
+                                             
                       </form>
+                      <button  onclick="postMessage({{id}},'{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}')" class="btn btn-primary">Envoyer</button>
         
         </div>
-        
+        @endif       
 </div>
+
 
 
 
       {{ script('js/announcement/profile_Messages') }}
       {{ script('js/pagination') }}
+      {{ script('js/dateConverter') }}
 
 
     @if(auth.user)
@@ -94,5 +91,8 @@ Annonces
     @endif
     <script>
     setMessageColor('{{announcement.color}}')
-    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}')</script>
+    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}')
+    
+ 
+                              </script>
        @endsection

@@ -48,7 +48,8 @@ class MessageController {
     }
 
     //fonction qui permet de créer un nouveau message, en paramètre d'uri l'id de l'annonce correspondant au nouveau message (params.id)
-    async store({request, auth,params, response, session}) {
+    async store({request, auth,params, response}) {
+        let result = false;
         try{
             const name_message = request.input("name_message")
             const announcement_id = params.id
@@ -59,17 +60,20 @@ class MessageController {
                 message.announcement_id = params.id
                 message.user_id = (await auth.getUser()).id //pour récuperer l'id de l'utilisateur connecté
                 await message.save()
+                result=true;
 
                 // Quand on a ajouté une nouvelle annonce, l'utilisateur gagne 1 d'experience
                 const user = await auth.getUser()
                 User.incrementUserLevel(user,1)
-                response.redirect('/announcement/'+params.id)
-            }else{
-                throw 'error'
             }
+            return response.json({
+                result : result
+            
+            });
         }catch(error){
-            session.flash({MessageAddError : 'Veuillez attendre 30 secondes entre chaque message'});
-            return response.redirect('/announcement/'+params.id)
+            return response.json({
+                result : result
+            });
         }
 
     }
