@@ -20,8 +20,8 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async handle (error, { request, response, view }) {
- 
+  async handle(error, { request, response, view }) {
+
 
     if (error.name === 'ValidationException') {
       session.withErrors(error.messages).flashAll()
@@ -29,23 +29,23 @@ class ExceptionHandler extends BaseExceptionHandler {
 
     }
     if (error.status == '404') {
-    
+
       return response.redirect('/error/404')
-      
+
     }
     if (error.status == '403') {
-    
+
       return response.redirect('/error/403')
     }
     if (error.status == '401') {
-    
+
       return response.redirect('/error/401')
     }
     if (error.status == '500') {
-    
+
       return response.redirect('/error/500')
     }
-   // response.redirect('/')
+    // response.redirect('/')
 
     response.status(error.status).send(error.message)
   }
@@ -60,7 +60,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async report (error, { request }) {
+  async report(error, { request }) {
   }
 }
 

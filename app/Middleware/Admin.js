@@ -9,16 +9,16 @@ class Admin {
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle ({ request,auth,response }, next) {
-    try{
+  async handle({ auth }, next) {
+    try {
 
-        const user =await auth.getUser()
-        if(user.admin == 1){
-            await next()
-        }else{
-          throw new erreurPerso()
-        }
-    }catch(error){
+      const user = await auth.getUser()
+      if (user.admin == 1) {
+        await next()
+      } else {
+        throw new erreurPerso()
+      }
+    } catch (error) {
       throw new erreurPerso()
     }
   }

@@ -4,7 +4,7 @@ const status = 403
 const code = 'E_NOT_EDITABLE'
 
 class errorQCT extends LogicalException {
-  constructor () {
+  constructor() {
     super(message, status, code)
   }
 }
