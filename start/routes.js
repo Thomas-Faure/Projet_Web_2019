@@ -18,24 +18,35 @@ const User = use('App/Models/User')
 const Route = use('Route');
 
 
-/**  LES ROUTES VERS INDEX  */
+/**  LES ROUTES VERS INDEX
+ * 
+ *  Route menant vers la page d'accueil du site
+ * 
+  */
 Route.on('/').render('index')
-Route.get('ranking', 'IndexController.ranking').middleware(['auth'])
+
+Route.get('ranking', 'IndexController.ranking').middleware(['auth']) //chemin vers le classement des utilisateurs
 
 
-/**                 PARTIE UTILISATEUR                                     */
+/**                 PARTIE UTILISATEUR 
+ * 
+ * 
+ * Permet d'acceder aux fonctionnalités utilisateurs
+ * 
+ * 
+****/
 Route
   .group(() => {
     Route.get('', 'UserController.index').middleware(['auth'])
     Route.on('login').render('user.login').middleware(['guest'])
-    Route.post('login', 'UserController.login').validator('LogUser');
+    Route.post('login', 'UserController.login').validator('LogUser')
 
     Route.get(':id/edit', 'UserController.edit').middleware(['auth'])
-    Route.put(':id/edit', 'UserController.update').validator('EditUser');
-    Route.get(':id/getannouncements', 'UserController.getAnnouncements').middleware(['auth'])
-    Route.get(':id/announcements', 'UserController.announcements').middleware(['auth'])
+    Route.put(':id/edit', 'UserController.update').validator('EditUser')
+    Route.get(':id/getannouncements', 'UserController.getAnnouncements')
+    Route.get(':id/getFiveLastAnnouncements', 'UserController.getFiveLastAnnouncements')
+    Route.get(':id/announcements', 'UserController.announcements')
     Route.get(':id/participation/:cat', async ({ view, params, response, auth }) => {
-
       const user_find = await User.find(params.id)
       if (user_find) {
         if (!(params.cat == "all" || (await Announcement_Category.find(params.cat)))) {
@@ -60,7 +71,12 @@ Route
 
 
 
-/**                 PARTIE NIVEAU                                     */
+/**                 PARTIE NIVEAU 
+ * 
+ * 
+ * Permet d'acceder aux fonctionnalités liées aux niveaux
+ * 
+***/
 
 Route
   .group(() => {
@@ -75,7 +91,12 @@ Route
 
 
 
-/**                 PARTIE announcement                                 */
+/**                 PARTIE announcement 
+ * 
+ * 
+ * Permet d'acceder aux fonctionnalité liées aux annonces
+ * 
+***/
 Route
   .group(() => {
     Route.get('', 'AnnouncementController.index')
@@ -111,7 +132,13 @@ Route
 
 
 
-/**                 PARTIE MESSAGE                                     */
+/**                 PARTIE MESSAGE
+ * 
+ * 
+ *  Permet d'acceder aux fonctionnalités liées aux messages dont ajout/modifcation/suppression
+ * 
+ * 
+***/
 Route
   .group(() => {
     Route.delete(':id/delete', 'MessageController.destroy').middleware(['auth'])
@@ -127,7 +154,13 @@ Route
   })
   .prefix('message')
 
-/**                 PARTIE CATEGORY_ANNOUNCEMENT                                     */
+/**      PARTIE CATEGORY_ANNOUNCEMENT                                     
+ * 
+ * 
+ *  Permet de rediriger vers les editions/ajouts de catégories
+ * 
+ * 
+*/
 
 Route
   .group(() => {
@@ -141,7 +174,13 @@ Route
   })
   .prefix('category')
 
-/**                 PARTIE BACKOFFICE                                     */
+/**   PARTIE BACKOFFICE
+ * 
+ * 
+ * Permet de rediriger vers les fonctionnalités d'aministration
+ * 
+ * 
+ ***/
 
 Route
   .group(() => {
@@ -155,7 +194,13 @@ Route
   })
   .prefix('backoffice')
 
-/**                PARTIE ERREUR */
+/**PARTIE ERREUR
+ * 
+ * Permet de renvoyer vers les pages d'erreurs
+ * 
+ * 
+ *  **/
+/
 Route
   .group(() => {
     Route.on('401').render('error.401');
