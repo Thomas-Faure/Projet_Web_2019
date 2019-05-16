@@ -4,11 +4,13 @@ var objJson;
 var id_user = 0;
 var xhr = new XMLHttpRequest();
 token = 0;
+var admin = false;
 
 //permet de récuperer toutes les annonces d'un utilisateur dont l'id est en paramètre
 //le token CSRF est également en paramètre
-function getAnnouncements(id, token_temp) {
+function getAnnouncements(id, token_temp,admin_temp) {
     id_user = id
+    admin = admin_temp
     token = token_temp
     xhr.open('GET', '/user/' + id_user + '/getAnnouncements'); //GET sur les annonces d'un utilisateur
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -18,7 +20,6 @@ function getAnnouncements(id, token_temp) {
             let value = JSON.parse(xhr.responseText);
             objJson = value.valeur;
             if (objJson.length > 0) {
-                console.log(value.valeur);
                 changePage(1);
             } else {
                 document.getElementById("listingTable").innerHTML = '<p class="aucune-annonce">aucune annonce</p>'
@@ -52,7 +53,7 @@ function changePage(page) {
 
                 let date_converted = date_converter(objJson[i].created_at)
 
-                listing_table.innerHTML += '<div id="' + objJson[i].id_announcement + '_row"><div class ="card-style">Action:  <a class="btn btn-danger" onclick="delete_id(' + objJson[i].id_announcement + ',' + i + ')"role="button"><i class="fas fa-trash-alt"></i></a>  <a href="/announcement/' + objJson[i].id_announcement + '/edit"class="btn btn-info" role="button"><i class="fas fa-cog"></i></a></div><a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none">' +
+                listing_table.innerHTML += '<div id="' + objJson[i].id_announcement + '_row"><div class ="card-style">'+(admin == true ? 'Action:  <a class="btn btn-danger" onclick="delete_id(' + objJson[i].id_announcement + ',' + i + ')"role="button"><i class="fas fa-trash-alt"></i></a>  <a href="/announcement/' + objJson[i].id_announcement + '/edit"class="btn btn-info" role="button"><i class="fas fa-cog"></i></a>': 'Annonce : '+i)+'</div><a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none">'+
                     '      <div class="annonce-container" style="background: ' + objJson[i].color + '">' +
                     '        <div class="blank">' +
                     '            <img src="/img/' + objJson[i].image + '" style="width: 100%;height:auto;"/>' +

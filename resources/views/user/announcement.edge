@@ -4,7 +4,7 @@ User
 @endsection
 @section('content')
 
-<h1>Mes annonces ! </h1>
+<h1>Les annonces :</h1>
 <div id="listingTable"></div>
 <p style="text-align:center">page: <span id="page"></span></p>
 <nav class="page-pagination" aria-label="Page navigation example">
@@ -20,7 +20,7 @@ User
       {{ script('js/pagination') }}
       {{ script('js/dateConverter') }}
 <script>
-getAnnouncements('{{id}}','{{ csrfToken }}')</script>
+getAnnouncements('{{id}}','{{ csrfToken }}',{{admin}})</script>
 @endsection
 
 
