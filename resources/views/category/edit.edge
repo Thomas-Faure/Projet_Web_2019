@@ -19,6 +19,7 @@ Catégorie
         <div class="card-body">
                 <form action="/category/{{ category.id_category_announcement }}/edit/?_method=PUT" method="POST" action="upload" enctype="multipart/form-data">
                         {{ csrfField() }}
+                        
                         <div class="form-group">
                                 <label for="name_category">Nom Categorie</label>
                 

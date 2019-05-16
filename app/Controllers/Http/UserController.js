@@ -277,6 +277,7 @@ class UserController {
     //permet à un utilisateur de se connecter
     async login({request, auth, response,session}) {
 
+
         let {email, password} = request.all();
 
         try {
@@ -284,6 +285,7 @@ class UserController {
             if (await auth.attempt(email, password)) {
                 let user = await User.findBy('email', email)
                let token = await auth.generate(user)
+               console.log(token);
                 response.cookie('Authorization', token,{ httpOnly: true, path: '/' })
 
                 response.redirect('/')

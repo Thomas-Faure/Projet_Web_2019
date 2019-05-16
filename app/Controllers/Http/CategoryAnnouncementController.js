@@ -26,11 +26,12 @@ class CategoryAnnouncementController {
             if(category.image !="default.png"){
             const fs = Helpers.promisify(require('fs'))
             await fs.unlink('public/img/'+category.image)
+            console.log("on supprime l'image")
             category.image="default.png"
             }
 
         }
-        category.save()
+        
         if(request.file('image') != null){ //on a une image à mettre
             const file = request.file('image', {
                 types: ['image'],
@@ -47,12 +48,14 @@ class CategoryAnnouncementController {
                 session.flash({addCategoryError : 'Inserer, mais:  Erreur, le fichier n\'est pas un image'});
                 return response.redirect('/category/store')
             }
-            category.image = fileName;
-            await category.save();
+            console.log("on met la nouvelle image")
+            category.image=fileName
+
             
         }
 
         }
+        await category.save()
         }
         return response.redirect('/backoffice/category')
 

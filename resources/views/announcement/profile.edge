@@ -16,7 +16,7 @@ Annonces
 <div>
         <div id="annonce-page-annonce" style="background: {{announcement.color}}">
                 <div id="annonce-page-annonce-logo">
-                    <img src="{{ assetsUrl('img/'+announcement.image) }}" style=""/>
+                    <img style="width:10%;height:10%"src="{{ assetsUrl('img/'+announcement.image) }}" style=""/>
                 </div>
                 <div id="annonce-page-annonce-content">
                   <h3 id="annonce-page-annonce-title">{{announcement.name_announcement}}</h3>
@@ -26,7 +26,10 @@ Annonces
                     <a onclick="decrementValueA({{announcement.id_announcement}},'{{ csrfToken }}')"><i class="fas fa-minus-square annonce-page-annonce-note-el"></i></a>
                     <span class="annonce-page-annonce-note-el" id="{{announcement.id_announcement}}_announcement"> {{announce_note}} </span>
                     <a onClick="incrementValueA({{announcement.id_announcement}},'{{ csrfToken }}')"><i class="fas fa-plus-square annonce-page-annonce-note-el"></i></a></p>
-                  <p id="annonce-page-annonce-date">{{announcement.created_at}}</p>
+                    @if(auth.user.id == announcement.id || auth.user.admin ==1)
+                    <p id="annonce-page-annonce-delete"><a class="btn btn-warning" onclick="delete_announcement({{announcement.id_announcement}})" role="button"><i class="fas fa-trash"></i></a></p>
+                    @endif
+                    <p id="annonce-page-annonce-date">{{announcement.created_at}}</p>
                 </div>
         </div>
 
@@ -78,9 +81,6 @@ Annonces
         @endif       
 </div>
 
-
-
-
       {{ script('js/announcement/profile_Messages') }}
       {{ script('js/pagination') }}
       {{ script('js/dateConverter') }}
@@ -91,8 +91,7 @@ Annonces
     @endif
     <script>
     setMessageColor('{{announcement.color}}')
-    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}')
-    
+    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}','{{auth.user.admin}}')
  
                               </script>
        @endsection
