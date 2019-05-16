@@ -225,7 +225,7 @@ class AnnouncementController {
        " join level on users.level_id=level.id_level"+
         " left join message_votes on message.id_message=message_votes.message_id"+
         " where message.announcement_id=?"+
-        " group by users.admin,users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message desc",[params.id])
+        " group by users.admin,users.id,id_message,message.announcement_id,message.created_at,name_message,username order by id_message asc",[params.id])
         
     
         return response.json({
