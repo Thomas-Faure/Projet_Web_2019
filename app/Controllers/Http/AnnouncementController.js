@@ -6,6 +6,7 @@ const Announcement_votes = use('App/Models/Announcement_votes')
 const Announcement_Category = use('App/Models/Category')
 const User = use('App/Models/User')
 const Database = use('Database')
+const erreurPerso = use('App/Exceptions/CustomException')
 
 class AnnouncementController {
 
@@ -138,7 +139,7 @@ class AnnouncementController {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Not found",404,"E_ROUTE")
             }
         }
     }

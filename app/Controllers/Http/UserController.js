@@ -2,7 +2,7 @@
 const User = use('App/Models/User')
 const Level = use('App/Models/Niveau')
 const Database = use('Database')
-const erreurPerso = use('App/Exceptions/errorQCT')
+const erreurPerso = use('App/Exceptions/CustomException')
 
 class UserController {
 
@@ -69,7 +69,12 @@ class UserController {
                 return response.redirect('/user/' + user.id + '/edit/')
             }
         } else {
-            try { throw new erreurPerso() } catch (e) { }
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Forbiden",403,"E_FORBIDEN")
+            
+            }
         }
     }
 
@@ -79,24 +84,24 @@ class UserController {
         const user = await User.find(params.id)
         if (user) {
             //on récupères ses 5 dernieres annonces
-            const announcements = await Database
-                .raw('select a.id_announcement as id,u.username as username,'+
-                'a.name_announcement as name_announcement,c.color as color,c.image as image from announcement a join category_announcement c'+
-                ' on a.category_id = c.id_category_announcement join users u on u.id=a.user_id where u.id=?  '+
-                'order by a.id_announcement desc limit  ?', [user.id, 5])
+            
             const level = await Level.query()
-            .select('level.color', 'level.name')
-            .innerJoin('users', 'users.level_id', 'level.id_level')
-            .where('users.id', params.id)
-            .first()
+                .select('level.color', 'level.name')
+                .innerJoin('users', 'users.level_id', 'level.id_level')
+                .where('users.id', params.id)
+                .first()
             //on transforme la date
             var date = new Date(user.birthday),
                 mnth = ("0" + (date.getMonth() + 1)).slice(-2),
                 day = ("0" + date.getDate()).slice(-2);
             user.birthday = [day, mnth, date.getFullYear()].join("-");
-            return view.render('user.profile', { user: user.toJSON(), announcements: announcements[0], level: level.toJSON() })
+            return view.render('user.profile', { user: user.toJSON(), level: level.toJSON() })
         } else {
-            return response.redirect('back')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Not found",404,"E_ROUTE")
+            }
         }
     }
 
@@ -108,7 +113,11 @@ class UserController {
                 users.toJSON()
             );
         } else {
-            response.redirect('/')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+            }
         }
     }
 
@@ -116,8 +125,8 @@ class UserController {
     //permet de récuperer toutes les annonces dans lesquels un utilisateur a participé (pas les siennes)
     async participation_category({ params, request, response }) {
         if (request.ajax()) {
-            const messages = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,"+
-            "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
+            const messages = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement," +
+                "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
                 " from announcement a" +
                 " join users on users.id=a.user_id" +
                 " join category_announcement c on c.id_category_announcement=a.category_id" +
@@ -130,7 +139,11 @@ class UserController {
             }
             );
         } else {
-            response.redirect('/')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+            }
         }
     }
     //permet de créer un nouvel utilisateur
@@ -167,7 +180,6 @@ class UserController {
                 return response.redirect('/user/register')
             }
             if (password != passwordValidation) {
-                console.log("erreur")
                 throw "error"
             }
             let user = new User()
@@ -182,7 +194,6 @@ class UserController {
             return response.redirect('/')
 
         } catch (error) {
-            console.log(error)
             session.flash({ RegisterError: 'Le mot de passe de confirmation ne correspond pas !' });
             return response.redirect('/user/register')
         }
@@ -194,17 +205,26 @@ class UserController {
         const user_actual = await auth.getUser()
         if (user_actual.id == params.id || user_actual.admin == 1) {
             let user = (await User.find(params.id))
-            var date = new Date(user.birthday),
-                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-                day = ("0" + date.getDate()).slice(-2);
-            user.birthday = [date.getFullYear(), mnth, day].join("-");
+            if(user){
+                var date = new Date(user.birthday),
+                    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                    day = ("0" + date.getDate()).slice(-2);
+                user.birthday = [date.getFullYear(), mnth, day].join("-");
 
-            return view.render('user.edit', { user: user })
+                return view.render('user.edit', { user: user })
+            }else{
+                try {
+                    throw 'error'
+                } catch (e) {
+                    throw new erreurPerso("Not found",404,"E_ROUTE")
+                }
+
+            }
         } else {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
             }
         }
     }
@@ -213,13 +233,46 @@ class UserController {
     //dans cette vue , il y a un appel (Ajax) qui va récuperer toutes les annonces d'un utilisateur qui est passé en paramètre de cette fonction (params.id)
     async announcements({ auth, view, params }) {
         const user = await auth.getUser()
-        if (user.id == params.id) {
-            return view.render('user.announcement', { id: params.id })
+        if (user.id == params.id || user.admin == 1) {
+            return view.render('user.announcement', { id: params.id,admin:true })
+        } else {
+
+            let exist = await User.find(params.id)
+            if(exist){
+            return view.render('user.announcement', { id: params.id,admin:false })
+            }else{
+                try {
+                    throw 'error'
+                } catch (e) {
+                    throw new erreurPerso("NOT FOUND",404,"E_ROUTE")
+                }
+            }
+        }
+    }
+
+    //permet de récuperer les annonces qu'un utilisateur à posté (son id est passé en paramètre d'uri (params.id))
+    async getFiveLastAnnouncements({ request, auth, response, params }) {
+        if (request.ajax()) {
+                try {
+                    const announcements = await Database
+                    .raw('select a.created_at,a.id_announcement as id,u.username as username,' +
+                        'a.name_announcement as name_announcement,c.color as color,c.image as image,sum(COALESCE(av.vote, 0)) as note from announcement a join category_announcement c' +
+                        ' on a.category_id = c.id_category_announcement join users u on u.id=a.user_id ' +
+                        'left join announcement_votes av on av.announcement_id=a.id_announcement where u.id=? '+
+                        'group by a.created_at,a.id_announcement,u.username,a.name_announcement,c.color,c.image '+
+                        'order by a.id_announcement desc limit  ?', [params.id, 5])
+                    return response.json({
+                        valeur: announcements[0]
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
+            
         } else {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
             }
         }
     }
@@ -227,11 +280,9 @@ class UserController {
     //permet de récuperer les annonces qu'un utilisateur à posté (son id est passé en paramètre d'uri (params.id))
     async getAnnouncements({ request, auth, response, params }) {
         if (request.ajax()) {
-            const user = await auth.getUser()
-            if (user.id == params.id) {
                 try {
-                    const announcements = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement,"+
-                    "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
+                    const announcements = await Database.raw("select a.id_announcement,users.username,a.created_at,a.name_announcement," +
+                        "c.image,c.color,sum(COALESCE(vote, 0)) as note" +
                         " from announcement a" +
                         " join users on users.id=a.user_id" +
                         " join category_announcement c on c.id_category_announcement=a.category_id" +
@@ -245,12 +296,12 @@ class UserController {
                 } catch (e) {
                     console.log(e)
                 }
-            }
+            
         } else {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
             }
         }
     }
@@ -266,7 +317,6 @@ class UserController {
             if (await auth.attempt(email, password)) {
                 let user = await User.findBy('email', email)
                 let token = await auth.generate(user)
-                console.log(token);
                 response.cookie('Authorization', token, { httpOnly: true, path: '/' }) //Création du cookie qui va servie pour l'authentification
                 response.redirect('/')
             }

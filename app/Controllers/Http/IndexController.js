@@ -12,7 +12,6 @@ class IndexController {
     async ranking({ view }) {
         const classement = await Database
             .raw('select id,level.name,level.color,username,exp,level_id,(exp+(100*level_id)) as points from users join level on level.id_level=users.level_id order by points desc limit 10', [])
-        console.log(classement[0])
         return view.render('ranking', { rank: classement[0] })
     }
 

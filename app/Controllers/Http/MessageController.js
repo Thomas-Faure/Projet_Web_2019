@@ -5,7 +5,7 @@ const Announcement = use('App/Models/Announcement')
 const Message_votes = use('App/Models/Message_votes')
 const User = use('App/Models/User')
 const Database = use('Database')
-const erreurPerso = use('App/Exceptions/errorQCT')
+const erreurPerso = use('App/Exceptions/CustomException')
 
 
 class MessageController {
@@ -36,7 +36,11 @@ class MessageController {
                 messages.toJSON()
             );
         } else {
-            response.redirect('/')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+            }
         }
     }
     //fonction qui permet de créer un nouveau message, en paramètre d'uri l'id de l'annonce correspondant au nouveau message (params.id)
@@ -78,7 +82,7 @@ class MessageController {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Not found",404,"E_ROUTE")
             }
         }
     }
@@ -95,7 +99,7 @@ class MessageController {
             try {
                 throw 'error'
             } catch (e) {
-                throw new erreurPerso()
+                throw new erreurPerso("Not found",404,"E_ROUTE")
             }
         }
 

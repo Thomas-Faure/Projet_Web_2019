@@ -1,16 +1,18 @@
 'use strict'
 const Niveau = use('App/Models/Niveau')
-
-
+const erreurPerso = use('App/Exceptions/CustomException')
 class NiveauController {
-
     //permet de génerer la page pour modifier un niveau déja existant
-    async edit({ params, response, view}) {
+    async edit({ params, view,response}) {
         let niveau = (await Niveau.find(params.id))
         if (niveau) {
             return view.render('level.edit', { niveau: niveau, 'id': params.id })
         } else {
-            response.redirect('back')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Not found",404,"E_ROUTE")
+            }
         }
     }
     //retourne tout les niveaux existants
@@ -28,7 +30,6 @@ class NiveauController {
     //cette fonction redirige vers le backoffice des niveaux après modification
     async update({ params, request, response, session }) {
         try {
-            console.log("je suis dedans")
             const name = request.input('name')
             const color = request.input('color')
             let level = await Niveau.find(params.id)

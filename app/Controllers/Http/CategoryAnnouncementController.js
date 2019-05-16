@@ -3,6 +3,7 @@
 //les modèles
 const Category = use('App/Models/Category')
 const Helpers = use('Helpers')
+const erreurPerso = use('App/Exceptions/CustomException')
 
 
 class CategoryAnnouncementController {
@@ -21,7 +22,7 @@ class CategoryAnnouncementController {
                 if (category.image != "default.png") {
                     const fs = Helpers.promisify(require('fs'))
                     await fs.unlink('public/img/' + category.image)
-                    console.log("on supprime l'image")
+                
                     category.image = "default.png"
                 }
 
@@ -43,7 +44,6 @@ class CategoryAnnouncementController {
                         session.flash({ addCategoryError: 'Inserer, mais:  Erreur, le fichier n\'est pas un image' });
                         return response.redirect('/category/store')
                     }
-                    console.log("on met la nouvelle image")
                     category.image = fileName
                 }
             }
@@ -59,7 +59,11 @@ class CategoryAnnouncementController {
 
             return view.render('category.edit', { category: category })
         } else {
-            response.redirect('back')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Not found",404,"E_ROUTE")
+            }
         }
     }
     //permet de récuperer toutes les catégories
@@ -71,7 +75,11 @@ class CategoryAnnouncementController {
             }
             );
         } else {
-            response.redirect('/')
+            try {
+                throw 'error'
+            } catch (e) {
+                throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+            }
         }
     }
 

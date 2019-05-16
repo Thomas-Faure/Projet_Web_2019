@@ -12,8 +12,6 @@ class BackOfficeController {
     }
     //permet d'envoyer l'utilisareur sur la vue qui va afficher via une requête (Ajax) les messages correspondant à une annonce passé en paramètre d'uri (params.id)
     async messages({ view, params }) {
-
-        console.log("test")
         return view.render('backoffice.message', { id: params.id })
     }
 
