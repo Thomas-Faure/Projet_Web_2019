@@ -13,41 +13,37 @@ User
                                 </div>
                
                         <div style="text-align: center">
+                                @if(auth.user)
                                  @if(user.id == auth.user.id)
                                 <a class="btn btn-danger" href="/user/{{user.id}}/edit" role="button">Modifier mes informations</a>
                                 <a class="btn btn-info" href="/user/{{user.id}}/participation/all" role="button">Mes participations</a>
                                 <a class="btn btn-info" href="/user/{{user.id}}/announcements/" role="button">Mes annonces</a>
                                 @else
                                 <a class="btn btn-info" href="/user/{{user.id}}/participation/all" role="button">Ses participations</a>
+                                <a class="btn btn-info" href="/user/{{user.id}}/announcements/" role="button">Ses annonces</a>
                                 @endif
-                        </div>
+                                @endif
+                        
                
                         <p class="card-text user-profile-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
                         <p class="card-text user-profile-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
                         <p class="card-text user-profile-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
                         <p class="card-text user-profile-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.level_id}} (<span>{{level.name}}</span>)</p>
                         <p class="card-text user-profile-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
-                
+                        </div>
                 </div>
         </div>
         <div class ="card-style">5 derniers postes:</div>
-        <div class="card" style="">
-      @each(announcement in announcements)
-      <a href="/announcement/{{announcement.id}}" style="text-decoration: none">
-      <div class="annonce-container" style="background: {{announcement.color}}">
-        <div class="blank">
-            <img src="{{ assetsUrl('img/'+announcement.image) }}" style="width: 100%;height:auto;"/>
-        </div>
-        <div>
-          <p><span id="user-profile-announcement-username">{{announcement.username}} (<span style="color:black">+0</span>)</span></p>
-          <p id="user-profile-announcement-name">{{announcement.name_announcement}}</p>
-          <p style="font-size: 12px;color:black">09/05/2019</p>
-        </div>
-    </div>
-  </a>
-    @endeach
+        <div class="card" style="" id="5last">
+ 
         </div>
 
 
 </div>
+{{ script('js/dateConverter') }}
+{{ script('js/user/lastFivePosts')}}
+<script>
+getAnnouncements({{user.id}},'{{ csrfToken }}')
+
+</script>
 @endsection
