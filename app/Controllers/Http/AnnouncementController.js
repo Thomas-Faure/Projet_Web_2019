@@ -285,6 +285,7 @@ class AnnouncementController {
                     await vote_user.save()
                     //on ajoute 1 à l'experience du créateur
                     User.incrementUserLevel(user_createur_announcement,1)
+                    User.incrementUserLevel (user,1) //on récompense la personne qui vote
                 
                 }
             }
@@ -327,6 +328,7 @@ class AnnouncementController {
                     await vote_user.save()
                     //on enlenve 1 à l'experience du créateur
                     User.decrementUserLevel(user_createur_announcement,1)
+                    User.incrementUserLevel (user,1) //on récompense la personne qui vote
                 
                 }
             }

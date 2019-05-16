@@ -86,7 +86,7 @@ footer{
 .message-note-el{
     color:white;
 }
-.message-date{
+.message-date,.message-delete{
     font-size:10px;
     padding-right:5px;
     display:flex;
@@ -245,7 +245,7 @@ footer{
 
 #main-container{
     padding-top:20px;
-    padding-bottom:40px;
+    padding-bottom:60px;
 }
 
 .annonce-container {

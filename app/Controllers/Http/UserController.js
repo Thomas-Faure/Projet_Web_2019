@@ -272,10 +272,8 @@ class UserController {
     //permet à un utilisateur connecté de se déconnecter
     async logout({response}) {
         response.clearCookie('Authorization')
-      //  response.cookie('Authorization', 1,{ httpOnly: true, path: '/' }) // on enlève le token du cookie
         response.redirect('/')
     }
-
     //permet à un utilisateur de se connecter
     async login({request, auth, response,session}) {
 

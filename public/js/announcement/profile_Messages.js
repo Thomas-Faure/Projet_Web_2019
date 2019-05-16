@@ -67,8 +67,7 @@ function changePage(page)
 '                            <a onClick="decrementValueM('+objJson[i].id_message+','+i+',\''+token+'\')"><i class="fas fa-minus-square message-note-el"></i></a>'+
 '                            <span class="message-note-el" id="'+objJson[i].id_message+'_message">'+objJson[i].note+'</span>'+
 '                            <a onClick="incrementValueM('+objJson[i].id_message+',\''+token+'\')"><i class="fas fa-plus-square message-note-el"></i></a></p>'+
-'                            '+((objJson[i].user_id == userVisitorID) ? '<div class="message-date"><a class="btn btn-warning" onclick="delete_id('+objJson[i].id_message+','+i+')" role="button"><i class="fas fa-trash"></i></a>' : "")+
-'                                </div>     '+
+'                            '+((objJson[i].user_id == userVisitorID) ? '<div class="message-delete"><a class="btn btn-warning" onclick="delete_id('+objJson[i].id_message+','+i+')" role="button"><i class="fas fa-trash"></i></a></div>     ' : "")+
 '                            <div class="message-date">'+
 '                                    '+date_converted+
 '                                </div>     '+

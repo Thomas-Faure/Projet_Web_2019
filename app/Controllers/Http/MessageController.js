@@ -143,31 +143,34 @@ class MessageController {
         const message = await Message.find(message_id)
         if(message){
             const user_createur_message = await User.find(message.user_id)
-            let vote = await Database.from('message_votes').where({ user_id: user.id,message_id: message_id })
-            let voteExist = vote.length
-           // vote =vote[0]['count(`id`)'] //0 si jamais voté avec ce compte
-            if(voteExist >0){//on a deja voté sur ce poste
-               
-                if(!(vote[0]['vote']==1)){//on avait voté -1 la fois précedente
-                    
-                const affectedRows = await Database
-                .table('message_votes')
-                .where({ user_id: user.id,message_id: message_id })
-                .update('vote', 1)
-                //on augmenter l'experience du créateur du message de 2 (on annule le -1 d'avant et on lui donne 1 en plus)
-                User.incrementUserLevel (user_createur_message,2)
-                }
-            }else{//on a jamais voté
+            if(user_createur_message.id != user.id){
+                let vote = await Database.from('message_votes').where({ user_id: user.id,message_id: message_id })
+                let voteExist = vote.length
+            // vote =vote[0]['count(`id`)'] //0 si jamais voté avec ce compte
+                if(voteExist >0){//on a deja voté sur ce poste
                 
-                let vote_user = new Message_votes()
-                vote_user.user_id = user.id
-                vote_user.message_id = message_id
-                vote_user.vote=1
-                await vote_user.save()
+                    if(!(vote[0]['vote']==1)){//on avait voté -1 la fois précedente
+                        
+                    const affectedRows = await Database
+                    .table('message_votes')
+                    .where({ user_id: user.id,message_id: message_id })
+                    .update('vote', 1)
+                    //on augmenter l'experience du créateur du message de 2 (on annule le -1 d'avant et on lui donne 1 en plus)
+                    User.incrementUserLevel (user_createur_message,2)
+                    }
+                }else{//on a jamais voté
+                    
+                    let vote_user = new Message_votes()
+                    vote_user.user_id = user.id
+                    vote_user.message_id = message_id
+                    vote_user.vote=1
+                    await vote_user.save()
 
-                //on augmenter l'experience du créateur du message de 1
-                User.incrementUserLevel (user_createur_message,1)
-               
+                    //on augmenter l'experience du créateur du message de 1
+                    User.incrementUserLevel (user_createur_message,1)
+                    User.incrementUserLevel (user,1) //on récompense la personne qui vote
+                
+                }
             }
             
         }
@@ -185,28 +188,31 @@ class MessageController {
         const message = await Message.find(message_id)
         if(message){
             const user_createur_message = await User.find(message.user_id)
-            let vote = await Database.from('message_votes').where({ user_id: user.id,message_id: message_id })
-            let voteExist = vote.length
-            if(voteExist >0){//on a deja voté
-             
-                if(!(vote[0]['vote']==-1)){//on avait voté +1 la première fois
-                   
-                const affectedRows = await Database
-                .table('message_votes')
-                .where({ user_id: user.id,message_id: message_id })
-                .update('vote', -1)
-                //on enleve l'experience du créateur du message de 2 (on annule le +1 d'avant et on lui enleve 1 en plus)
-                User.decrementUserLevel (user_createur_message,2)
+            if(user_createur_message.id != user.id){
+                let vote = await Database.from('message_votes').where({ user_id: user.id,message_id: message_id })
+                let voteExist = vote.length
+                if(voteExist >0){//on a deja voté
+                
+                    if(!(vote[0]['vote']==-1)){//on avait voté +1 la première fois
+                    
+                    const affectedRows = await Database
+                    .table('message_votes')
+                    .where({ user_id: user.id,message_id: message_id })
+                    .update('vote', -1)
+                    //on enleve l'experience du créateur du message de 2 (on annule le +1 d'avant et on lui enleve 1 en plus)
+                    User.decrementUserLevel (user_createur_message,2)
+                    }
+                }else{//on a jamais voté
+                
+                    let vote_user = new Message_votes()
+                    vote_user.user_id = user.id
+                    vote_user.message_id = message_id
+                    vote_user.vote=-1
+                    await vote_user.save()
+                    //on enleve 1 experience au créateur du message
+                    User.decrementUserLevel (user_createur_message,1)
+                    User.incrementUserLevel (user,1) //on récompense la personne qui vote
                 }
-            }else{//on a jamais voté
-               
-                let vote_user = new Message_votes()
-                vote_user.user_id = user.id
-                vote_user.message_id = message_id
-                vote_user.vote=-1
-                await vote_user.save()
-                //on enleve 1 experience au créateur du message
-                User.decrementUserLevel (user_createur_message,1)
             }
             
         }
