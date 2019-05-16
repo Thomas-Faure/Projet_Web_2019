@@ -35,9 +35,9 @@ class User extends Model {
   }
   static incrementUserLevel (user,valeur) {
     let new_exp= user.exp+valeur;
-    if(new_exp >= (user.niveau_id*10)){ 
-         user.exp = new_exp-(user.niveau_id*10)
-         user.niveau_id= user.niveau_id+1
+    if(new_exp >= (user.level_id*10)){ 
+         user.exp = new_exp-(user.level_id*10)
+         user.level_id= user.level_id+1
     }else{
           user.exp = new_exp
     }
@@ -47,13 +47,13 @@ class User extends Model {
   static decrementUserLevel (user,valeur) {
     let new_lvl= user.exp-valeur;
     if(new_lvl < 0){
-        if(user.niveau_id==0){
-          user.niveau_id=0
+        if(user.level_id==0){
+          user.level_id=0
           user.exp=0
         }else{
-         let new_niveau = user.niveau_id-1
-         user.niveau_id = new_niveau
-         user.exp = (new_niveau*10)+new_lvl
+         let new_level = user.level_id-1
+         user.level_id = new_level
+         user.exp = (new_level*10)+new_lvl
         }
          
     }else{
