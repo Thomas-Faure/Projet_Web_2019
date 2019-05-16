@@ -22,7 +22,8 @@ class ExceptionHandler extends BaseExceptionHandler {
    */
   async handle(error, { request, response, view }) {
 
-
+  
+  
     if (error.name === 'ValidationException') {
       session.withErrors(error.messages).flashAll()
       await session.commit()

@@ -9,6 +9,8 @@ class Auth {
    * @param {Request} ctx.request
    * @param {Function} next
    */
+
+  //permet d'envoyer dans le Header le token si l'utlisateur à stocké ce dernier dans ses cookies
   async handle({ request }, next) {
     //on récupere le cookie
     const token = request.cookie('Authorization')

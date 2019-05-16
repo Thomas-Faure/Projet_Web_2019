@@ -2,25 +2,27 @@
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
-const erreurPerso = use('App/Exceptions/errorQCT')
+const erreurPerso = use('App/Exceptions/CustomException')
 class Admin {
   /**
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle({ auth }, next) {
-    try {
 
+  //permet de vérifier si un utlisateur est administrateur
+  async handle({ auth,response }, next) {
+    
+      
       const user = await auth.getUser()
       if (user.admin == 1) {
         await next()
       } else {
-        throw new erreurPerso()
+        try {throw 'error'}catch(e){
+          throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+        }
       }
-    } catch (error) {
-      throw new erreurPerso()
-    }
+    
   }
 }
 module.exports = Admin
