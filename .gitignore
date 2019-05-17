@@ -16,3 +16,4 @@ database/development.sqlite
 .idea
 *.png
 *.ico
+public/img/cat4.png
