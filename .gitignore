@@ -17,3 +17,4 @@ database/development.sqlite
 *.png
 *.ico
 public/img/cat4.png
+*.png
