@@ -10,6 +10,20 @@ Accueil
                 </span>
             </div>
 @endif
+@if(flashMessage('LogoutSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('LogoutSuccess') }}
+                </span>
+            </div>
+@endif
+@if(flashMessage('LoginSuccess'))
+            <div class='form-success-general'>
+                <span>
+                        <i class="far fa-check-circle"></i>  {{ flashMessage('LoginSuccess') }}
+                </span>
+            </div>
+@endif
 <div class ="card-style">Infos</div>
 <div class="card">
       
@@ -17,11 +31,11 @@ Accueil
             <h5 class="card-title">Bienvenue sur Ad Sharing</h5>
             <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">A quoi je sers ?</h5>
+                  <h5 class="card-title">Le principe:</h5>
                   <h6 class="card-subtitle mb-2 text-muted">09/05/2019</h6>
-                  <p class="card-text"><strong>Ad Share</strong> te permet de partager tes informations avec le reste de la communauté.
-                    <br>Tu as le choix entre divers type d'annonces qui sont mis à ta disposition.
-                    <br>Si un message/annonce te plait, n'hésite pas à voter pour ce dernier !</p>
+                  <p class="card-text"><strong>Ad Sharing</strong> te permet de partager tes informations avec le reste de la communauté.
+                    <br>Tu as le choix entre divers types d'annonces qui sont mis à ta disposition.
+                    <br>Si un message/annonce te plaît, n'hésite pas à voter pour ce dernier !</p>
                  
 
                 </div>
