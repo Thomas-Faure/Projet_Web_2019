@@ -278,23 +278,33 @@ class MessageController {
 
     //permet de supprimer un message , l'id du message est en paramètre d'uri (params.id)
     async destroy({ params, response, auth }) {
-        let resultat = "non supprimé"
-
+     
+        let result = false
+       
         const user = await auth.getUser();
         const message = await Message.find(params.id)
         if (message) {
 
             if (message.user_id == user.id || user.admin == 1) {
-                resultat = "supprimé"
+                result = true
                 await message.delete()
+                let message_owner;
+                if(message.user_id == user.id){
+                    message_owner = user;
+                }else{
+                    message_owner = await User.find(message.user_id)
+                }
+                User.decrementUserLevel(message_owner,1)
+
             }
         } else { //l'annonce n'existe plus (cas ou une personne demande la suppression alors qu'une autre l'a demandé juste avant)
-            resultat = "supprimé" //on dit donc à l'utlisateur qu'il peut supprimer de sa balise HTML l'element qui n'est donc plus existant
+            result = true //on dit donc à l'utlisateur qu'il peut supprimer de sa balise HTML l'element qui n'est donc plus existant
         }
         return response.json({
-            valeur: resultat
+            valeur: result
 
         })
+   
 
     }
 

@@ -353,14 +353,14 @@ class UserController {
 
     //fonction qui permet de supprimer un utilsiateur
     async destroy({ params, response }) {
-        let resultat = "non supprimé"
+        let result = false
         const user = await User.find(params.id)
         if (user) {
-            resultat = "supprimé"
+            result = true
             await user.delete()
         }
         return response.json({
-            valeur: resultat
+            valeur: result
         })
 
     }

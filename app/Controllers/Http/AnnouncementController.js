@@ -412,16 +412,23 @@ class AnnouncementController {
     //permet de supprimer une annonce dont l'id est passé en paramètre d'uri (params.id)
     async destroy({ params, auth, response }) {
         const user = await auth.getUser()
-        let resultat = "non supprimé"
+        let result = false
         const announcement = await Announcement.find(params.id)
         if (announcement) {
             if (announcement.user_id == user.id || user.admin == 1) {
-                resultat = "supprimé"
+                result = true
                 await announcement.delete()
+                let announcement_owner;
+                if(announcement.user_id == user.id){
+                    announcement_owner = user;
+                }else{
+                    announcement_owner = await User.find(announcement.user_id)
+                }
+                User.decrementUserLevel(announcement_owner,1)
             }
         }
         return response.json({
-            valeur: resultat
+            valeur: result
         })
 
     }

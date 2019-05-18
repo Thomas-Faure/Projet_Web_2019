@@ -177,22 +177,22 @@ class CategoryAnnouncementController {
     */
     //permet de supprimer un message , l'id du message est en paramètre d'uri (params.id)
     async destroy({ params, response, auth }) {
-        let resultat = "non supprimé"
+        let result = false
         try {
             const user = await auth.getUser();
             const category = await Category.find(params.id)
             if (category) {
                 if (user.admin == 1) {
-                    resultat = "supprimé"
+                    result = true
                     await category.delete()
                 }
             } else { //l'annonce n'existe plus (cas ou une personne demande la suppression alors qu'une autre l'a demandé juste avant)
                 if (user.admin == 1) {
-                    resultat = "supprimé" //on dit donc à l'utlisateur qu'il peut supprimer de sa balise HTML l'element qui n'est donc plus existant
+                    result = true //on dit donc à l'utlisateur qu'il peut supprimer de sa balise HTML l'element qui n'est donc plus existant
                 }
             }
             return response.json({
-                valeur: resultat
+                valeur: result
 
             })
         } catch (e) {
