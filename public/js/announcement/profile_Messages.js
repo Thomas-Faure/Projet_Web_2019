@@ -178,7 +178,7 @@ function postMessage(id, token, id_announcement, auth_id) {
             } else {
                 document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
                     '<span>' +
-                    '<i class="fas fa-exclamation-triangle"></i>Vous devez attendre avant denvoyer un nouveau message' +
+                    '<i class="fas fa-exclamation-triangle"></i>' +value.returnMessage+
                     '</span>' +
                     '</div>';
             }

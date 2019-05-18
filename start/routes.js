@@ -56,7 +56,7 @@ Route
 
         return view.render('user.participation', { id: params.id, cat: params.cat, categorys: categorys.toJSON() })
       }
-    })
+    }).middleware(['auth'])
 
     Route.delete(':id/delete', 'UserController.destroy').middleware(['admin'])
 
@@ -170,6 +170,8 @@ Route
 
     Route.on('store').render('category.store').middleware(['admin'])
     Route.post('store', 'CategoryAnnouncementController.store').middleware(['admin']).validator('AddCategory')
+    
+    Route.delete(':id/delete', 'CategoryAnnouncementController.destroy').middleware(['admin'])
 
   })
   .prefix('category')

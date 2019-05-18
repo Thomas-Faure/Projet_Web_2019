@@ -6,10 +6,10 @@ Level
 
 @section('content')
 
-@if(flashMessage('addCategoryError'))
+@if(flashMessage('LevelError'))
 <div class='form-error-general'>
         <span>
-                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('addCategoryError') }}
+                <i class="fas fa-exclamation-triangle"></i>  {{ flashMessage('LevelError') }}
         </span>
     </div>
  
@@ -20,11 +20,23 @@ Level
         <div class="card-body">
                 <form action="{{ route('NiveauController.store') }}" method="POST">
                         {{ csrfField() }}
-                       
+
+                
+                        <div class="form-group">
+                                <label for="level">id Niveau</label>
+                                <input type="text" id="level" name="id_level" class="form-control" value="{{old('id_level','') }}"\>
+                                @if(hasErrorFor('id_level'))
+                                <div class='form-error-specific'>
+                                        <span>
+                                                <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('id_level') }}
+                                        </span>
+                                </div>
+                                @endif
+                        </div>
                         <div class="form-group">
                                 <label for="name">Nom niveau</label>
                 
-                                <input type="text" id="name" name="name" class="form-control" value="{{old('name', niveau.name) }}"\>
+                                <input type="text" id="name" name="name" class="form-control" value="{{old('name','') }}"\>
                                 @if(hasErrorFor('name'))
                                 <div class='form-error-specific'>
                                         <span>
@@ -36,7 +48,7 @@ Level
                         <div class="form-group">
                                 <label for="color">Couleur</label>
                 
-                                <input type="text" id="color" name="color" class="form-control" value="{{old('color', niveau.color) }}"\>
+                                <input type="text" id="color" name="color" class="form-control" value="{{old('color', '') }}"\>
                                 @if(hasErrorFor('color'))
                                 <div class='form-error-specific'>
                                         <span>
