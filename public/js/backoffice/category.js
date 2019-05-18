@@ -36,7 +36,6 @@ xhr.send();
 //fonction qui permet de supprimer une catégorie via une requete ajax
 //id de la catégorie est en paramètre
 function delete_id(id) {
-    var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
@@ -46,8 +45,8 @@ function delete_id(id) {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
-                if (resultat == "supprimé") {
+                result = value.valeur;
+                if (result == true) {
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }

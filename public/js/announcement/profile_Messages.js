@@ -112,12 +112,12 @@ function delete_message(id, elid) {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
                 resultat = value.valeur;
-                if (resultat == "supprimé") {
-                    var elem = document.getElementById("div-message-" + id);
-                    elem.parentNode.removeChild(elem);
-                    objJson = arrayRemove(objJson, objJson[elid])
-                    changePage(page_actuel);
-                }
+               
+                var elem = document.getElementById("div-message-" + id);
+                elem.parentNode.removeChild(elem);
+                objJson = arrayRemove(objJson, objJson[elid])
+                changePage(page_actuel);
+                
             }
             else {
                 alert('Request failed.  Returned status of ' + xhr.status);
@@ -140,11 +140,9 @@ function delete_announcement(id) {
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.onload = function () {
             if (xhr.status === 200) {
-                let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
-                if (resultat == "supprimé") {
-                    window.location.href = "/announcement/category/all";
-                }
+ 
+                window.location.href = "/announcement/category/all";
+              
 
             }
             else {

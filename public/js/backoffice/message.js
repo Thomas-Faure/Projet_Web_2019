@@ -10,7 +10,6 @@ function setTokenAndId(token_temp, id_temp) {
 
 //permet de supprimer un message dont l'id est placé en paramètre
 function delete_id(id) {
-    var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
@@ -20,9 +19,9 @@ function delete_id(id) {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
+                result = value.valeur;
 
-                if (resultat == "supprimé") {
+                if (result == true) {
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }

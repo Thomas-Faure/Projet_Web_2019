@@ -10,7 +10,6 @@ var objJson; //tableau d'annonce
 //fonction qui permet de supprimer une annonce via une requete ajax
 //id de l'annonce est en paramètre
 function delete_id(id) {
-    var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
@@ -20,9 +19,9 @@ function delete_id(id) {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
+                result = value.valeur;
 
-                if (resultat == "supprimé") {
+                if (result == true ||result == false) { //double verification
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }

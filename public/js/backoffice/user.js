@@ -7,7 +7,6 @@ function setToken(token_temp) {
 //permet de supprimer un utilisateur
 //l'id de l'utlilisateur à supprimé est le paramètre
 function delete_id(id) {
-    var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
@@ -17,8 +16,8 @@ function delete_id(id) {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
-                if (resultat == "supprimé") {
+                result = value.valeur;
+                if (result == true ||result == false) { //pour verfier qu'on a bien recu un retour
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }
