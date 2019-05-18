@@ -12,8 +12,8 @@ class AddAnnouncement {
   get messages(){
     return{
       'required' : ' Il faut remplir le champs..',
-      'max' : 'Nombre de caractère autorisé dépassé',
-      'min' : 'Nombre de caractère doit être supérieur'
+      'max' : 'Nombre de caractères autorisé dépassé',
+      'min' : 'Nombre de caractères doit être supérieur'
     }
   }
   async fails(error){

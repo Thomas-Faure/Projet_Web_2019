@@ -3,6 +3,7 @@
 class AddAnnouncement {
   get rules () {
     return {
+      'id_level': 'required|unique:level|integer|min:1',
       'name': 'required|min:2|max:80',
       'color': 'required|min:2|max:7',
 
@@ -13,9 +14,11 @@ class AddAnnouncement {
 
   get messages(){
     return{
-      'required' : ' Il faut remplir le champ : {{ field }}...',
-      'max' : 'Nombre de caractère autorisé dépassé',
-      'min' : 'Nombre de caractère doit être supérieur'
+      'unique' : "ce numéro est deja pris",
+      'integer' : 'Le numéro doit être un nombre',
+      'required' : ' Il faut remplir le champ',
+      'max' : 'Nombre de caractères autorisé dépassé',
+      'min' : 'Nombre de caractères doit être supérieur'
     }
   }
   async fails(error){

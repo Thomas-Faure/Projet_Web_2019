@@ -13,9 +13,9 @@ class AddCategory {
 
   get messages(){
     return{
-      'required' : ' Il faut remplir le champs..',
-      'max' : 'Nombre de caractère autorisé dépassé',
-      'min' : 'Nombre de caractère doit être supérieur'
+      'required' : ' Il faut remplir le champ',
+      'max' : 'Nombre de caractères autorisé dépassé',
+      'min' : 'Nombre de caractères doit être supérieur'
     }
   }
   async fails(error){

@@ -49,6 +49,7 @@ class ExceptionHandler extends BaseExceptionHandler {
     // response.redirect('/')
 
     response.status(error.status).send(error.message)
+    
   }
 
   /**

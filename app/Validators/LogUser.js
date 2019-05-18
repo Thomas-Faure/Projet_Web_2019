@@ -11,8 +11,8 @@ class LogUser {
 
     get messages(){
         return{
-            'required' : ' Il faut remplir le champ : {{ field }}...',
-            'unique' : ' Il se trouve que {{ field }} existe deja...',
+            'required' : ' Il faut remplir le champ...',
+            'unique' : ' Il se trouve que l\'élément existe deja...',
             'email' : ' Vous devez mettre un email dans ce champ...'
         }
     }

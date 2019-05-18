@@ -14,11 +14,11 @@ class EditUser {
 
   get messages(){
     return{
-      'required' : ' Il faut remplir le champ : {{ field }}...',
-      'unique' : ' Il se trouve que {{ field }} existe deja...',
+      'required' : ' Il faut remplir le champ...',
+      'unique' : ' Il se trouve que cet élement existe deja...',
       'email' : ' Vous devez mettre un email dans ce champ...',
-      'max' : 'Nombre de caractère autorisé dépassé',
-      'min' : 'Nombre de caractère doit être supérieur'
+      'max' : 'Nombre de caractères autorisé dépassé',
+      'min' : 'Nombre de caractères doit être supérieur'
     }
   }
   async fails(error){
