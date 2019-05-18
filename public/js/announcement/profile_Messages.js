@@ -28,7 +28,7 @@ function getMessages(id, token_temp, idUser, visitorID, admin) {
 
             let value = JSON.parse(xhr.responseText);
             objJson = value.valeur;
-            changePage(1);
+            changePage(page_actuel);
         }
         else {
             alert('Request failed.  Returned status of ' + xhr.status);
@@ -163,26 +163,48 @@ function postMessage(id, token, id_announcement, auth_id) {
     var form = document.getElementById('form-message');
     var FD = new FormData(form);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/message/store/announcement/' + id);
+    var format = /[<>]/;
+    if(document.getElementById('name_message').value.length <2){
+        document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
+                        '<span>' +
+                        '<i class="fas fa-exclamation-triangle"></i>Nombre de caractères trop petit' +
+                        '</span>' +
+                        '</div>';
+    }else if(document.getElementById('name_message').value.length >80){
+        document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
+        '<span>' +
+        '<i class="fas fa-exclamation-triangle"></i>Nombre de caractères trop grand' +
+        '</span>' +
+        '</div>';
+    }else if(format.test(document.getElementById('name_message').value)){
+        document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
+        '<span>' +
+        '<i class="fas fa-exclamation-triangle"></i>Contient un "<" ou un ">"' +
+        '</span>' +
+        '</div>';
+    }else{
+        xhr.open('POST', '/message/store/announcement/' + id);
 
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let value = JSON.parse(xhr.responseText);
-            if (value.result == true) {
-                document.getElementById('message-error-field').innerHTML = '';
-                document.getElementById("name_message").value = '';
-                getMessages(id, token, id_announcement, auth_id, administrator)
-            } else {
-                document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
-                    '<span>' +
-                    '<i class="fas fa-exclamation-triangle"></i>' +value.returnMessage+
-                    '</span>' +
-                    '</div>';
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let value = JSON.parse(xhr.responseText);
+                if (value.result == true) {
+                    document.getElementById('message-error-field').innerHTML = '';
+                    document.getElementById("name_message").value = '';
+                    getMessages(id, token, id_announcement, auth_id, administrator)
+              
+                } else {
+                    document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
+                        '<span>' +
+                        '<i class="fas fa-exclamation-triangle"></i>' +value.returnMessage+
+                        '</span>' +
+                        '</div>';
+                }
+
             }
 
-        }
-
-    };
-    xhr.send(FD);//envoi le formulaire 
+        };
+        xhr.send(FD);//envoi le formulaire 
+    }
 }
