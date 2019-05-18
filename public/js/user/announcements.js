@@ -56,7 +56,7 @@ function changePage(page) {
                 listing_table.innerHTML += '<div id="' + objJson[i].id_announcement + '_row"><div class ="card-style">'+(admin == true ? 'Action:  <a class="btn btn-danger" onclick="delete_id(' + objJson[i].id_announcement + ',' + i + ')"role="button"><i class="fas fa-trash-alt"></i></a>  <a href="/announcement/' + objJson[i].id_announcement + '/edit"class="btn btn-info" role="button"><i class="fas fa-cog"></i></a>': 'Annonce : '+i)+'</div><a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none">'+
                     '      <div class="annonce-container" style="background: ' + objJson[i].color + '">' +
                     '        <div class="blank">' +
-                    '            <img class="announcement-img" src="/img/' + objJson[i].image + '" />' +
+                    '            <img alt="image_annonce" class="announcement-img" src="/img/' + objJson[i].image + '" />' +
                     '        </div>' +
                     '        <div class="announce-index-content">' +
                     '        <p><span class="announce-index-username" >' + objJson[i].username + ' ( note: <span style="color:black">' + objJson[i].note + '</span>)</span></p>' +

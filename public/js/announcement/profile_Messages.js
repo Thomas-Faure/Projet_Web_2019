@@ -64,7 +64,7 @@ function changePage(page) {
                 '        <div class="col-2"></div>' +
                 '        <div class="col-8">' +
                 '            <div class="message-div" style="background:' + objJson[i].color + '">' +
-                '                    <a class="message-username" href="/user/' + objJson[i].user_id + '"><p> <img class="message-username-img" src="/img/icon.png" />' + ((objJson[i].admin == 1) ? '<span > 👑 </span>' : "") + objJson[i].username + ((user_announcement_creator_id == objJson[i].user_id) ? '<span> ⭐ </span>' : "") + '</p></a>' +
+                '                    <a class="message-username" href="/user/' + objJson[i].user_id + '"><p> <img alt="image_utilisateur" class="message-username-img" src="/img/icon.png" />' + ((objJson[i].admin == 1) ? '<span > 👑 </span>' : "") + objJson[i].username + ((user_announcement_creator_id == objJson[i].user_id) ? '<span> ⭐ </span>' : "") + '</p></a>' +
                 '                    <div class="message-msg"><p>' + objJson[i].name_message + '</p></div>' +
                 '                    <p class="message-note">' +
                 '                            <a onClick="decrementValueM(' + objJson[i].id_message + ',' + i + ',\'' + token + '\')"><i class="fas fa-minus-square message-note-el"></i></a>' +

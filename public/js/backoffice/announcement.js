@@ -21,7 +21,7 @@ function delete_id(id) {
                 let value = JSON.parse(xhr.responseText);
                 result = value.valeur;
 
-                if (result == true ||result == false) { //double verification
+                if (result == true || result == false) { //double verification
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }

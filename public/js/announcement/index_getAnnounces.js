@@ -56,7 +56,7 @@ function changePage(page) {
         listing_table.innerHTML += '<a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none"><div class ="card-style"><span class="announce-index-username" >Par: ' + objJson[i].username + '</span></div>' +
             '      <div class="annonce-container" style="background: ' + objJson[i].color + '">' +
             '        <div class="blank">' +
-            '            <img class="announcement-img" src="/img/' + objJson[i].image + '"/>' +
+            '            <img alt="image_annonce" class="announcement-img" src="/img/' + objJson[i].image + '"/>' +
             '        </div>' +
             '        <div class="announce-index-content">' +
             '          <p>Note actuel : <span style="color:black">' + objJson[i].note + '</span></p>' +
