@@ -67,7 +67,7 @@ function changePage(page) {
         listing_table.innerHTML += '<a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none">' +
             '      <div class="annonce-container" style="background: ' + objJson[i].color + '">' +
             '        <div class="blank">' +
-            '            <img src="/img/' + objJson[i].image + '" style="width: 100%;height:auto;"/>' +
+            '            <img class="announcement-img" src="/img/' + objJson[i].image + '" />' +
             '        </div>' +
             '        <div class="announce-index-content">' +
             '        <p><span class="announce-index-username" >' + objJson[i].username + ' (note : <span style="color:black">' + objJson[i].note + '</span>)</span></p>' +
@@ -76,9 +76,6 @@ function changePage(page) {
             '        </div>' +
             '    </div>' +
             '  </a>';
-
-
-
 
     }
     page_span.innerHTML = page;

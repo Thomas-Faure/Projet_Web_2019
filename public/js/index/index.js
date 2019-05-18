@@ -14,7 +14,7 @@ xhr.onload = function () {
             lastPost.innerHTML = '<a href="/announcement/' + objJson.id_announcement + '" style="text-decoration: none">' +
                 '      <div class="annonce-container" style="background: ' + objJson.color + '">' +
                 '        <div class="blank">' +
-                '            <img src="/img/' + objJson.image + '" style="width: 100%;height:auto;"/>' +
+                '            <img class="announcement-img" src="/img/' + objJson.image + '" />' +
                 '        </div>' +
                 '        <div class="announce-index-content">' +
                 '          <p class="announce-index-name"style="">' + objJson.name_announcement + '</p>' +

@@ -56,7 +56,7 @@ function changePage(page) {
                 listing_table.innerHTML += '<div id="' + objJson[i].id_announcement + '_row"><div class ="card-style">'+(admin == true ? 'Action:  <a class="btn btn-danger" onclick="delete_id(' + objJson[i].id_announcement + ',' + i + ')"role="button"><i class="fas fa-trash-alt"></i></a>  <a href="/announcement/' + objJson[i].id_announcement + '/edit"class="btn btn-info" role="button"><i class="fas fa-cog"></i></a>': 'Annonce : '+i)+'</div><a href="/announcement/' + objJson[i].id_announcement + '" style="text-decoration: none">'+
                     '      <div class="annonce-container" style="background: ' + objJson[i].color + '">' +
                     '        <div class="blank">' +
-                    '            <img src="/img/' + objJson[i].image + '" style="width: 100%;height:auto;"/>' +
+                    '            <img class="announcement-img" src="/img/' + objJson[i].image + '" />' +
                     '        </div>' +
                     '        <div class="announce-index-content">' +
                     '        <p><span class="announce-index-username" >' + objJson[i].username + ' ( note: <span style="color:black">' + objJson[i].note + '</span>)</span></p>' +
@@ -100,7 +100,6 @@ function arrayRemove(arr, value) {
 //contient l'id de l'élement à supprimer en paramètre
 //elid correspond à l'index de l'element à supprimer (index dans le tableau d'objet JSON)
 function delete_id(id, elid) {
-    var resultat = "";
     var result = confirm("Vous confirmez la suppression ?");
     if (result) {
         var xhr = new XMLHttpRequest();
@@ -110,9 +109,9 @@ function delete_id(id, elid) {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let value = JSON.parse(xhr.responseText);
-                resultat = value.valeur;
+                result = value.valeur;
 
-                if (resultat == "supprimé") {
+                if (result == true ||result == false) {
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                     objJson = arrayRemove(objJson, objJson[elid])

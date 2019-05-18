@@ -167,10 +167,10 @@ footer{
     font-size:12px;
 }
 
-
-
-
-
+.announcement-img{
+    width: 80%;
+    height:auto;
+}
 
 /** NAVBAR **/
 .container {
@@ -179,7 +179,6 @@ footer{
     margin-right: auto;
     margin-left: auto;
   }
-
 .navbar{
     background:#333333;
 
@@ -199,7 +198,6 @@ footer{
 .navitem .navbar-link{
     color: white;
 }
-
 .register-button,.login-button{
     width:100%;
 }
@@ -294,7 +292,6 @@ footer{
 .bid-index-div{
     width: 100%;text-align:center;
 }
-
 /** 
 
 Pour la page d'erreur
