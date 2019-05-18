@@ -80,7 +80,7 @@ module.exports = {
   */
   xss: {
     enabled: true,
-    enableOnOldIE: false
+    enableOnOldIE: true
   },
 
   /*
@@ -136,7 +136,7 @@ module.exports = {
     methods: ['POST', 'PUT', 'DELETE'],
     filterUris: [],
     cookieOptions: {
-      httpOnly: false,
+      httpOnly: true,
       sameSite: true,
       path: '/',
       maxAge: 7200
