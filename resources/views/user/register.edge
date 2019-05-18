@@ -68,8 +68,8 @@ User
                         </div>
                          <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input type="password"  class="form-control" placeholder="mdp..." name="password" value="{{ old('password', '') }}">
-                        <input type="password"  class="form-control" placeholder="mdp confirm..." name="passwordValidation" value="{{ old('passwordValidation', '') }}">
+                        <input type="password" autocomplete="off"  class="form-control" placeholder="mdp..." name="password" value="{{ old('password', '') }}">
+                        <input type="password" autocomplete="off"  class="form-control" placeholder="mdp confirm..." name="passwordValidation" value="{{ old('passwordValidation', '') }}">
                         @if(hasErrorFor('password'))
                         <div class='form-error-specific'>
                                 <span>
