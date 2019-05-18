@@ -4,6 +4,15 @@ const Database = use('Database')
 
 
 class IndexController {
+
+    /**
+    * 
+    *  READ
+    * 
+    * Verb : GET
+    *
+    */
+   
     //afficher la vue d'accueil
     async index({ view }) {
         return view.render('index')

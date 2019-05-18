@@ -111,6 +111,10 @@ User
         </div>
        
 </div>
-<a class="btn btn-info" href="/backoffice/users" role="button" style="margin-top:20px">Retour</a>  
+@if(auth.user.admin)
+<a class="btn btn-info" href="/backoffice/users" role="button" style="margin-top:20px">Retour BackOffice</a>  <a class="btn btn-info" href="/user/{{user.id}}" role="button" style="margin-top:20px">Retour Profil</a>  
+@else
+<a class="btn btn-info" href="/user/{{user.id}}" role="button" style="margin-top:20px">Retour Profil</a>
+ @endif
 
 @endsection

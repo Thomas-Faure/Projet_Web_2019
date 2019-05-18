@@ -5,6 +5,15 @@ const Database = use('Database')
 
 
 class BackOfficeController {
+
+    /**
+     * 
+     *  READ
+     * 
+     * Verb : GET
+     *
+     */
+
     //permet d'envoyer l'utilisateur sur la vue principale du backoffice
     async index({ view }) {
 

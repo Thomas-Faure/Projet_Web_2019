@@ -2,6 +2,46 @@
 const Niveau = use('App/Models/Niveau')
 const erreurPerso = use('App/Exceptions/CustomException')
 class NiveauController {
+
+    /**
+    * 
+    *  CREATE
+    * 
+    * Verb : POST
+    *
+    */
+
+    //permet de créer un nouveau niveau
+    async store({ request, response,session }) {
+        try {
+            const id_level = request.input("id_level")
+            const name = request.input("name")
+            const color = request.input("color")
+            var format = /[<>]/;
+            if (format.test(name)) {
+                session.flash({ LevelError: 'Contient des caractères spéciaux' });
+                return response.redirect('/level/store')
+            }
+            let level = new Niveau()
+            level.id_level = id_level
+            level.color = color
+            level.name = name
+            await level.save()
+            response.redirect('/backoffice/level')
+        } catch (error) {
+            session.flash({ LevelError: 'Impossible de créer un niveau (duplication niveau)' });
+            return response.redirect('/level/store')
+        }
+    }
+
+    /**
+    * 
+    *  READ
+    * 
+    * Verb : GET
+    *
+    */
+
     //permet de génerer la page pour modifier un niveau déja existant
     async edit({ params, view,response}) {
         let niveau = (await Niveau.find(params.id))
@@ -26,12 +66,28 @@ class NiveauController {
             response.redirect('/')
         }
     }
+
+
+    /**
+    * 
+    *  UPDATE
+    * 
+    * Verb : PUT
+    *
+    */
+
     //permet de mettre à jour un niveau , l'id du niveau est passé en paramètre d'uri (params.id)
     //cette fonction redirige vers le backoffice des niveaux après modification
     async update({ params, request, response, session }) {
         try {
+            var format = /[<>]/;
             const name = request.input('name')
             const color = request.input('color')
+            if (format.test(name)) {
+                session.flash({ editLevelError: 'Contient des caractères spéciaux' });
+                return response.redirect('/level/' + params.id + '/edit')
+           
+            }
             let level = await Niveau.find(params.id)
             if (level) {
                 level.name = name;
@@ -44,20 +100,17 @@ class NiveauController {
             return response.redirect('/level/' + params.id + '/edit')
         }
     }
-    //permet de créer un nouveau niveau
-    async store({ request, response }) {
-        try {
-            const name = request.input("name")
-            const color = request.input("color")
-            let level = new Niveau()
-            level.color = color
-            level.name = name
-            await level.save()
-            response.redirect('/backoffice')
-        } catch (error) {
-            session.flash({ MdpError: 'Impossible de créer un niveau' });
-            return response.redirect('/level/store')
-        }
-    }
+
+    /**
+    * 
+    *  DELETE
+    * 
+    * Verb : DELETE
+    *
+    */
+
+
+    //on interdit la suppression d'un niveau
+
 }
 module.exports = NiveauController
