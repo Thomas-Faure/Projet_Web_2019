@@ -63,7 +63,7 @@ Route
     Route.on('register').render('user.register').middleware(['guest'])
     Route.post('register', 'UserController.store').validator('RegisterUser');
 
-    Route.get('logout', 'UserController.logout').middleware(['auth'])
+    Route.post('logout', 'UserController.logout')
     Route.get(':id', 'UserController.show')
 
   })
@@ -166,7 +166,7 @@ Route
   .group(() => {
     Route.get('', 'CategoryAnnouncementController.index').middleware(['auth'])
     Route.get(':id/edit', 'CategoryAnnouncementController.edit').middleware(['admin'])
-    Route.put(':id/edit', 'CategoryAnnouncementController.update').middleware(['admin'])
+    Route.put(':id/edit', 'CategoryAnnouncementController.update').middleware(['admin']).validator('EditCategory')
 
     Route.on('store').render('category.store').middleware(['admin'])
     Route.post('store', 'CategoryAnnouncementController.store').middleware(['admin']).validator('AddCategory')
