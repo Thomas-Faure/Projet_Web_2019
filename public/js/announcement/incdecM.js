@@ -14,33 +14,32 @@ function decrementValueM(id, elid, token) {
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
         if (xhr.status === 200) {
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('GET', '/message/' + id + '/vote');
-            xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr2.setRequestHeader("x-csrf-token", token);
-            xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                    let value = JSON.parse(xhr2.responseText);
-                    document.getElementById(id + '_message').innerHTML = value.valeur;
-                    if (value.suppression == true) {
-                        var elem = document.getElementById("div-message-" + id);
-                        elem.parentNode.removeChild(elem);
-                        objJson = arrayRemove(objJson, objJson[elid])
+            let result = JSON.parse(xhr.responseText);
+            if(result.valeur==true){
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', '/message/' + id + '/vote');
+                xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr2.setRequestHeader("x-csrf-token", token);
+                xhr2.onload = function () {
+                    if (xhr2.status === 200) {
+                        let value = JSON.parse(xhr2.responseText);
+                        document.getElementById(id + '_message').innerHTML = value.valeur;
+                        if (value.suppression == true) {
+                            var elem = document.getElementById("div-message-" + id);
+                            elem.parentNode.removeChild(elem);
+                            objJson = arrayRemove(objJson, objJson[elid])
 
-                        changePage(page_actuel);
+                            changePage(page_actuel);
+
+                        }
 
                     }
+                    
+                };
+                xhr2.send();
+            }
+        }
 
-                }
-                else {
-                    alert('Request failed.  Returned status of ' + xhr2.status);
-                }
-            };
-            xhr2.send();
-        }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
     };
     xhr.send("id=" + id);
 
@@ -57,25 +56,23 @@ function incrementValueM(id, token) {
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
         if (xhr.status === 200) {
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('GET', '/message/' + id + '/vote');
-            xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr2.setRequestHeader("x-csrf-token", token);
-            xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                    let value = JSON.parse(xhr2.responseText);
-                    document.getElementById(id + '_message').innerHTML = value.valeur;
-                }
-                else {
-                    alert('Request failed.  Returned status of ' + xhr2.status);
-                }
-            };
-            xhr2.send();
+            let result = JSON.parse(xhr.responseText);
+           
+            if(result.valeur==true){
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', '/message/' + id + '/vote');
+                xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr2.setRequestHeader("x-csrf-token", token);
+                xhr2.onload = function () {
+                    if (xhr2.status === 200) {
+                        let value = JSON.parse(xhr2.responseText);
+                        document.getElementById(id + '_message').innerHTML = value.valeur;
+                    } 
+                };
+                xhr2.send();
+            }
         }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
+        
     };
     xhr.send("id=" + id);
 

@@ -9,28 +9,30 @@ function decrementValueA(id, token) {
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
         if (xhr.status === 200) {
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('GET', '/announcement/' + id + '/vote');
-            xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr2.setRequestHeader("x-csrf-token", token);
-            xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                    let value = JSON.parse(xhr2.responseText);
-                    document.getElementById(id + '_announcement').innerHTML = value.valeur;
+            let result = JSON.parse(xhr.responseText);
+           
+            if(result.valeur==true){
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', '/announcement/' + id + '/vote');
+                xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr2.setRequestHeader("x-csrf-token", token);
+                xhr2.onload = function () {
+                    if (xhr2.status === 200) {
+                        let value = JSON.parse(xhr2.responseText);
+                        document.getElementById(id + '_announcement').innerHTML = value.valeur;
 
-                    if (value.suppression == true) {//si c'est supprimé on revient sur la page principale
-                        window.location.href = "/announcement/category/all";
+                        if (value.suppression == true) {//si c'est supprimé on revient sur la page principale
+                            window.location.href = "/announcement/category/all";
+                        }
                     }
-                }
-                else {
-                    alert('Request failed.  Returned status of ' + xhr2.status); //la requete n'a pas fonctionné
-                }
-            };
-            xhr2.send();
+                    else {
+                        alert('Request failed.  Returned status of ' + xhr2.status); //la requete n'a pas fonctionné
+                    }
+                };
+                xhr2.send();
+            }
         }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
+ 
     };
     xhr.send("id=" + id);//on envoie l'id de l'annonce
 
@@ -47,25 +49,26 @@ function incrementValueA(id, token) {
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.onload = function () {
         if (xhr.status === 200) {
+            let result = JSON.parse(xhr.responseText);
+           
+            if(result.valeur==true){
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', '/announcement/' + id + '/vote');
+                xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr2.setRequestHeader("x-csrf-token", token);
+                xhr2.onload = function () {
+                    if (xhr2.status === 200) {
+                        let value = JSON.parse(xhr2.responseText);
+                        document.getElementById(id + '_announcement').innerHTML = value.valeur;
+                    }
+                    else {
+                        alert('Request failed.  Returned status of ' + xhr2.status);
+                    }
+                };
+                xhr2.send();
+            }
+        }
 
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('GET', '/announcement/' + id + '/vote');
-            xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr2.setRequestHeader("x-csrf-token", token);
-            xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                    let value = JSON.parse(xhr2.responseText);
-                    document.getElementById(id + '_announcement').innerHTML = value.valeur;
-                }
-                else {
-                    alert('Request failed.  Returned status of ' + xhr2.status);
-                }
-            };
-            xhr2.send();
-        }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
     };
     xhr.send("id=" + id);//on envoie l'id de l'annonce
 
