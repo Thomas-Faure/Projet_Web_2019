@@ -19,7 +19,7 @@ class Admin {
         await next()
       } else {
         try {throw 'error'}catch(e){
-          throw new erreurPerso("Forbiden",401,"E_FORBIDEN")
+          throw new erreurPerso("Unauthorized",401,"")
         }
       }
     
