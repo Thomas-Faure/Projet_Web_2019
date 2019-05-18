@@ -35,7 +35,7 @@ Catégorie
                         <div class="form-group">
                                 <label for="color">Couleur</label>
                 
-                                <input type="text" id="color" name="color" class="form-control" value="{{old('color', category.color) }}"\>
+                                <input type="color" id="color" name="color" class="form-control" value="{{old('color', category.color) }}"\>
                                 @if(hasErrorFor('color'))
                                 <div class='form-error-specific'>
                                         <span>
