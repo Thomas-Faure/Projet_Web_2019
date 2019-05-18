@@ -29,7 +29,7 @@ class ExceptionHandler extends BaseExceptionHandler {
       await session.commit()
 
     }else{
-      return response.send(view.render('error',{status: error.status,message: error.message,code: error.code}))
+      return response.send(view.render('error',{status: error.status}))
     }
 
     response.status(error.status).send(error.message)
