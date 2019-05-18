@@ -61,6 +61,7 @@ class AnnouncementController {
     //increment signifie donc une note +1
     async increment({ response, auth, request }) {
         const user = await auth.getUser()
+        let returnvar = true
         const announcement_id = request.input("id");
         const announcement = await Announcement.find(announcement_id)
         if (announcement) {
@@ -88,9 +89,11 @@ class AnnouncementController {
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
                 }
             }
+        }else{
+            returnvar=false
         }
         return response.json({
-            valeur: 'great'
+            valeur: returnvar
         });
     }
 
@@ -99,6 +102,7 @@ class AnnouncementController {
     //increment signifie donc une note -1
     async decrement({ response, auth, request }) {
         const user = await auth.getUser()
+        let returnvar = true
         const announcement_id = request.input("id");
         const announcement = await Announcement.find(announcement_id)
         if (announcement) {
@@ -126,9 +130,11 @@ class AnnouncementController {
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
                 }
             }
+        }else{
+            returnvar=false
         }
         return response.json({
-            valeur: 'success'
+            valeur: returnvar
         });
     }
 

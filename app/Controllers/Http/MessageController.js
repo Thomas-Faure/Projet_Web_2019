@@ -65,6 +65,7 @@ class MessageController {
     //increment signifie donc une note +1 pour un message
     async increment({ response, auth, request }) {
         const user = await auth.getUser()
+        let returnvar = true
         const message_id = request.input("id");
         const message = await Message.find(message_id)
         if (message) {
@@ -96,9 +97,11 @@ class MessageController {
 
                 }
             }
+        }else{
+            returnvar=false
         }
         return response.json({
-            valeur: 'great'
+            valeur: returnvar
         });
     }
 
@@ -107,6 +110,7 @@ class MessageController {
     //increment signifie donc une note -1
     async decrement({ response, auth, request }) {
         const user = await auth.getUser()
+        let returnvar = true
         const message_id = request.input("id");
         const message = await Message.find(message_id)
         if (message) {
@@ -135,9 +139,11 @@ class MessageController {
                     User.incrementUserLevel(user, 1) //on récompense la personne qui vote
                 }
             }
+        }else{
+            returnvar=false
         }
         return response.json({
-            valeur: 'great'
+            valeur: returnvar
         });
     }
 

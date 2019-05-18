@@ -70,8 +70,9 @@ class UserController {
     }
 
     //permet à un utilisateur connecté de se déconnecter
-    async logout({ response }) {
+    async logout({ response,session }) {
         response.clearCookie('Authorization')
+        session.flash({ LogoutSuccess: 'Vous êtes maintenant deconnecté !' });
         response.redirect('/')
     }
     //permet à un utilisateur de se connecter
@@ -82,6 +83,7 @@ class UserController {
                 let user = await User.findBy('email', email)
                 let token = await auth.generate(user)
                 response.cookie('Authorization', token, { httpOnly: true, path: '/' }) //Création du cookie qui va servie pour l'authentification
+                session.flash({ LoginSuccess: 'Vous êtes maintenant connecté !' });
                 response.redirect('/')
             }
         }

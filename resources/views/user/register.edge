@@ -69,11 +69,18 @@ User
                          <div class="form-group">
                         <label for="password">Mot de passe</label>
                         <input type="password"  class="form-control" placeholder="mdp..." name="password" value="{{ old('password', '') }}">
-                        <input type="password"  class="form-control" placeholder="mdp confirm..." name="passwordValidation" value="">
+                        <input type="password"  class="form-control" placeholder="mdp confirm..." name="passwordValidation" value="{{ old('passwordValidation', '') }}">
                         @if(hasErrorFor('password'))
                         <div class='form-error-specific'>
                                 <span>
                                         <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('password') }}
+                                </span>
+                            </div>
+                        @endif
+                        @if(hasErrorFor('passwordValidation'))
+                        <div class='form-error-specific'>
+                                <span>
+                                        <i class="fas fa-exclamation-triangle"></i>  {{ getErrorFor('passwordValidation') }}
                                 </span>
                             </div>
                         @endif

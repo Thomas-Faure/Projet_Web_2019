@@ -1,19 +1,19 @@
 'use strict'
 
-class AddAnnouncement {
+class AddMessage {
   get rules () {
     return {
       
-      'name_message': 'required|min:2|max:80'
+      'name_message': 'required|min:2|max:80|regex:^[^<>]+$'
     
     }
   }
-
   get messages(){
     return{
       'required' : ' Il faut remplir le champ',
       'max' : 'Nombre de caractères autorisé dépassé',
-      'min' : 'Nombre de caractères doit être supérieur'
+      'min' : 'Nombre de caractères doit être supérieur',
+      'regex': 'Ne peut contenir "<" ou ">"'
     }
   }
   async fails(error){
@@ -24,4 +24,4 @@ class AddAnnouncement {
 
 }
 
-module.exports = AddAnnouncement
+module.exports = AddMessage
