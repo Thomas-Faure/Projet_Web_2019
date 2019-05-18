@@ -88,6 +88,21 @@ Annonces
 
     @if(auth.user)
     {{ script('js/announcement/incdecM') }}
+    @else
+    <script>
+        function incrementValueA(){ //à vide car déconnecté
+
+        }
+        function decrementValueA(){//à vide car déconnecté
+                    
+        }
+        function incrementValueM(){//à vide car déconnecté
+
+        }
+        function decrementValueM(){//à vide car déconnecté
+
+        }       
+    </script>
     @endif
     <script>
     setMessageColor('{{announcement.color}}')
