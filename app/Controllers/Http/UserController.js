@@ -305,12 +305,16 @@ class UserController {
                 } else if (format.test(username)) {
                     session.flash({ EditError: 'Votre pseudo contient des caractères non acceptés' });
                     return response.redirect('/user/' + params.id + '/edit/')
-                }
+                }           
                 let userEdit = await User.find(params.id)
                 if (password != null) {
-                    if (password == passwordValidation) {
-                        userEdit.password = password
-                    } else {
+                    if(password.length>3){
+                        if (password == passwordValidation) {
+                            userEdit.password = password
+                        } else {
+                            throw 'error'
+                        }
+                    }else{
                         throw 'error'
                     }
                 }
