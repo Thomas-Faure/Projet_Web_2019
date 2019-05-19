@@ -15,7 +15,7 @@ class AddLevel {
   get messages(){
     return{
       'unique' : "ce numéro est deja pris",
-      'integer' : 'Le numéro doit être un nombre',
+      'integer' : 'Il doit s\'agir d\'un nombre',
       'required' : ' Il faut remplir le champ',
       'max' : 'Nombre de caractères autorisé dépassé',
       'min' : 'Nombre de caractères doit être supérieur',

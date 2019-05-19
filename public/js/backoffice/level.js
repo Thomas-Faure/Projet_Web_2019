@@ -18,10 +18,10 @@ function setData(data) {
     var myTable = document.querySelector("table");
     var dataTable = new DataTable(myTable);
 }
-var xhr = new XMLHttpRequest();
-xhr.open('GET', '/level');
-xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-xhr.onload = function () {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/level');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onload = function () {
     if (xhr.status === 200) {
         let value = JSON.parse(xhr.responseText);
         objJson = value;

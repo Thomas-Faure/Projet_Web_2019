@@ -45,10 +45,12 @@ class User extends Model {
 
   }
   static decrementUserLevel (user,valeur) {
+  
     let new_lvl= user.exp-valeur;
+    
     if(new_lvl < 0){
-        if(user.level_id==0){
-          user.level_id=0
+        if(user.level_id==1){
+          user.level_id=1
           user.exp=0
         }else{
          let new_level = user.level_id-1
@@ -60,7 +62,6 @@ class User extends Model {
           user.exp = new_lvl
     }
     user.save()
-
   }
 }
 
