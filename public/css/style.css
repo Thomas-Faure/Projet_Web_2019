@@ -11,6 +11,11 @@ body{
  
 }
 
+textarea[name=name_message]
+{
+ resize : none;
+}
+
 footer{
    
     width:100%;
@@ -21,6 +26,9 @@ footer{
     }
 /** USER */
 
+.info-user-profile{
+    margin-top: 20px;
+}
 .user-profile-text{
     color:white !important;
 }
@@ -248,7 +256,7 @@ footer{
 
 .annonce-container {
     background: yellow;
-    border-radius: 5px;
+    border-radius: 0px 0px 5px 5px;
     padding: 1em;
     margin-bottom: 1px;
     display: grid;
@@ -264,9 +272,17 @@ footer{
     width:100%;
 }
 
-.img-nav{
-    width: 10%;
-    height: auto;
+@media screen and (min-width: 701px) {
+    .img-nav{
+        width: 10%;
+        height: auto;
+    }
+}
+@media screen and (max-width: 700px) {
+    .img-nav{
+        width: 30%;
+        height: auto;
+    }
 }
 
 .card{

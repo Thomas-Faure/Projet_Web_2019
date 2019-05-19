@@ -35,14 +35,11 @@
                   <a class="nav-link color-nav" href="/"><strong>Accueil</strong></a>
              </li>
             
+
+             <li class="nav-item">
+                <a class="nav-link color-nav" href="/announcement/category/all">Annonces</a>
+            </li>
         @if(auth.user)
-        <form action="/user/logout" method="post">
-          <li class="nav-item">
-            {{ csrfField() }}
-            <button type="submit" class="btn btn-danger">Deconnexion</button>
-          </li>
-        </form>
-      
         <li class="nav-item">
             <a class="nav-link color-nav" href="/user/{{auth.user.id}}">Profil</a>
         </li>
@@ -58,13 +55,19 @@
           <a class="nav-link color-nav" href="/user/register">Inscription</a>
         </li>
         @endif
-        <li class="nav-item">
-            <a class="nav-link color-nav" href="/announcement/category/all">Annonces</a>
-        </li>
+       
         @if(auth.user.admin == 1)
         <li class="nav-item">
             <a class="nav-link color-nav-admin" href="/backoffice"><strong>BackOffice</strong></a>
         </li>
+        @endif
+        @if(auth.user)
+        <form action="/user/logout" method="post">
+          <li class="nav-item">
+            {{ csrfField() }}
+            <button type="submit" class="btn btn-danger"><i class="fas fa-power-off"></i></button>
+          </li>
+        </form>
         @endif
           </ul>
         </div>

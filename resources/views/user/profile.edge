@@ -24,12 +24,13 @@ User
                                 @endif
                                 @endif
                         
-               
-                        <p class="card-text user-profile-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
-                        <p class="card-text user-profile-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
-                        <p class="card-text user-profile-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
-                        <p class="card-text user-profile-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.level_id}} (<span>{{level.name}}</span>)</p>
-                        <p class="card-text user-profile-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
+                                <div class="info-user-profile">
+                                        <p class="card-text user-profile-text"><i class="fas fa-male"></i>  Username :  {{user.username}}</p>
+                                        <p class="card-text user-profile-text"><i class="fas fa-address-book"></i>  Email : {{user.email}}</p>
+                                        <p class="card-text user-profile-text"><i class="fas fa-birthday-cake"></i>  Date naissance : {{user.birthday}}</p>
+                                        <p class="card-text user-profile-text"><i class="fas fa-chess-king"></i>  Niveau : {{user.level_id}} (<span>{{level.name}}</span>)</p>
+                                        <p class="card-text user-profile-text"><i class="fas fa-dumbbell"></i>  Experience : {{user.exp}}</p>
+                                </div>
                         </div>
                 </div>
         </div>

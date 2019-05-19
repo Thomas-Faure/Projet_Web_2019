@@ -318,7 +318,7 @@ class UserController {
                         throw 'error'
                     }
                 }
-                if (user.admin == 1 && (admin == 0 || admin == 1)) {
+                if (user.admin == 1 && (admin == 0 || admin == 1) && userEdit.id !=user.id) {
                     userEdit.admin = admin
                 }
                 userEdit.name = name

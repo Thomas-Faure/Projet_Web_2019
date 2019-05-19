@@ -51,7 +51,7 @@ class AnnouncementController {
                 throw 'error'
             }
         } catch (error) {
-            session.flash({ AnnouncementAddError: 'Veuillez attendre 10 minutes entre chaque création d\'annonce;)' });
+            session.flash({ AnnouncementAddError: 'Veuillez attendre 10 minutes entre chaque création d\'annonce' });
             return response.redirect('/announcement/store')
         }
     }

@@ -4,15 +4,16 @@ User
 @endsection
 @section('content')
 
-<h1>Les annonces :</h1>
+<a class="btn btn-info" href="/user/{{id}}" role="button" style="margin-top:20px">Retour Profil</a>
+
 <div id="listingTable"></div>
 <p style="text-align:center">page: <span id="page"></span></p>
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
           
-          <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
+          <li class="page-item"><a class="page-link" id="btn_prev" onclick="prevPage()">Precedent</a></li>
          
-          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Next</a></li>
+          <li class="page-item"><a class="page-link" id="btn_next" onclick="nextPage()">Next</a></li>
     
         </ul>
       </nav>

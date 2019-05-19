@@ -3,6 +3,7 @@
 User
 @endsection
 @section('content')
+<a class="btn btn-info" href="/user/{{id}}" role="button" style="margin-top:20px">Retour Profil</a>
 <div class="dropdown dropdown-category-announce" >
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Filtre
@@ -21,9 +22,9 @@ User
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
           
-          <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
+          <li class="page-item"><a class="page-link" id="btn_prev" onclick="prevPage()">Precedent</a></li>
          
-          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Next</a></li>
+          <li class="page-item"><a class="page-link" id="btn_next" onclick="nextPage()">Next</a></li>
     
         </ul>
       </nav>

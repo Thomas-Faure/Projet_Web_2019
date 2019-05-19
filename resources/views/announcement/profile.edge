@@ -1,6 +1,6 @@
 @layout('layouts.main')
 @section('title')
-Annonces
+Annonce
 @endsection
 @section('content')
 @if(auth.user)
@@ -41,9 +41,9 @@ Annonces
 <nav class="page-pagination" aria-label="Page navigation example">
         <ul class="pagination">
 
-          <li class="page-item"><a class="page-link" id="btn_prev" href="javascript:prevPage()">Precedent</a></li>
+          <li class="page-item"><a class="page-link" id="btn_prev" onclick="prevPage()">Precedent</a></li>
 
-          <li class="page-item"><a class="page-link" id="btn_next" href="javascript:nextPage()">Suivant</a></li>
+          <li class="page-item"><a class="page-link" id="btn_next" onclick="nextPage()">Suivant</a></li>
 
         </ul>
 </nav>
