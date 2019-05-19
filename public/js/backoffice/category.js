@@ -50,8 +50,6 @@ function delete_id(id) {
                     var elem = document.getElementById(+id + "_row");
                     elem.parentNode.removeChild(elem);
                 }
-
-
             }
             else {
                 alert('Request failed.  Returned status of ' + xhr.status);

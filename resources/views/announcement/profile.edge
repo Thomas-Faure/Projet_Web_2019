@@ -106,7 +106,7 @@ Annonces
     @endif
     <script>
     setMessageColor('{{announcement.color}}')
-    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}','{{auth.user.admin}}')
+    getMessages('{{id}}','{{ csrfToken }}','{{announcement.id}}','{{auth.user.id}}','{{auth.user.admin}}','{{auth.user.username}}')
  
                               </script>
        @endsection

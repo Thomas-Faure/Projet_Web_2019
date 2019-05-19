@@ -8,14 +8,17 @@ var token = 0; //token CSRF
 var userVisitorID = 0; //id du visiteur actuellement en train d'être sur la page
 var administrator = 0; //1 si administrateur , 0 sinon
 
+var name_user = "" //pseudo de la personne qui visite l'annonce
+
 //permet de récuperer les messages d'une annonce dont l'id est passé en paramètre
 //le tocken est également en paramètre
 //l'id de l'utlisateur créateur de l'annonce y est aussi
 //l'id de l'utlisateur visiteur de la page
 //et un paramètre admin (1 ou 0), PS: si on s'amuse à changer ce 0 en 1 , rien ne change vu que c'est géré dans le backend//
 //ce paramètre administrateur ne sert uniquement à afficher la poubelle de suppression de message/Annonce
-function getMessages(id, token_temp, idUser, visitorID, admin) {
+function getMessages(id, token_temp, idUser, visitorID, admin,name_temp) {
     administrator = admin
+    name_user = name_temp
     user_announcement_creator_id = idUser
     token = token_temp
     idAnnouncement = id;
@@ -59,13 +62,14 @@ function changePage(page) {
     if (objJson.length > 0) {
         for (var i = (page - 1) * max_page; i < (page * max_page) && i < objJson.length; i++) {
             let date_converted = date_converter(objJson[i].created_at)
-
+            var str = objJson[i].name_message
+            str = str.replace("@"+name_user, "<strong>@"+name_user+"</strong>");//permet de montrer à la personne cible qu'on le mentionne
             listing_table.innerHTML += '<div class="row message-container" id="div-message-' + objJson[i].id_message + '" style="padding-bottom:20px;">' +
                 '        <div class="col-2"></div>' +
                 '        <div class="col-8">' +
                 '            <div class="message-div" style="background:' + objJson[i].color + '">' +
                 '                    <a class="message-username" href="/user/' + objJson[i].user_id + '"><p> <img alt="image_utilisateur" class="message-username-img" src="/img/icon.png" />' + ((objJson[i].admin == 1) ? '<span > 👑 </span>' : "") + objJson[i].username + ((user_announcement_creator_id == objJson[i].user_id) ? '<span> ⭐ </span>' : "") + '</p></a>' +
-                '                    <div class="message-msg"><p>' + objJson[i].name_message + '</p></div>' +
+                '                    <div class="message-msg"><p>' + str + '</p></div>' +
                 '                    <p class="message-note">' +
                 '                            <a onClick="decrementValueM(' + objJson[i].id_message + ',' + i + ',\'' + token + '\')"><i class="fas fa-minus-square message-note-el"></i></a>' +
                 '                            <span class="message-note-el" id="' + objJson[i].id_message + '_message">' + objJson[i].note + '</span>' +
@@ -192,7 +196,7 @@ function postMessage(id, token, id_announcement, auth_id) {
                 if (value.result == true) {
                     document.getElementById('message-error-field').innerHTML = '';
                     document.getElementById("name_message").value = '';
-                    getMessages(id, token, id_announcement, auth_id, administrator)
+                    getMessages(id, token, id_announcement, auth_id, administrator,name_user)
               
                 } else {
                     document.getElementById('message-error-field').innerHTML = '<div class="form-error-general">' +
