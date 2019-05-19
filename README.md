@@ -7,6 +7,7 @@ Projet web - semestre 6 - IG3
 - Adonis JS (Framework Full-Stack NodesJS) https://adonisjs.com/
 - MySql https://www.mysql.com/fr/
 - JWT (création token) https://jwt.io/
+- Vanilla datatable https://github.com/Mobius1/Vanilla-DataTables
 - Javascript
 - Html 5
 - Css 3
@@ -19,9 +20,6 @@ Projet web - semestre 6 - IG3
 
 * **Thomas Faure** - *Etudiant* - [Voir mon GitHub](https://github.com/Thomas-Faure)
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Connaissances Requises
 
