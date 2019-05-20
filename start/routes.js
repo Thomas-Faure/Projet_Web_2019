@@ -188,7 +188,7 @@ Route
   .group(() => {
     Route.get('', 'BackOfficeController.index').middleware(['admin'])
     Route.on('users').render('backoffice.users').middleware(['admin'])
-    Route.get('announcement/:id/messages', 'BackofficeController.messages').middleware(['admin'])
+    Route.get('announcement/:id/messages', 'BackOfficeController.messages').middleware(['admin'])
     Route.on('announcement').render('backoffice.announcement').middleware(['admin'])
     Route.on('category').render('backoffice.category').middleware(['admin'])
     Route.on('level').render('backoffice.level').middleware(['admin'])
